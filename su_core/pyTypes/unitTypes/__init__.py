@@ -1,8 +1,8 @@
-from MH_Core.pm import mem
-from MH_Core.pyStructures import UnitHashTable
-from MH_Core.pyTypes.unitTypes.Player import Player
-from MH_Core.pyTypes.unitTypes.Menu import Menu, Menus
-from MH_Core.utils.exceptions import PlayerNotFound
+from su_core.pm import mem
+from su_core.pyStructures import UnitHashTable
+from su_core.pyTypes.unitTypes.Player import Player
+from su_core.pyTypes.unitTypes.Menu import Menu, Menus
+from su_core.utils.exceptions import PlayerNotFound
 
 
 def obtain_units(unit_type: int) -> list:

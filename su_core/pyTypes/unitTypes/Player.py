@@ -1,6 +1,6 @@
-from MH_Core.pyTypes import UnitAny
-from MH_Core.pyTypes import Act
-from MH_Core.data import Area
+from su_core.pyTypes import UnitAny
+from su_core.pyTypes import Act
+from su_core.data import Area
 
 
 class Player(UnitAny):

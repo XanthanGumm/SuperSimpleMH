@@ -4,9 +4,9 @@ import psutil
 import win32gui
 import win32con
 import win32process
-from MH_Core.pyTypes.unitTypes import obtain_player, Menu, Menus, PlayerNotFound
-from MH_Core.window.shapes import *
-from MH_Core.math import *
+from su_core.pyTypes.unitTypes import obtain_player, Menu, Menus, PlayerNotFound
+from su_core.window.shapes import *
+from su_core.math import *
 
 
 class Window:

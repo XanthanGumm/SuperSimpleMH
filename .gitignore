@@ -107,7 +107,6 @@ pip-selfcheck.json
 # Reference: https://intellij-support.jetbrains.com/hc/en-us/articles/206544839
 
 # User-specific stuff
-pyMeow-1.43.25.zip
 /MH_MapApi/.idea/*
 .idea/*
 .idea/**/workspace.xml
@@ -187,3 +186,9 @@ fabric.properties
 # idea folder, uncomment if you don't need it
  .idea
 
+# others
+pyMeow-1.43.25.zip
+rpyc-d2-map-api/build/
+rpyc-d2-map-api/map_layout.egg-info/
+rpyc-d2-map-api/venv/
+rpyc-d2-map-api/.git

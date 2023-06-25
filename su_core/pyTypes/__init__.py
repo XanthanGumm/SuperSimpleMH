@@ -1,13 +1,15 @@
+import os
+import pathlib
 import ctypes as ct
-from MH_Core.pm import mem
-from MH_Core.pyStructures import UnitAny as StructUnitAny
-from MH_Core.pyStructures import Act as StructAct
-from MH_Core.pyStructures import ActMisc as StructActMisc
-from MH_Core.pyStructures import DynamicPath
-from MH_Core.pyStructures import Room1 as StructRoom1
-from MH_Core.pyStructures import Room2 as StructRoom2
-from MH_Core.pyStructures import Level as StructLevel
-from MH_Core.data import *
+from su_core.pm import mem
+from su_core.pyStructures import UnitAny as StructUnitAny
+from su_core.pyStructures import Act as StructAct
+from su_core.pyStructures import ActMisc as StructActMisc
+from su_core.pyStructures import DynamicPath
+from su_core.pyStructures import Room1 as StructRoom1
+from su_core.pyStructures import Room2 as StructRoom2
+from su_core.pyStructures import Level as StructLevel
+from su_core.data import *
 
 
 class UnitAny:
@@ -58,7 +60,11 @@ class ActMisc:
         self._real_tomb_area = None
         self._difficulty = None
 
-        rustdecrypt = ct.CDLL(".\\rustdecrypt.dll")
+        root = pathlib.Path(__file__)
+        while root.name != "SuperSimpleMH":
+            root = root.parent
+
+        rustdecrypt = ct.CDLL(os.path.join(root, "dep", "rustdecrypt.dll"))
         self._decrypt_seed = rustdecrypt["get_seed"]
         self._decrypt_seed.argtypes = [ct.c_uint32, ct.c_uint32, ct.c_uint32]
         self._decrypt_seed.restype = ct.c_uint32

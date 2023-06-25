@@ -1,6 +1,6 @@
-from MH_Core.pm import mem
-from MH_Core.pyStructures import UI
-from MH_Core.data import Menus
+from su_core.pm import mem
+from su_core.pyStructures import UI
+from su_core.data import Menus
 
 
 class Menu:
