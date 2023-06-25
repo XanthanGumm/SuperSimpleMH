@@ -28,23 +28,3 @@ def obtain_player() -> Player:
                 return c
 
     raise PlayerNotFound("Could not find player unit")
-
-
-# # TODO: create ui unit, later...
-# def is_manu_open() -> bool:
-#     ui: UI = mem.read_struct(mem.ui, UI)
-#     return (
-#         not ui.inGame or
-#         ui.invMenu or
-#         ui.charMenu or
-#         ui.skillMenu or
-#         ui.npcInteract or
-#         ui.quitMenu or
-#         ui.npcShop or
-#         ui.questsMenu or
-#         ui.waypointMenu or
-#         ui.partyMenu or
-#         ui.stash or
-#         ui.mercMenu or
-#         ui.loading
-#     )

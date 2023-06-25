@@ -1,6 +1,8 @@
+import os
 import rpyc
 import time
 import psutil
+import pathlib
 import win32gui
 import win32con
 import win32process
@@ -144,15 +146,21 @@ class Window:
 class Canvas:
     colors = {"greenyellow": pm.get_color("greenyellow"),
               "green": pm.get_color("green"),
-              "navy": pm.get_color("navy")}
+              "navy": pm.get_color("navy"),
+              "d2rbrown": pm.new_color(199, 179, 119, 255)}
 
     def __init__(self):
+        root = pathlib.Path(__file__)
+        while root.name != "SuperSimpleMH":
+            root = root.parent
+
         self._win = Window()
         pm.overlay_init()
         fps = pm.get_monitor_refresh_rate()
         pm.set_fps(fps)
         pm.set_window_size(self._win.width, self._win.height)
         pm.set_window_position(self._win.start_pos_x, self._win.start_pos_y)
+        pm.load_font(os.path.join(root, "fonts", "formal436bt-regular.otf"), 9590)
 
         self._rpconn = rpyc.connect("localhost", port=18861)
 
@@ -184,7 +192,7 @@ class Canvas:
             player = self.try_get_player()
             if player is not None:
 
-                current_seed = player.act.act_misc.decrypt_seed
+                current_seed = player.act.act_misc.decrypt_seed()
 
                 if current_seed != self._rpconn.root.map_seed():
                     self._rpconn.root.set_map_seed(current_seed)
@@ -201,9 +209,11 @@ class Canvas:
                     exits = map_data.exits
                     adjacent_levels = map_data.adjacent_levels
 
+                pm.begin_drawing()
+                pm.draw_font(9590, "SuperSimpleMH", 0.07 * self._win.width, 0.05 * self._win.height,
+                             24, 0, self.colors["d2rbrown"])
                 if not player.is_in_town:
 
-                    pm.begin_drawing()
                     if waypoint is not None:
                         end = self._win.world2map(player.path.position, waypoint, origin)
                         self._win.draw_arrow(end, text="Waypoint", color=self.colors["navy"])

@@ -76,15 +76,6 @@ class ActMisc:
         self._real_tomb_area = Area(self._struct.dwRealTombArea)
         self._difficulty = Difficulty(self._struct.wDifficulty)
 
-    @property
-    def difficulty(self):
-        return self._difficulty
-
-    @property
-    def real_tomb_area(self):
-        return self._real_tomb_area
-
-    @property
     def decrypt_seed(self):
         init1 = self._struct.dwInitSeedHash1
         init2 = self._struct.dwInitSeedHash1
@@ -96,6 +87,14 @@ class ActMisc:
             self.__seed = self._decrypt_seed(init1, init2, end)
 
         return self.__seed
+
+    @property
+    def difficulty(self):
+        return self._difficulty
+
+    @property
+    def real_tomb_area(self):
+        return self._real_tomb_area
 
 
 class Act:
