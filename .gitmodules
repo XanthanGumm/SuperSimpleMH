@@ -1,0 +1,3 @@
+[submodule "rpyc-d2-map-api"]
+	path = rpyc-d2-map-api
+	url = https://github.com/XanthanGumm/rpyc-d2-map-api.git
