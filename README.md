@@ -19,6 +19,7 @@
 
 ## Features
 * map directions to adjacent levels and mazes.
+* level map overlay
 
 ## Credits
 * [mapview](https://github.com/joffreybesos/d2r-mapview) @joffreybesos for rustdecrypt and many more.
@@ -26,6 +27,6 @@
 * [d2mapapi](https://github.com/jcageman/d2mapapi)
 
 
-DuranceOfHate              |  Catacombs
+LowerKurast              |  Catacombs
 :-------------------------:|:-------------------------:
-![plot](./DuranceOfHate.png)  |  ![plot](Catacombs.png)
+![plot](./LowerKurast.png)  |  ![plot](Catacombs.png)
