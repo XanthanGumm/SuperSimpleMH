@@ -70,12 +70,12 @@ class Window:
 
         win32gui.EnumWindows(callback, None)
 
-    def world2map(self, player_pos, target_pos, area_origin):
+    def world2map(self, player_pos, target_pos, area_origin, scaleX=None, scaleY=None):
 
         map_mat = CSharpMatrix3X2.make_translation(area_origin[0], area_origin[1]) @ \
                   CSharpMatrix3X2.make_translation(-player_pos[0], -player_pos[1]) @ \
                   CSharpMatrix3X2.make_rotation(45) @ \
-                  CSharpMatrix3X2.make_scale(self._scaleW, self._scaleH) @ \
+                  CSharpMatrix3X2.make_scale(self._scaleW if not scaleX else scaleX, self._scaleH if not scaleY else scaleY) @ \
                   CSharpMatrix3X2.make_translation(self.center[0], self.center[1])
 
         area_mat = CSharpMatrix3X2.make_translation(-area_origin[0], -area_origin[1]) @ map_mat
@@ -120,7 +120,8 @@ class Window:
         Arrow(start, end, short_render, text, color, self._start_line_pad)
 
     def draw_player_circle(self):
-        pm.draw_circle_lines(self._center[0], self._center[1] - self._center_pad, self._start_line_pad, pm.get_color("red"))
+        pm.draw_circle_lines(self._center[0], self._center[1] - self._center_pad, self._start_line_pad,
+                             pm.get_color("red"))
 
     @property
     def width(self):
@@ -147,7 +148,9 @@ class Canvas:
     colors = {"greenyellow": pm.get_color("greenyellow"),
               "green": pm.get_color("green"),
               "navy": pm.get_color("navy"),
-              "d2rbrown": pm.new_color(199, 179, 119, 255)}
+              "d2rbrown": pm.new_color(199, 179, 119, 255),
+              "red": pm.get_color("red"),
+              "white": pm.get_color("white")}
 
     def __init__(self):
         root = pathlib.Path(__file__)
@@ -155,13 +158,13 @@ class Canvas:
             root = root.parent
 
         self._win = Window()
+        self._map_scale = (self._win.width / (2 * 1280)) * 4.8
         pm.overlay_init()
         fps = pm.get_monitor_refresh_rate()
         pm.set_fps(fps)
         pm.set_window_size(self._win.width, self._win.height)
         pm.set_window_position(self._win.start_pos_x, self._win.start_pos_y)
-        pm.load_font(os.path.join(root, "fonts", "formal436bt-regular.otf"), 9590)
-
+        pm.load_font(os.path.join(root, "fonts", "formal436bt-regular.otf"), 1)
         self._rpconn = rpyc.connect("localhost", port=18861)
 
     def try_get_player(self):
@@ -202,16 +205,21 @@ class Canvas:
                 if player.path.room1.room2.level.area.value != current_area:
                     current_area = player.path.room1.room2.level.area.value
                     origin = player.path.room1.room2.level.origin
-                    map_data = self._rpconn.root.obtain_map_data(
-                        player.path.room1.room2.level.area.value, player.path.position
-                    )
+                    self._rpconn.root.read_map_data(player.path.room1.room2.level.area.value, player.path.position)
+                    map_data = self._rpconn.root.obtain_map_data(current_area)
+                    level_texture_bytes = self._rpconn.root.generate_map_image(current_area)
+                    level_texture = pm.load_texture_bytes(".png", level_texture_bytes)
+
                     waypoint = map_data.waypoint
                     exits = map_data.exits
                     adjacent_levels = map_data.adjacent_levels
 
                 pm.begin_drawing()
-                pm.draw_font(9590, "SuperSimpleMH", 0.07 * self._win.width, 0.05 * self._win.height,
+                pm.draw_font(1, "SuperSimpleMH", 0.07 * self._win.width, 0.05 * self._win.height,
                              24, 0, self.colors["d2rbrown"])
+                texture_pos = self._win.world2map(player.path.position, origin, origin)
+                texture_pos.x = texture_pos - map_data.size[1] * self._map_scale
+                pm.draw_texture(level_texture, texture_pos.x, texture_pos.y, self.colors["white"], 0, self._map_scale)
                 if not player.is_in_town:
 
                     if waypoint is not None:
