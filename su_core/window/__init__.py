@@ -218,7 +218,7 @@ class Canvas:
                 pm.draw_font(1, "SuperSimpleMH", 0.07 * self._win.width, 0.05 * self._win.height,
                              24, 0, self.colors["d2rbrown"])
                 texture_pos = self._win.world2map(player.path.position, origin, origin)
-                texture_pos.x = texture_pos - map_data.size[1] * self._map_scale
+                texture_pos.x = texture_pos.x - map_data.size[1] * self._map_scale
                 pm.draw_texture(level_texture, texture_pos.x, texture_pos.y, self.colors["white"], 0, self._map_scale)
                 if not player.is_in_town:
 
