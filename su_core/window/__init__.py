@@ -189,7 +189,7 @@ class Canvas:
         waypoint = None
         exits = None
         adjacent_levels = None
-
+        # TODO: fix the rpyc server to have read_map_data function
         while pm.overlay_loop():
 
             player = self.try_get_player()
