@@ -26,6 +26,6 @@
 * [d2mapapi](https://github.com/jcageman/d2mapapi)
 
 
-DuranceOfHate              |  Catacombs
+LowerKurast                |  Catacombs
 :-------------------------:|:-------------------------:
-![plot](./DuranceOfHate.png)  |  ![plot](Catacombs.png)
+![plot](./LowerKurast.png)  |  ![plot](Catacombs.png)
