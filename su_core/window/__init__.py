@@ -1,11 +1,11 @@
 import os
-import rpyc
 import time
 import psutil
 import pathlib
 import win32gui
 import win32con
 import win32process
+from su_core.utils import RPYClient
 from su_core.pyTypes.unitTypes import obtain_player, Menu, Menus, PlayerNotFound
 from su_core.window.shapes import *
 from su_core.math import *
@@ -165,7 +165,9 @@ class Canvas:
         pm.set_window_size(self._win.width, self._win.height)
         pm.set_window_position(self._win.start_pos_x, self._win.start_pos_y)
         pm.load_font(os.path.join(root, "fonts", "formal436bt-regular.otf"), 1)
-        self._rpconn = rpyc.connect("localhost", port=18861)
+        self.font_xpos = self._win.width * 0.07
+        self.font_ypos = self._win.height * 0.05
+        self.map_cli = RPYClient()
 
     def try_get_player(self):
         menu = Menu()
@@ -184,55 +186,46 @@ class Canvas:
         return None
 
     def run_event_loop(self):
-        current_area = None
-        origin = None
-        waypoint = None
-        exits = None
-        adjacent_levels = None
-        # TODO: fix the rpyc server to have read_map_data function
         while pm.overlay_loop():
 
             player = self.try_get_player()
             if player is not None:
 
+                origin = player.path.room1.room2.level.origin
                 current_seed = player.act.act_misc.decrypt_seed()
+                current_area = player.path.room1.room2.level.area.value
 
-                if current_seed != self._rpconn.root.map_seed():
-                    self._rpconn.root.set_map_seed(current_seed)
-                    self._rpconn.root.set_difficulty(player.act.act_misc.difficulty.value)
-                    current_area = None
+                if current_seed != self.map_cli.prev_seed:
+                    self.map_cli.set_requirements(current_seed, player.act.act_misc.difficulty.value)
+                    self.map_cli.clear_cache()
 
-                if player.path.room1.room2.level.area.value != current_area:
-                    current_area = player.path.room1.room2.level.area.value
-                    origin = player.path.room1.room2.level.origin
-                    self._rpconn.root.read_map_data(player.path.room1.room2.level.area.value, player.path.position)
-                    map_data = self._rpconn.root.obtain_map_data(current_area)
-                    level_texture_bytes = self._rpconn.root.generate_map_image(current_area)
-                    level_texture = pm.load_texture_bytes(".png", level_texture_bytes)
-
-                    waypoint = map_data.waypoint
-                    exits = map_data.exits
-                    adjacent_levels = map_data.adjacent_levels
+                if self.map_cli.prev_area != current_area:
+                    self.map_cli.prev_area = current_area
+                    map_data = self.map_cli.read_map(current_area, player.path.position)
+                    level_image = self.map_cli.get_level_image(current_area)
+                    level_texture = pm.load_texture_bytes(".png", level_image)
 
                 pm.begin_drawing()
-                pm.draw_font(1, "SuperSimpleMH", 0.07 * self._win.width, 0.05 * self._win.height,
-                             24, 0, self.colors["d2rbrown"])
+
+                pm.draw_font(1, "SuperSimpleMH", self.font_xpos, self.font_ypos, 24, 0, self.colors["d2rbrown"])
+
                 texture_pos = self._win.world2map(player.path.position, origin, origin)
-                texture_pos.x = texture_pos.x - map_data.size[1] * self._map_scale
+                texture_pos.x = texture_pos.x - map_data["size"][1] * self._map_scale
                 pm.draw_texture(level_texture, texture_pos.x, texture_pos.y, self.colors["white"], 0, self._map_scale)
+
                 if not player.is_in_town:
 
-                    if waypoint is not None:
-                        end = self._win.world2map(player.path.position, waypoint, origin)
+                    if map_data["waypoint"] is not None:
+                        end = self._win.world2map(player.path.position, map_data["waypoint"], origin)
                         self._win.draw_arrow(end, text="Waypoint", color=self.colors["navy"])
 
-                    if exits is not None:
-                        for k, v in exits.items():
+                    if map_data["exits"] is not None:
+                        for k, v in map_data["exits"].items():
                             end = self._win.world2map(player.path.position, v, origin)
                             self._win.draw_arrow(end, k, color=self.colors["green"])
 
-                    if adjacent_levels is not None:
-                        for k, v in adjacent_levels.items():
+                    if map_data["adjacent_levels"] is not None:
+                        for k, v in map_data["adjacent_levels"].items():
                             for c in v["outdoor"]:
                                 end = self._win.world2map(player.path.position, c, origin)
                                 self._win.draw_arrow(end, k, color=self.colors["greenyellow"])
