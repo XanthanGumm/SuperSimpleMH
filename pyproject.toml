@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "SuperSimpleMH"
-version = "2.0.1"
-requires-python = ">=3.10"
+version = "2.1.1"
+requires-python = ">=3.11"
 classifiers = [
     "Programming Language :: Python :: 3",
 ]

@@ -1,4 +1,5 @@
 from ctypes import Structure
+from ctypes import c_uint64
 from ctypes.wintypes import DWORD
 from ctypes.wintypes import WORD
 from ctypes.wintypes import BYTE
@@ -55,7 +56,31 @@ class PlayerInfoStrc(Structure):
     pass
 
 
+class MonsterData(Structure):
+    pass
+
+
+class MonsterTxt(Structure):
+    pass
+
+
+class Stat(Structure):
+    pass
+
+
+class StatVector(Structure):
+    pass
+
+
+class StatsList(Structure):
+    pass
+
+
 class UI(Structure):
+    pass
+
+
+class Minions(Structure):
     pass
 
 
@@ -75,7 +100,7 @@ UnitAny._fields_ = [
     ("_2", DWORD * 4),  # 0x28
     ("pPath", c_void_p),  # 0x38
     ("_3", DWORD * 0x12),  # 0x40
-    ("pStatListEx", c_void_p),  # 0x88 not sure about this later I'll figure it
+    ("pStatList", c_void_p),  # 0x88
     ("pInventory", c_void_p),  # 0x90
     ("_4", DWORD * 0x0B),  # 0x98
     ("wX", WORD),  # 0xC4
@@ -221,6 +246,49 @@ PlayerInfoStrc._fields_ = [
     ("expansion", c_bool)
 ]
 
+MonsterData._fields_ = [
+    ("pMonsterTxt", c_void_p),  # 0x00
+    ("dwShrineType", DWORD),  # 0x08
+    ("_1", DWORD * 3),  # 0xC
+    ("_2", WORD),  # 0x18
+    ("bMonsterTypeFlags", BYTE),  # 0x1A
+    ("_3", BYTE * 3),  # 0x1B
+    ("_4", DWORD * 2),  # 0x20
+    ("_5", WORD),  # 0x28
+    ("wBossLineId", WORD)  # 0x2A
+]
+
+MonsterTxt._fields_ = [
+    ("TxtFileNo", WORD),
+    ("name", CHAR * 16)
+]
+
+Stat._fields_ = [
+    ("wLayer", WORD),  # 0x0
+    ("wStatId", WORD),  # 0x2
+    ("dwValue", DWORD),  # 0x4
+]
+
+StatVector._fields_ = [
+    ("pStats", c_void_p),  # 0x0
+    ("dwlSize", c_uint64),  # 0x8
+    ("dwlCapacity", c_uint64)  # 0x10
+]
+
+StatsList._fields_ = [
+    ("_1", DWORD * 2),  # 0x00
+    ("dwOwnerType", DWORD),  # 0x8
+    ("dwOwnerId", DWORD),  # 0xC
+    ("_2", DWORD * 3),  # 0x10
+    ("dwFlags", DWORD),  # 0x1C
+    ("_3", DWORD * 4),  # 0x20
+    ("BaseStats", StatVector),  # 0x30
+    ("_4", DWORD * 16),  # 0x48
+    ("Stats", StatVector),  # 0x88
+    ("_5", DWORD * 0x28C),  # 0x100
+    ("StateFlags", DWORD * 6)  # 0xAc8
+]
+
 UI._fields_ = [
     ("inGame", BYTE),
     ("invMenu", c_bool),
@@ -246,6 +314,15 @@ UI._fields_ = [
     ("loading", c_bool)
 ]
 
+Minions._fields_ = [
+    ("dwTxtFileNo", DWORD),
+    ("_1", DWORD),
+    ("dwUnitId", DWORD),
+    ("dwOwnerId", DWORD),
+    ("_2", DWORD * 7),
+    ("pNext", c_void_p)
+]
+
 if __name__ == "__main__":
-    for field in UI._fields_:
-        print(field[0], hex(getattr(UI, field[0]).offset))
+    for field in Minions._fields_:
+        print(field[0], hex(getattr(Minions, field[0]).offset))

@@ -6,7 +6,7 @@ import win32gui
 import win32con
 import win32process
 from su_core.utils import RPYClient
-from su_core.pyTypes.unitTypes import obtain_player, Menu, Menus, PlayerNotFound
+from su_core.pyTypes.unitTypes import obtain_player, obtain_npcs, obtain_player_minions, Menu, Menus, PlayerNotFound
 from su_core.window.shapes import *
 from su_core.math import *
 
@@ -75,7 +75,8 @@ class Window:
         map_mat = CSharpMatrix3X2.make_translation(area_origin[0], area_origin[1]) @ \
                   CSharpMatrix3X2.make_translation(-player_pos[0], -player_pos[1]) @ \
                   CSharpMatrix3X2.make_rotation(45) @ \
-                  CSharpMatrix3X2.make_scale(self._scaleW if not scaleX else scaleX, self._scaleH if not scaleY else scaleY) @ \
+                  CSharpMatrix3X2.make_scale(self._scaleW if not scaleX else scaleX,
+                                             self._scaleH if not scaleY else scaleY) @ \
                   CSharpMatrix3X2.make_translation(self.center[0], self.center[1])
 
         area_mat = CSharpMatrix3X2.make_translation(-area_origin[0], -area_origin[1]) @ map_mat
@@ -119,9 +120,8 @@ class Window:
 
         Arrow(start, end, short_render, text, color, self._start_line_pad)
 
-    def draw_player_circle(self):
-        pm.draw_circle_lines(self._center[0], self._center[1] - self._center_pad, self._start_line_pad,
-                             pm.get_color("red"))
+    def draw_cross(self, end, size, colors=[]):
+        Cross(end, size, self._scaleW, self._scaleH, colors)
 
     @property
     def width(self):
@@ -190,6 +190,8 @@ class Canvas:
 
             player = self.try_get_player()
             if player is not None:
+                player_minions = obtain_player_minions(player.unit_id)
+                npcs = obtain_npcs(player.is_in_town)
 
                 origin = player.path.room1.room2.level.origin
                 current_seed = player.act.act_misc.decrypt_seed()
@@ -206,7 +208,6 @@ class Canvas:
                     level_texture = pm.load_texture_bytes(".png", level_image)
 
                 pm.begin_drawing()
-
                 pm.draw_font(1, "SuperSimpleMH", self.font_xpos, self.font_ypos, 24, 0, self.colors["d2rbrown"])
 
                 texture_pos = self._win.world2map(player.path.position, origin, origin)
@@ -229,6 +230,35 @@ class Canvas:
                             for c in v["outdoor"]:
                                 end = self._win.world2map(player.path.position, c, origin)
                                 self._win.draw_arrow(end, k, color=self.colors["greenyellow"])
+
+                    # draw monsters
+                    for npc in npcs["unique"]:
+                        icon_pos = self._win.world2map(player.path.position, npc.path.position, origin)
+                        self._win.draw_cross(icon_pos, size=9, colors=npc.resistances_colors)
+
+                    for npc in npcs["other"]:
+                        icon_pos = self._win.world2map(player.path.position, npc.path.position, origin)
+                        self._win.draw_cross(icon_pos, size=6, colors=npc.resistances_colors)
+
+                    for npc in npcs["player_minions"]:
+                        for minion in player_minions:
+                            if minion.dwUnitId == npc.unit_id and minion.dwOwnerId == player.unit_id:
+                                icon_pos = self._win.world2map(player.path.position, npc.path.position, origin)
+                                self._win.draw_cross(icon_pos, size=6, colors=["royalblue"])
+
+                for npc in npcs["town"]:
+                    icon_pos = self._win.world2map(player.path.position, npc.path.position, origin)
+                    self._win.draw_cross(icon_pos, size=6, colors=npc.resistances_colors)
+
+                for npc in npcs["merc"]:
+                    for minion in player_minions:
+                        if minion.dwUnitId == npc.unit_id and minion.dwOwnerId == player.unit_id:
+                            icon_pos = self._win.world2map(player.path.position, npc.path.position, origin)
+                            self._win.draw_cross(icon_pos, size=6, colors=["seagreen"])
+                            break
+
+                player_icon_pos = self._win.world2map(player.path.position, player.path.position, origin)
+                self._win.draw_cross(player_icon_pos, size=6, colors=["cyan"])
 
             pm.end_drawing()
 
