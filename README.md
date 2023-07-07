@@ -19,6 +19,10 @@
 
 ## Features
 * map directions to adjacent levels and mazes.
+* map overlay
+* drawing monster and their immunities
+* drawing super uniques, uniques and champions
+* drawing merc and player minions
 
 ## Credits
 * [mapview](https://github.com/joffreybesos/d2r-mapview) @joffreybesos for rustdecrypt and many more.
