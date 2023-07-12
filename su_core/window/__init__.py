@@ -6,8 +6,10 @@ import win32gui
 import win32con
 import win32process
 from su_core.utils import RPYClient
-from su_core.pyTypes.unitTypes import obtain_player, obtain_npcs, obtain_player_minions, Menu, Menus, PlayerNotFound
-from su_core.window.shapes import *
+from su_core.pyTypes.unitTypes import Menu, Menus, PlayerNotFound
+from su_core.pyTypes.unitTypes import obtain_player, obtain_npcs, obtain_player_minions, obtain_hostiled_players
+from su_core.window.drawings import pm_colors
+from su_core.window.drawings.shapes import *
 from su_core.math import *
 
 
@@ -123,6 +125,16 @@ class Window:
     def draw_cross(self, end, size, colors=[]):
         Cross(end, size, self._scaleW, self._scaleH, colors)
 
+    def draw_player_label(self, end, text, size, font_size, text_color, back_color):
+        PlayerLabel(end, text, size, self._scaleH, font_size, text_color, back_color)
+
+    def draw_hostile_label(self, end, hostiled_life_percent, hostiled_index, text, font_size, text_color, back_color):
+        end = CSharpVector2(end.x, end.y + hostiled_index * (font_size + font_size // 2))
+        text += f" - {hostiled_life_percent}%".encode()
+        background_length = pm.measure_text(text, font_size)
+        background_length = (background_length - (1 / 5) * background_length) * hostiled_life_percent // 100
+        HostileLabel(end, text, background_length, font_size, text_color, back_color)
+
     @property
     def width(self):
         return self._width
@@ -145,12 +157,6 @@ class Window:
 
 
 class Canvas:
-    colors = {"greenyellow": pm.get_color("greenyellow"),
-              "green": pm.get_color("green"),
-              "navy": pm.get_color("navy"),
-              "d2rbrown": pm.new_color(199, 179, 119, 255),
-              "red": pm.get_color("red"),
-              "white": pm.get_color("white")}
 
     def __init__(self):
         root = pathlib.Path(__file__)
@@ -165,8 +171,10 @@ class Canvas:
         pm.set_window_size(self._win.width, self._win.height)
         pm.set_window_position(self._win.start_pos_x, self._win.start_pos_y)
         pm.load_font(os.path.join(root, "fonts", "formal436bt-regular.otf"), 1)
-        self.font_xpos = self._win.width * 0.07
-        self.font_ypos = self._win.height * 0.05
+        self.su_label_posX = self._win.width * 0.07
+        self.su_label_posY = self._win.height * 0.05
+        self.su_label_font_scale = self._win.width / (2 * 1280)
+        self.hostile_labels_pos = CSharpVector2(self.su_label_posX, self.su_label_posY + 2 * self.su_label_font_scale)
         self.map_cli = RPYClient()
 
     def try_get_player(self):
@@ -174,15 +182,12 @@ class Canvas:
         if not menu.is_open:
             try:
                 player = obtain_player()
+                return player
             except PlayerNotFound as e:
                 if menu.last_open in [Menus.charMenu, Menus.quitMenu, Menus.loading]:
                     time.sleep(0.1)
                     return None
                 raise e
-
-            if player.update():
-                return player
-
         return None
 
     def run_event_loop(self):
@@ -190,9 +195,6 @@ class Canvas:
 
             player = self.try_get_player()
             if player is not None:
-                player_minions = obtain_player_minions(player.unit_id)
-                npcs = obtain_npcs(player.is_in_town)
-
                 origin = player.path.room1.room2.level.origin
                 current_seed = player.act.act_misc.decrypt_seed()
                 current_area = player.path.room1.room2.level.area.value
@@ -208,37 +210,40 @@ class Canvas:
                     level_texture = pm.load_texture_bytes(".png", level_image)
 
                 pm.begin_drawing()
-                pm.draw_font(1, "SuperSimpleMH", self.font_xpos, self.font_ypos, 24, 0, self.colors["d2rbrown"])
+                pm.draw_font(1, "SuperSimpleMH", self.su_label_posX, self.su_label_posY, self.su_label_font_scale * 32, 0, pm_colors["d2rbrown"])
 
                 texture_pos = self._win.world2map(player.path.position, origin, origin)
                 texture_pos.x = texture_pos.x - map_data["size"][1] * self._map_scale
-                pm.draw_texture(level_texture, texture_pos.x, texture_pos.y, self.colors["white"], 0, self._map_scale)
+                pm.draw_texture(level_texture, texture_pos.x, texture_pos.y, pm_colors["white"], 0, self._map_scale)
+
+                player_minions = obtain_player_minions(player.unit_id)
+                npcs = obtain_npcs(player.is_in_town)
 
                 if not player.is_in_town:
 
                     if map_data["waypoint"] is not None:
                         end = self._win.world2map(player.path.position, map_data["waypoint"], origin)
-                        self._win.draw_arrow(end, text="Waypoint", color=self.colors["navy"])
+                        self._win.draw_arrow(end, text="Waypoint", color="navy")
 
                     if map_data["exits"] is not None:
                         for k, v in map_data["exits"].items():
                             end = self._win.world2map(player.path.position, v, origin)
-                            self._win.draw_arrow(end, k, color=self.colors["green"])
+                            self._win.draw_arrow(end, k, color="green")
 
                     if map_data["adjacent_levels"] is not None:
                         for k, v in map_data["adjacent_levels"].items():
                             for c in v["outdoor"]:
                                 end = self._win.world2map(player.path.position, c, origin)
-                                self._win.draw_arrow(end, k, color=self.colors["greenyellow"])
+                                self._win.draw_arrow(end, k, color="greenyellow")
 
                     # draw monsters
                     for npc in npcs["unique"]:
                         icon_pos = self._win.world2map(player.path.position, npc.path.position, origin)
-                        self._win.draw_cross(icon_pos, size=9, colors=npc.resistances_colors)
+                        self._win.draw_cross(icon_pos, size=9, colors=npc.resists_colors)
 
                     for npc in npcs["other"]:
                         icon_pos = self._win.world2map(player.path.position, npc.path.position, origin)
-                        self._win.draw_cross(icon_pos, size=6, colors=npc.resistances_colors)
+                        self._win.draw_cross(icon_pos, size=6, colors=npc.resists_colors)
 
                     for npc in npcs["player_minions"]:
                         for minion in player_minions:
@@ -248,7 +253,7 @@ class Canvas:
 
                 for npc in npcs["town"]:
                     icon_pos = self._win.world2map(player.path.position, npc.path.position, origin)
-                    self._win.draw_cross(icon_pos, size=6, colors=npc.resistances_colors)
+                    self._win.draw_cross(icon_pos, size=6, colors=npc.resists_colors)
 
                 for npc in npcs["merc"]:
                     for minion in player_minions:
@@ -256,6 +261,24 @@ class Canvas:
                             icon_pos = self._win.world2map(player.path.position, npc.path.position, origin)
                             self._win.draw_cross(icon_pos, size=6, colors=["seagreen"])
                             break
+
+                # draw hostiled players
+                hostiles, rosters = obtain_hostiled_players(player.unit_id)
+                for hostile in hostiles:
+                    # minions = obtain_player_minions(hostile.unit_id)
+                    icon_pos = self._win.world2map(player.path.position, hostile.path.position, origin)
+                    self._win.draw_cross(icon_pos, size=6, colors=["red"])
+                    self._win.draw_player_label(
+                        icon_pos, text=hostile.name, size=6, font_size=22,
+                        text_color="white", back_color="redbackground"
+                    )
+
+                # draw hostiled life percentage
+                for index, (roster_id, roster) in enumerate(rosters.items(), 1):
+                    self._win.draw_hostile_label(
+                        self.hostile_labels_pos, roster.life_percent, index, text=roster.name,
+                        font_size=int(self.su_label_font_scale * 30), text_color="white", back_color="redbackground"
+                    )
 
                 player_icon_pos = self._win.world2map(player.path.position, player.path.position, origin)
                 self._win.draw_cross(player_icon_pos, size=6, colors=["cyan"])

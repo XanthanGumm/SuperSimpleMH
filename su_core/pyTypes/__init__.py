@@ -26,6 +26,7 @@ class UnitAny:
         self._path = None
         self._stats_list_struct = None
         self._stats = None
+        self._base_stats = None
 
     def update(self):
         self._struct = self.read_unit_struct()
@@ -37,13 +38,38 @@ class UnitAny:
     def read_unit_struct(self) -> StructUnitAny:
         return mem.read_struct(self._address, StructUnitAny)
 
-    # here I read the stats not the basestats
-    def read_stats_structs(self):
+    def read_stats(self):
         self._stats_list_struct = mem.read_struct(self._struct.pStatList, StructStatList)
         num_of_stats = self._stats_list_struct.Stats.dwlSize
         raw_stats = mem.read_bytes(self._stats_list_struct.Stats.pStats, num_of_stats * ct.sizeof(StructStat))
         stats_array = StructStat * num_of_stats
         self._stats = stats_array.from_buffer_copy(raw_stats)
+
+        num_of_stats = self._stats_list_struct.BaseStats.dwlSize
+        raw_stats = mem.read_bytes(self._stats_list_struct.BaseStats.pStats, num_of_stats * ct.sizeof(StructStat))
+        stats_array = StructStat * num_of_stats
+        self._base_stats = stats_array.from_buffer_copy(raw_stats)
+
+        basestats = dict()
+        stats = dict()
+
+        for stat_struct in self._base_stats:
+            stat = Stat(stat_struct.wStatId)
+            stat_layer = {stat_struct.wLayer: stat_struct.dwValue}
+            if basestats.get(stat.name) is None:
+                basestats[stat.name] = []
+            if stat_layer not in basestats[stat.name]:
+                basestats[stat.name].append(stat_layer)
+
+        for stat_struct in self._stats:
+            stat = Stat(stat_struct.wStatId)
+            stat_layer = {stat_struct.wLayer: stat_struct.dwValue}
+            if stats.get(stat.name) is None:
+                stats[stat.name] = []
+            if stat_layer not in stats[stat.name]:
+                stats[stat.name].append(stat_layer)
+
+        return basestats, stats
 
     @property
     def unit_id(self):

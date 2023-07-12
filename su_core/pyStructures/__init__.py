@@ -76,6 +76,14 @@ class StatsList(Structure):
     pass
 
 
+class RosterMember(Structure):
+    pass
+
+
+class HostileInfo(Structure):
+    pass
+
+
 class UI(Structure):
     pass
 
@@ -289,6 +297,31 @@ StatsList._fields_ = [
     ("StateFlags", DWORD * 6)  # 0xAc8
 ]
 
+HostileInfo._fields_ = [
+    ("dwUnitId", DWORD),  # 0x0
+    ("dwHostileFlag", DWORD),  # 0x4
+    ("pNext", c_void_p),  # 0x8
+]
+
+RosterMember._fields_ = [
+    ("name", BYTE * 0x40),  # 0x0
+    ("_1", DWORD * 2),  # 0x40
+    ("dwUnitId", DWORD),  # 0x48
+    ("dwLifePercentage", DWORD),  # 0x4C
+    ("_2", DWORD),  # 0x50
+    ("dwPlayerClass", DWORD),  # 0x54
+    ("wPlayerLevel", WORD),  # 0x58
+    ("wPartyId", WORD),  # 0x5A
+    ("dwlevelId", DWORD),  # 0x5C
+    ("dwPosX", DWORD),  # 0x60
+    ("dwPosY", DWORD),  # 0x64
+    ("dwPartyFlags", DWORD),  # 0x68
+    ("_3", DWORD),  # 0x6C
+    ("pHostileInfo", c_void_p),  # 0x70
+    ("_4", DWORD * 0x34),  # 0x78
+    ("pNext", c_void_p)  # 0x148
+]
+
 UI._fields_ = [
     ("inGame", BYTE),
     ("invMenu", c_bool),
@@ -324,5 +357,5 @@ Minions._fields_ = [
 ]
 
 if __name__ == "__main__":
-    for field in Minions._fields_:
-        print(field[0], hex(getattr(Minions, field[0]).offset))
+    for field in RosterMember._fields_:
+        print(field[0], hex(getattr(RosterMember, field[0]).offset))

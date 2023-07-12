@@ -1,7 +1,7 @@
 from su_core.pyTypes import UnitAny
 from su_core.pyStructures import MonsterData, MonsterTxt
 from su_core.pm import mem
-from su_core.data import PlrMode, MonsterTypeFlag, Npc, UselessNpc
+from su_core.data import PlrMode, MonsterTypeFlag, Npc, UselessNpc, Stat
 
 
 class Monster(UnitAny):
@@ -12,8 +12,9 @@ class Monster(UnitAny):
         self._monster_txt = None
         self._mode = None
         self._npc = None
-        self._resistances = dict()
+        self._resists = dict()
         self._immunities_colors = []
+        self.update()
 
     def update(self):
         super(Monster, self).update()
@@ -22,33 +23,36 @@ class Monster(UnitAny):
         self._mode = PlrMode(self._struct.dwMode)
         self._npc = Npc(self._txt_file_no)
 
-    def read_resistances(self):
-        self.read_stats_structs()
-        for stat in self._stats:
-            if stat.wStatId == 36:
-                self._resistances["physical"] = stat.dwValue
-                if stat.dwValue >= 100:
-                    self._immunities_colors.append("saddlebrown")
-            elif stat.wStatId == 37:
-                self._resistances["magic"] = stat.dwValue
-                if stat.dwValue >= 100:
-                    self._immunities_colors.append("gold")
-            elif stat.wStatId == 39:
-                self._resistances["fire"] = stat.dwValue
-                if stat.dwValue >= 100:
-                    self._immunities_colors.append("red")
-            elif stat.wStatId == 41:
-                self._resistances["light"] = stat.dwValue
-                if stat.dwValue >= 100:
-                    self._immunities_colors.append("yellow")
-            elif stat.wStatId == 43:
-                self._resistances["cold"] = stat.dwValue
-                if stat.dwValue >= 100:
-                    self._immunities_colors.append("blue")
-            elif stat.wStatId == 45:
-                self._resistances["poison"] = stat.dwValue
-                if stat.dwValue >= 100:
-                    self._immunities_colors.append("green")
+    def read_stats(self):
+        basestats, stats = super(Monster, self).read_stats()
+        if Stat.ColdResist.name in stats:
+            cold_res = next(iter(stats[Stat.ColdResist.name][-1].values()))
+            self._resists["cold"] = cold_res
+            if cold_res >= 100:
+                self._immunities_colors.append("blue")
+        if Stat.FireResist.name in stats:
+            fire_res = next(iter(stats[Stat.FireResist.name][-1].values()))
+            self._resists["fire"] = fire_res
+            if fire_res >= 100:
+                self._immunities_colors.append("red")
+        if Stat.LightningResist.name in stats:
+            light_res = next(iter(stats[Stat.LightningResist.name][-1].values()))
+            self._resists["light"] = light_res
+            if light_res >= 100:
+                self._immunities_colors.append("yellow")
+        if Stat.PoisonResist.name in stats:
+            poison_res = next(iter(stats[Stat.PoisonResist.name][-1].values()))
+            self._resists["poison"] = poison_res
+            if poison_res >= 100:
+                self._immunities_colors.append("green")
+        if Stat.MagicResist.name in stats:
+            magic_res = next(iter(stats[Stat.MagicResist.name][-1].values()))
+            if magic_res >= 100:
+                self._immunities_colors.append("gold")
+        if Stat.DamageReduced.name in stats:
+            physical_res = next(iter(stats[Stat.DamageReduced.name][-1].values()))
+            if physical_res >= 100:
+                self._immunities_colors.append("saddlebrown")
 
     @property
     def npc(self):
@@ -69,9 +73,9 @@ class Monster(UnitAny):
                (self._monster_data.bMonsterTypeFlags & MonsterTypeFlag.SuperUnique.value) != 0
 
     @property
-    def resistances(self):
-        return self._resistances
+    def resists(self):
+        return self._resists
 
     @property
-    def resistances_colors(self):
+    def resists_colors(self):
         return self._immunities_colors
