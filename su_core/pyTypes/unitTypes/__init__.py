@@ -114,7 +114,6 @@ def obtain_hostiled_players(player_unit_id):
         try:
             if player_roster.is_hostiled(r.unit_id):
                 hostiled_rosters[r.unit_id] = r
-                print(r.name, r.life_percent)
         except Exception as e:
             print(e)
             pass
