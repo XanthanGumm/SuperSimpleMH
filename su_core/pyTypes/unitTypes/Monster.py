@@ -10,21 +10,19 @@ class Monster(UnitAny):
         super(Monster, self).__init__(address)
         self._monster_data = None
         self._monster_txt = None
-        self._mode = None
-        self._npc = None
+        self._mode = PlrMode(self._struct.dwMode)
+        self._npc = Npc(self._txt_file_no)
+        self._is_revived = mem.read_uint(self._struct.pStatList + 0xAC8 + 0xC) & 31 == 1
         self._resists = dict()
         self._immunities_colors = []
-        self.update()
 
     def update(self):
         super(Monster, self).update()
         self._monster_data = mem.read_struct(self._struct.pUnitData, MonsterData)
         self._monster_txt = mem.read_struct(self._monster_data.pMonsterTxt, MonsterTxt)
-        self._mode = PlrMode(self._struct.dwMode)
-        self._npc = Npc(self._txt_file_no)
 
-    def read_stats(self):
-        basestats, stats = super(Monster, self).read_stats()
+    def read_npc_stats(self):
+        stats = self.read_stats(self._stats_list_struct.Stats)
         if Stat.ColdResist.name in stats:
             cold_res = next(iter(stats[Stat.ColdResist.name][-1].values()))
             self._resists["cold"] = cold_res
@@ -65,6 +63,10 @@ class Monster(UnitAny):
     @property
     def is_dead(self):  # why the hell the mode is kick when the monster is dead
         return self._mode == PlrMode.Dead or self._mode == PlrMode.Death or self._mode == PlrMode.Kick
+
+    @property
+    def is_revived(self):
+        return self._is_revived
 
     @property
     def is_strong_monster(self):

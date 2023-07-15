@@ -17,7 +17,7 @@ def main():
 
     try:
         canvas = Canvas()
-        canvas.run_event_loop()
+        canvas.event_loop()
     except Exception as e:
         raise e
     finally:

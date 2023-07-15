@@ -1,5 +1,5 @@
 from su_core.pm import mem
-from su_core.pyStructures import UnitHashTable, Minions
+from su_core.pyStructures import UnitHashTable, Minions, LastHoverUnit
 from su_core.pyTypes.unitTypes.Player import Player
 from su_core.pyTypes.unitTypes.Monster import Monster
 from su_core.pyTypes.unitTypes.Roster import Roster
@@ -29,25 +29,33 @@ def obtain_units(unit_type: int) -> list:
     return valid_units
 
 
-def obtain_player() -> Player:
+def obtain_player() -> Player | None:
     candidates = obtain_units(unit_type=0)
+    menu = Menu()
     for c in candidates:
         if c._struct.pInventory:
             check_user = mem.read_int(c._struct.pInventory + 0x70) == 0
             if not check_user:
-                Player.my_player_id = c.unit_id
-                return c
+                try:
+                    c.update()
+                    Player.my_player_id = c.unit_id
+                    return c
+                except Exception as e:
+                    if menu.last_open in [Menus.waypointMenu,
+                                          Menus.loading]:
+                        return None
+                    raise e
+    return None
 
-    raise PlayerNotFound("Could not find player unit")
 
-
-def obtain_npcs(in_town) -> dict:
+def obtain_npcs() -> dict:
     npcs = {"unique": [], "player_minions": [], "merc": [], "town": [], "other": []}
     for npc in obtain_units(unit_type=1):
-        if not npc.is_dead and not npc.is_useless:
+        if not npc.is_dead and not npc.is_useless and not npc.is_revived:
             # just ignore any invalid unit that changes in the middle
             try:
-                npc.read_stats()
+                npc.update()
+                npc.read_npc_stats()
                 if npc.npc in MercNpc:
                     npcs["merc"].append(npc)
                 elif npc.npc in TownNpc:
@@ -122,14 +130,33 @@ def obtain_hostiled_players(player_unit_id):
         if p.unit_id in hostiled_rosters:
             # just ignore any invalid unit that changes in the middle
             try:
+                p.update()
                 # let's add here others players life - later I might change it.
-                p.read_stats()
                 p.life_percent = hostiled_rosters[p.unit_id].life_percent
                 hostiled_players.append(p)
             except Exception as e:
                 print(e)
 
     return hostiled_players, hostiled_rosters
+
+
+def obtain_unit_hover():
+    unit_hover = mem.read_struct(mem.last_hover, LastHoverUnit)
+    return unit_hover.bIsHovered, unit_hover.dwType, unit_hover.dwUnitId
+
+
+def obtain_hovered_player() -> Player | None:
+    is_hovered, unit_type, unit_id = obtain_unit_hover()
+    if is_hovered and unit_type == 0:
+        players = obtain_units(unit_type=0)
+        for p in players:
+            if p.unit_id == unit_id:
+                p.update()
+                p.read_player_stats()
+                return p
+
+    return None
+
 
 
 

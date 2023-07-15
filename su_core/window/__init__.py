@@ -5,9 +5,10 @@ import pathlib
 import win32gui
 import win32con
 import win32process
+import textwrap
 from su_core.utils import RPYClient
-from su_core.pyTypes.unitTypes import Menu, Menus, PlayerNotFound
-from su_core.pyTypes.unitTypes import obtain_player, obtain_npcs, obtain_player_minions, obtain_hostiled_players
+from logger import manager
+from su_core.pyTypes.unitTypes import *
 from su_core.window.drawings import pm_colors
 from su_core.window.drawings.shapes import *
 from su_core.math import *
@@ -132,8 +133,33 @@ class Window:
         end = CSharpVector2(end.x, end.y + hostiled_index * (font_size + font_size // 2))
         text += f" - {hostiled_life_percent}%".encode()
         background_length = pm.measure_text(text, font_size)
-        background_length = (background_length - (1 / 5) * background_length) * hostiled_life_percent // 100
+        background_length = (background_length - (1 / 6) * background_length) * hostiled_life_percent // 100
         HostileLabel(end, text, background_length, font_size, text_color, back_color)
+
+    def draw_player_stats(self, text, font_size, text_color, back_color):
+        overlay_pos = pm.get_window_position()
+        mouse_pos = pm.mouse_position()
+        relative_pos = mouse_pos["x"] - overlay_pos["x"], mouse_pos["y"] - overlay_pos["y"]
+        pad_height = self._scaleH * 25
+
+        text_length = pm.measure_text(text, font_size)
+        text_length = text_length - 1 / 4 * text_length + self._scaleW
+        text_height = font_size * text.count("\n") * 1.6 + self._scaleH
+
+        if relative_pos[1] + pad_height + text_height >= self._height - self._win_pad.y:
+            start_posY = relative_pos[1] - pad_height - text_height
+        else:
+            start_posY = relative_pos[1] + pad_height
+
+        if relative_pos[0] + text_length >= self._width - self._win_pad.x:
+            start_posX = relative_pos[0] - text_length
+        elif relative_pos[0] <= self._win_pad.x:
+            start_posX = relative_pos[0] + text_length
+        else:
+            start_posX = relative_pos[0]
+
+        start_pos = CSharpVector2(start_posX - self._scaleW, start_posY - self._scaleH)
+        TextBox(start_pos, text, text_length, text_height, font_size, text_color, back_color)
 
     @property
     def width(self):
@@ -163,6 +189,7 @@ class Canvas:
         while root.name != "SuperSimpleMH":
             root = root.parent
 
+        self._logger = manager.get_logger(__name__)
         self._win = Window()
         self._map_scale = (self._win.width / (2 * 1280)) * 4.8
         pm.overlay_init()
@@ -177,111 +204,135 @@ class Canvas:
         self.hostile_labels_pos = CSharpVector2(self.su_label_posX, self.su_label_posY + 2 * self.su_label_font_scale)
         self.map_cli = RPYClient()
 
-    def try_get_player(self):
-        menu = Menu()
-        if not menu.is_open:
-            try:
-                player = obtain_player()
-                return player
-            except PlayerNotFound as e:
-                if menu.last_open in [Menus.charMenu, Menus.quitMenu, Menus.loading]:
-                    time.sleep(0.1)
-                    return None
-                raise e
-        return None
+    # TODO: create log
+    # TODO: use r_ctype instead of my function.
+    # TODO: change try catch to if statements
 
-    def run_event_loop(self):
+    def event_loop(self):
         while pm.overlay_loop():
+            menu = Menu()
 
-            player = self.try_get_player()
-            if player is not None:
-                origin = player.path.room1.room2.level.origin
-                current_seed = player.act.act_misc.decrypt_seed()
-                current_area = player.path.room1.room2.level.area.value
+            if menu.is_game_active:
+                player = obtain_player()
 
-                if current_seed != self.map_cli.prev_seed:
-                    self.map_cli.set_requirements(current_seed, player.act.act_misc.difficulty.value)
-                    self.map_cli.clear_cache()
+                if player is not None:
+                    origin = player.path.room1.room2.level.origin
+                    current_seed = player.act.act_misc.decrypt_seed()
+                    current_area = player.path.room1.room2.level.area.value
 
-                if self.map_cli.prev_area != current_area:
-                    self.map_cli.prev_area = current_area
-                    map_data = self.map_cli.read_map(current_area, player.path.position)
-                    level_image = self.map_cli.get_level_image(current_area)
-                    level_texture = pm.load_texture_bytes(".png", level_image)
+                    # new game
+                    if current_seed != self.map_cli.prev_seed:
+                        difficulty = player.act.act_misc.difficulty.value
+                        self._logger.info(f"Set map server with seed: {current_seed}, difficulty: {difficulty}")
+                        self.map_cli.set_requirements(current_seed, difficulty)
+                        self.map_cli.clear_cache()
 
-                pm.begin_drawing()
-                pm.draw_font(1, "SuperSimpleMH", self.su_label_posX, self.su_label_posY, self.su_label_font_scale * 32, 0, pm_colors["d2rbrown"])
+                    # new area
+                    if self.map_cli.prev_area != current_area:
+                        self._logger.info(f"Request map data to area: {current_area}")
+                        # clean the buffer when area is changed
+                        pm.end_drawing()
+                        self.map_cli.prev_area = current_area
+                        map_data = self.map_cli.read_map(current_area, player.path.position)
+                        level_image = self.map_cli.get_level_image(current_area)
+                        level_texture = pm.load_texture_bytes(".png", level_image)
 
-                texture_pos = self._win.world2map(player.path.position, origin, origin)
-                texture_pos.x = texture_pos.x - map_data["size"][1] * self._map_scale
-                pm.draw_texture(level_texture, texture_pos.x, texture_pos.y, pm_colors["white"], 0, self._map_scale)
+                    player_minions = obtain_player_minions(player.unit_id)
+                    npcs = obtain_npcs()
 
-                player_minions = obtain_player_minions(player.unit_id)
-                npcs = obtain_npcs(player.is_in_town)
+                    pm.begin_drawing()
+                    pm.draw_fps(self.su_label_posX, self.su_label_posY)
 
-                if not player.is_in_town:
+                    if not menu.is_open:
+                        texture_pos = self._win.world2map(player.path.position, origin, origin)
+                        texture_pos.x = texture_pos.x - map_data["size"][1] * self._map_scale
+                        pm.draw_texture(level_texture, texture_pos.x, texture_pos.y, pm_colors["white"], 0, self._map_scale)
 
-                    if map_data["waypoint"] is not None:
-                        end = self._win.world2map(player.path.position, map_data["waypoint"], origin)
-                        self._win.draw_arrow(end, text="Waypoint", color="navy")
+                        player_icon_pos = self._win.world2map(player.path.position, player.path.position, origin)
+                        self._win.draw_cross(player_icon_pos, size=6, colors=["cyan"])
 
-                    if map_data["exits"] is not None:
-                        for k, v in map_data["exits"].items():
-                            end = self._win.world2map(player.path.position, v, origin)
-                            self._win.draw_arrow(end, k, color="green")
-
-                    if map_data["adjacent_levels"] is not None:
-                        for k, v in map_data["adjacent_levels"].items():
-                            for c in v["outdoor"]:
-                                end = self._win.world2map(player.path.position, c, origin)
-                                self._win.draw_arrow(end, k, color="greenyellow")
-
-                    # draw monsters
-                    for npc in npcs["unique"]:
-                        icon_pos = self._win.world2map(player.path.position, npc.path.position, origin)
-                        self._win.draw_cross(icon_pos, size=9, colors=npc.resists_colors)
-
-                    for npc in npcs["other"]:
-                        icon_pos = self._win.world2map(player.path.position, npc.path.position, origin)
-                        self._win.draw_cross(icon_pos, size=6, colors=npc.resists_colors)
-
-                    for npc in npcs["player_minions"]:
-                        for minion in player_minions:
-                            if minion.dwUnitId == npc.unit_id and minion.dwOwnerId == player.unit_id:
-                                icon_pos = self._win.world2map(player.path.position, npc.path.position, origin)
-                                self._win.draw_cross(icon_pos, size=6, colors=["royalblue"])
-
-                for npc in npcs["town"]:
-                    icon_pos = self._win.world2map(player.path.position, npc.path.position, origin)
-                    self._win.draw_cross(icon_pos, size=6, colors=npc.resists_colors)
-
-                for npc in npcs["merc"]:
-                    for minion in player_minions:
-                        if minion.dwUnitId == npc.unit_id and minion.dwOwnerId == player.unit_id:
+                        # draw npcs
+                        for npc in npcs["town"]:
                             icon_pos = self._win.world2map(player.path.position, npc.path.position, origin)
-                            self._win.draw_cross(icon_pos, size=6, colors=["seagreen"])
-                            break
+                            self._win.draw_cross(icon_pos, size=6, colors=npc.resists_colors)
 
-                # draw hostiled players
-                hostiles, rosters = obtain_hostiled_players(player.unit_id)
-                for hostile in hostiles:
-                    # minions = obtain_player_minions(hostile.unit_id)
-                    icon_pos = self._win.world2map(player.path.position, hostile.path.position, origin)
-                    self._win.draw_cross(icon_pos, size=6, colors=["red"])
-                    self._win.draw_player_label(
-                        icon_pos, text=hostile.name, size=6, font_size=22,
-                        text_color="white", back_color="redbackground"
-                    )
+                        for npc in npcs["merc"]:
+                            for minion in player_minions:
+                                if minion.dwUnitId == npc.unit_id and minion.dwOwnerId == player.unit_id:
+                                    icon_pos = self._win.world2map(player.path.position, npc.path.position, origin)
+                                    self._win.draw_cross(icon_pos, size=6, colors=["seagreen"])
+                                    break
 
-                # draw hostiled life percentage
-                for index, (roster_id, roster) in enumerate(rosters.items(), 1):
-                    self._win.draw_hostile_label(
-                        self.hostile_labels_pos, roster.life_percent, index, text=roster.name,
-                        font_size=int(self.su_label_font_scale * 30), text_color="white", back_color="redbackground"
-                    )
+                        # draw hostiled players
+                        hostiles, rosters = obtain_hostiled_players(player.unit_id)
+                        for hostile in hostiles:
+                            # minions = obtain_player_minions(hostile.unit_id)
+                            icon_pos = self._win.world2map(player.path.position, hostile.path.position, origin)
+                            self._win.draw_cross(icon_pos, size=6, colors=["red"])
+                            self._win.draw_player_label(
+                                icon_pos, text=hostile.name, size=6, font_size=22,
+                                text_color="white", back_color="redbackground"
+                            )
 
-                player_icon_pos = self._win.world2map(player.path.position, player.path.position, origin)
-                self._win.draw_cross(player_icon_pos, size=6, colors=["cyan"])
+                        # draw hostiled life percentage
+                        for index, (roster_id, roster) in enumerate(rosters.items(), 1):
+                            self._win.draw_hostile_label(
+                                self.hostile_labels_pos, roster.life_percent, index, text=roster.name,
+                                font_size=int(self.su_label_font_scale * 30), text_color="white",
+                                back_color="redbackground"
+                            )
+
+                        # check for player hover
+                        if pm.key_pressed(33):
+                            hovered_player = obtain_hovered_player()
+                            if hovered_player is not None:
+                                tooltip = textwrap.dedent(f"""\
+                                {str(hovered_player.name, 'utf8')} Stats:
+                                FasterCastRate: {hovered_player.fcr}
+                                IncreaseAttackSpeed: {hovered_player.ias}
+                                FasterHitRecovery: {hovered_player.fhr}
+                                FasterRunWalk: {hovered_player.frw}
+                                ColdResist: {hovered_player.resists['cold']}
+                                FireResist: {hovered_player.resists["fire"]}
+                                LightResist: {hovered_player.resists["light"]}
+                                PoisonResist: {hovered_player.resists["poison"]}
+                                MagicResist: {hovered_player.resists["magic"]}
+                                PhysicalResist: {hovered_player.resists["physical"]}""")
+                                self._win.draw_player_stats(
+                                    text=tooltip, font_size=int(self.su_label_font_scale * 30),
+                                    text_color="white", back_color="onyx"
+                                )
+
+                        if not player.is_in_town:
+                            if map_data["waypoint"] is not None:
+                                end = self._win.world2map(player.path.position, map_data["waypoint"], origin)
+                                self._win.draw_arrow(end, text="Waypoint", color="navy")
+
+                            if map_data["exits"] is not None:
+                                for k, v in map_data["exits"].items():
+                                    end = self._win.world2map(player.path.position, v, origin)
+                                    self._win.draw_arrow(end, k, color="green")
+
+                            if map_data["adjacent_levels"] is not None:
+                                for k, v in map_data["adjacent_levels"].items():
+                                    for c in v["outdoor"]:
+                                        end = self._win.world2map(player.path.position, c, origin)
+                                        self._win.draw_arrow(end, k, color="greenyellow")
+
+                            # draw monsters
+                            for npc in npcs["unique"]:
+                                icon_pos = self._win.world2map(player.path.position, npc.path.position, origin)
+                                self._win.draw_cross(icon_pos, size=9, colors=npc.resists_colors)
+
+                            for npc in npcs["other"]:
+                                icon_pos = self._win.world2map(player.path.position, npc.path.position, origin)
+                                self._win.draw_cross(icon_pos, size=6, colors=npc.resists_colors)
+
+                            for npc in npcs["player_minions"]:
+                                for minion in player_minions:
+                                    if minion.dwUnitId == npc.unit_id and minion.dwOwnerId == player.unit_id:
+                                        icon_pos = self._win.world2map(player.path.position, npc.path.position, origin)
+                                        self._win.draw_cross(icon_pos, size=6, colors=["royalblue"])
 
             pm.end_drawing()
 

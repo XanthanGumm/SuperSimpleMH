@@ -18,8 +18,11 @@ class Player(UnitAny):
         self._life = None
         self._maxlife = None
         self._life_percent = None
+        self._ias = None
+        self._fcr = None
+        self._fhr = None
+        self._frw = None
         self._resists = dict()
-        self.update()
 
     def update(self):
         super(Player, self).update()
@@ -32,14 +35,14 @@ class Player(UnitAny):
 
         return True
 
-    def read_stats(self):
-        basestats, stats = super(Player, self).read_stats()
+    def read_player_stats(self):
         difficulty = self.act.act_misc.difficulty.value
         penalty = 100 if difficulty == 2 else 40 if difficulty == 1 else 0
+        stats = self.read_stats(self._stats_list_struct.Stats)
 
         if self.unit_id == self.my_player_id:
+            basestats = self.read_stats(self._stats_list_struct.BaseStats)
             self._life = next(iter(basestats[Stat.Life.name][-1].values())) >> 8
-
             if Stat.MaxLife.name in stats:
                 self._maxlife = next(iter(stats[Stat.MaxLife.name][-1].values()))
             else:
@@ -48,17 +51,44 @@ class Player(UnitAny):
             self._life_percent = self._life // self._maxlife
 
         else:
-            # Here I assume all pvpers did Anya quest
             penalty = penalty - 30
 
-        # self._resists["cold"] =
-        #
-        # self._resists["cold"] = next(iter(stats[Stat.ColdResist.name][-1].values())) - penalty
-        # self._resists["fire"] = next(iter(stats[Stat.FireResist.name][-1].values())) - penalty
-        # self._resists["light"] = next(iter(stats[Stat.LightningResist.name][-1].values())) - penalty
-        # self._resists["poison"] = next(iter(stats[Stat.PoisonResist.name][-1].values())) - penalty
-        # # self._resists["physical"] = next(iter(stats[Stat.DamageReduced.name][-1].values()))
+        cold, fire, light, poison, magic, physical = 0, 0, 0, 0, 0, 0
+        fcr, frw, fhr, ias = 0, 0, 0, 0
 
+        if Stat.ColdResist.name in stats:
+            cold = next(iter(stats[Stat.ColdResist.name][-1].values()))
+        if Stat.FireResist.name in stats:
+            fire = next(iter(stats[Stat.FireResist.name][-1].values()))
+        if Stat.LightningResist.name in stats:
+            light = next(iter(stats[Stat.LightningResist.name][-1].values()))
+        if Stat.PoisonResist.name in stats:
+            poison = next(iter(stats[Stat.PoisonResist.name][-1].values()))
+        if Stat.MagicResist.name in stats:
+            magic = next(iter(stats[Stat.MagicResist.name][-1].values()))
+        if Stat.DamageReduced.name in stats:
+            physical = next(iter(stats[Stat.DamageReduced.name][-1].values()))
+
+        if Stat.FasterCastRate.name in stats:
+            fcr = next(iter(stats[Stat.FasterCastRate.name][-1].values()))
+        if Stat.IncreasedAttackSpeed.name in stats:
+            ias = next(iter(stats[Stat.IncreasedAttackSpeed.name][-1].values()))
+        if Stat.FasterRunWalk.name in stats:
+            frw = next(iter(stats[Stat.FasterRunWalk.name][-1].values()))
+        if Stat.FasterHitRecovery.name in stats:
+            fhr = next(iter(stats[Stat.FasterHitRecovery.name][-1].values()))
+
+        self._resists["cold"] = cold - penalty
+        self._resists["fire"] = fire - penalty
+        self._resists["light"] = light - penalty
+        self._resists["poison"] = poison - penalty
+        self._resists["magic"] = magic
+        self._resists["physical"] = physical
+
+        self._fcr = fcr
+        self._fhr = fhr
+        self._frw = frw
+        self._ias = ias
 
     @property
     def act(self):
@@ -85,14 +115,31 @@ class Player(UnitAny):
         return self._maxlife
 
     @property
-    def resists(self):
-        return self._resists
-
-    @property
     def life_percent(self):
         return self._life_percent
 
     @life_percent.setter
     def life_percent(self, p):
         self._life_percent = p
+
+    @property
+    def resists(self):
+        return self._resists
+
+    @property
+    def fcr(self):
+        return self._fcr
+
+    @property
+    def fhr(self):
+        return self._fhr
+
+    @property
+    def frw(self):
+        return self._frw
+
+    @property
+    def ias(self):
+        return self._ias
+
 

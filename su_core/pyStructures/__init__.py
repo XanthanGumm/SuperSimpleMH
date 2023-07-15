@@ -92,6 +92,10 @@ class Minions(Structure):
     pass
 
 
+class LastHoverUnit(Structure):
+    pass
+
+
 UnitHashTable._fields_ = [
     ("table", c_void_p * 128)
 ]
@@ -323,7 +327,7 @@ RosterMember._fields_ = [
 ]
 
 UI._fields_ = [
-    ("inGame", BYTE),
+    ("_1", c_bool),
     ("invMenu", c_bool),
     ("charMenu", c_bool),
     ("skillSelect", c_bool),
@@ -335,7 +339,8 @@ UI._fields_ = [
     ("npcShop", c_bool),
     ("_4", BYTE * 2),
     ("questsMenu", c_bool),
-    ("_5", BYTE * 4),
+    ("_5", BYTE * 3),
+    ("isGameActive", c_bool),  # when the player in game and quitMenu is not on
     ("waypointMenu", c_bool),
     ("_6", BYTE),
     ("partyMenu", c_bool),
@@ -343,7 +348,9 @@ UI._fields_ = [
     ("stash", c_bool),
     ("_8", BYTE * 5),
     ("mercMenu", c_bool),
-    ("_9", BYTE * 0x14D),
+    ("_9", BYTE * 0x101),
+    ("bAct", BYTE),
+    ("_10", BYTE * 0x4B),
     ("loading", c_bool)
 ]
 
@@ -356,6 +363,13 @@ Minions._fields_ = [
     ("pNext", c_void_p)
 ]
 
+LastHoverUnit._fields_ = [
+    ("bIsHovered", c_bool),
+    ("_1", BYTE * 3),
+    ("dwType", DWORD),
+    ("dwUnitId", DWORD)
+]
+
 if __name__ == "__main__":
-    for field in RosterMember._fields_:
-        print(field[0], hex(getattr(RosterMember, field[0]).offset))
+    for field in UI._fields_:
+        print(field[0], hex(getattr(UI, field[0]).offset))

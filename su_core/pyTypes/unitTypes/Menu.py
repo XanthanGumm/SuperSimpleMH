@@ -8,6 +8,7 @@ class Menu:
     __instance = None
     # last menu that was open which is != from the current menu that is open
     last_open = None
+    last_act = None
 
     def __new__(cls):
         if cls.__instance is None:
@@ -15,8 +16,24 @@ class Menu:
         return cls.__instance
 
     def __init__(self):
+        self._ui = None
+        self._isGameActive = None
+        self._invMenu = None
+        self._charMenu = None
+        self._skillMenu = None
+        self._npcInteract = None
+        self._quitMenu = None
+        self._npcShop = None
+        self._questsMenu = None
+        self._waypointMenu = None
+        self._partyMenu = None
+        self._stash = None
+        self._mercMenu = None
+        self._act_num = None
+        self._loading = None
+
         self._ui = mem.read_struct(mem.ui, UI)
-        self._inGame = self._ui.inGame
+        self._isGameActive = self._ui.isGameActive
         self._invMenu = self._ui.invMenu
         self._charMenu = self._ui.charMenu
         self._skillMenu = self._ui.skillMenu
@@ -29,6 +46,10 @@ class Menu:
         self._stash = self._ui.stash
         self._mercMenu = self._ui.mercMenu
         self._loading = self._ui.loading
+
+        if self._act_num != self._ui.bAct:
+            self.last_act = self._act_num
+        self._act_num = self._ui.bAct
 
         if self._invMenu and self.last_open != Menus.invMenu:
             self.last_open = Menus.invMenu
@@ -58,7 +79,7 @@ class Menu:
     @property
     def is_open(self) -> bool:
         return (
-            not self._inGame or
+            not self._isGameActive or
             self._invMenu or
             self._charMenu or
             self._skillMenu or
@@ -69,11 +90,19 @@ class Menu:
             self._waypointMenu or
             self._partyMenu or
             self._stash or
-            self._mercMenu or
-            self._loading
+            self._mercMenu
         )
 
     @property
-    def loading(self):
+    def is_loading(self):
         return self._loading
+
+    @property
+    def is_game_active(self):
+        return self._isGameActive
+
+    @property
+    def waypoint_menu(self):
+        return self._waypointMenu
+
 

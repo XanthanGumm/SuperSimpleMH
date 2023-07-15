@@ -85,3 +85,11 @@ class HostileLabel:
     def __init__(self, position, text, background_length, font_size, text_color, back_color):
         pm.draw_font(1, text, position.x, position.y, font_size, 0, pm_colors[text_color])
         pm.draw_rectangle_rounded(position.x, position.y, background_length, font_size, 0.8, 1, pm_colors[back_color])
+
+
+class TextBox:
+
+    def __init__(self, position, text, width, height, font_size, text_color, back_color):
+        pm.draw_font(1, text, position.x, position.y, font_size, 0, pm_colors[text_color])
+        pm.draw_rectangle(position.x, position.y, width, height, pm_colors[back_color])
+

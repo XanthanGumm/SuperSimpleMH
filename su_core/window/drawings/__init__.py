@@ -28,6 +28,7 @@ pm_colors = {
 
     # brownish colors
     "d2rbrown": pm.new_color(199, 179, 119, 255),
+    "saddlebrown": pm.get_color("saddlebrown"),
 
     # redish colors
     "red": pm.get_color("red"),
@@ -43,6 +44,9 @@ pm_colors = {
 
     # whiteish colors
     "white": pm.get_color("white"),
+
+    # blackish colors
+    "onyx": pm.new_color(53, 57, 53, 75),
 
     # others
     "gold": pm.get_color("gold")
