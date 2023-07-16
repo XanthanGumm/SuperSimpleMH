@@ -48,7 +48,7 @@ class Mem:
         if len(pattern_address) == 0:
             self._logger.warning(f"Could not find unit table offset with pattern: {self.unit_table_offset}")
         elif len(pattern_address) == 1:
-            self._logger.info(f"Unit table has been found at offset: {hex(pattern_address[0])} + (7)")
+            self._logger.info(f"Unit table has been found at offset: {hex(pattern_address[0] - self.base)} + (7)")
         else:
             self._logger.warning(f"Found more then one unit table offset with pattern: {self.unit_table_offset}")
 
@@ -63,7 +63,7 @@ class Mem:
         if len(pattern_address) == 0:
             self._logger.warning(f"Could not find expansion offset with pattern: {self.expansion_offset}")
         elif len(pattern_address) == 1:
-            self._logger.info(f"Expansion has been found at offset: {hex(pattern_address[0])} + (3)")
+            self._logger.info(f"Expansion has been found at offset: {hex(pattern_address[0] - self.base)} + (3)")
         else:
             self._logger.warning(f"Found more then one Expansion offset with pattern: {self.expansion_offset}")
 
@@ -79,7 +79,7 @@ class Mem:
         if len(pattern_address) == 0:
             self._logger.warning(f"Could not find UI offset with pattern: {self.ui_offset}")
         elif len(pattern_address) == 1:
-            self._logger.info(f"UI has been found at offset: {hex(pattern_address[0])} + (6)")
+            self._logger.info(f"UI has been found at offset: {hex(pattern_address[0] - self.base)} + (6)")
         else:
             self._logger.warning(f"Found more then one UI offset with pattern: {self.ui_offset}")
 
@@ -95,7 +95,7 @@ class Mem:
         if len(pattern_address) == 0:
             self._logger.warning(f"Could not find players minions offset with pattern: {self.minions_offset}")
         elif len(pattern_address) == 1:
-            self._logger.info(f"Players minions has been found at offset: {hex(pattern_address[0])} + (3)")
+            self._logger.info(f"Players minions has been found at offset: {hex(pattern_address[0]  - self.base)} + (3)")
         else:
             self._logger.warning(f"Found more then one players minions offset with pattern: {self.minions_offset}")
 
@@ -111,7 +111,7 @@ class Mem:
         if len(pattern_address) == 0:
             self._logger.warning(f"Could not find roster offset with pattern: {self.roster_offset}")
         elif len(pattern_address) == 1:
-            self._logger.info(f"Roster has been found at offset: {hex(pattern_address[0])} - (3)")
+            self._logger.info(f"Roster has been found at offset: {hex(pattern_address[0] - self.base)} - (3)")
         else:
             self._logger.warning(f"Found more then one roster offset with pattern: {self.roster_offset}")
 
@@ -127,7 +127,7 @@ class Mem:
         if len(pattern_address) == 0:
             self._logger.warning(f"Could not find last hover offset with pattern: {self.hover_offset}")
         elif len(pattern_address) == 1:
-            self._logger.info(f"Last hover has been found at offset: {hex(pattern_address[0])} + (3)")
+            self._logger.info(f"Last hover has been found at offset: {hex(pattern_address[0] - self.base)} + (3)")
         else:
             self._logger.warning(f"Found more then one last hover offset with pattern: {self.hover_offset}")
 

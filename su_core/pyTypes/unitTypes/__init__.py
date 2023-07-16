@@ -1,3 +1,4 @@
+import traceback
 from su_core.pm import mem
 from su_core.pyStructures import UnitHashTable, Minions, LastHoverUnit
 from su_core.pyTypes.unitTypes.Player import Player
@@ -6,6 +7,8 @@ from su_core.pyTypes.unitTypes.Roster import Roster
 from su_core.pyTypes.unitTypes.Menu import Menu, Menus
 from su_core.utils.exceptions import PlayerNotFound, InvalidPlayerUnit
 from su_core.data import TownNpc, MercNpc, PlayerMinionNpc
+from logger import manager
+_logger = manager.get_logger(__name__)
 
 
 def obtain_units(unit_type: int) -> list:
@@ -23,8 +26,8 @@ def obtain_units(unit_type: int) -> list:
                 while valid_units[-1].next:
                     valid_units.append(obtain_type(valid_units[-1].next))
             except Exception as e:
-                if not isinstance(e, InvalidPlayerUnit):
-                    print(e)
+                _logger.debug(f"Exception occurred during a search in the unit table for a unit of type {unit_type}")
+                _logger.debug(traceback.format_exc())
 
     return valid_units
 
@@ -55,7 +58,9 @@ def obtain_npcs() -> dict:
             # just ignore any invalid unit that changes in the middle
             try:
                 npc.update()
-                npc.read_npc_stats()
+                if not npc.read_npc_stats():
+                    continue
+
                 if npc.npc in MercNpc:
                     npcs["merc"].append(npc)
                 elif npc.npc in TownNpc:
@@ -67,7 +72,8 @@ def obtain_npcs() -> dict:
                 else:
                     npcs["other"].append(npc)
             except Exception as e:
-                print(e)
+                _logger.debug(f"Exception occurred during update/read_npc_stats")
+                _logger.debug(traceback.format_exc())
 
     return npcs
 
@@ -123,8 +129,8 @@ def obtain_hostiled_players(player_unit_id):
             if player_roster.is_hostiled(r.unit_id):
                 hostiled_rosters[r.unit_id] = r
         except Exception as e:
-            print(e)
-            pass
+            _logger.debug("Exception occurred during searching for hostiled rosters structures")
+            _logger.debug(traceback.format_exc())
 
     for p in players:
         if p.unit_id in hostiled_rosters:
@@ -135,7 +141,8 @@ def obtain_hostiled_players(player_unit_id):
                 p.life_percent = hostiled_rosters[p.unit_id].life_percent
                 hostiled_players.append(p)
             except Exception as e:
-                print(e)
+                _logger.debug("Exception occurred during searching for hostiled players units")
+                _logger.debug(traceback.format_exc())
 
     return hostiled_players, hostiled_rosters
 

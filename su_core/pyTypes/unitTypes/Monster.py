@@ -8,11 +8,15 @@ class Monster(UnitAny):
 
     def __init__(self, address):
         super(Monster, self).__init__(address)
+        if self._struct.pStatList:
+            self._is_revived = mem.read_uint(self._struct.pStatList + 0xAC8 + 0xC) & 31 == 1
+        else:
+            self._is_revived = False
+
         self._monster_data = None
         self._monster_txt = None
         self._mode = PlrMode(self._struct.dwMode)
         self._npc = Npc(self._txt_file_no)
-        self._is_revived = mem.read_uint(self._struct.pStatList + 0xAC8 + 0xC) & 31 == 1
         self._resists = dict()
         self._immunities_colors = []
 
@@ -21,7 +25,10 @@ class Monster(UnitAny):
         self._monster_data = mem.read_struct(self._struct.pUnitData, MonsterData)
         self._monster_txt = mem.read_struct(self._monster_data.pMonsterTxt, MonsterTxt)
 
-    def read_npc_stats(self):
+    def read_npc_stats(self) -> bool:
+        if not self._stats_list_struct.Stats.pStats:
+            return False
+
         stats = self.read_stats(self._stats_list_struct.Stats)
         if Stat.ColdResist.name in stats:
             cold_res = next(iter(stats[Stat.ColdResist.name][-1].values()))
@@ -51,6 +58,8 @@ class Monster(UnitAny):
             physical_res = next(iter(stats[Stat.DamageReduced.name][-1].values()))
             if physical_res >= 100:
                 self._immunities_colors.append("saddlebrown")
+
+        return True
 
     @property
     def npc(self):

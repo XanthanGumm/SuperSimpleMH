@@ -1,5 +1,6 @@
 from ctypes import Structure
 from ctypes import c_uint64
+from ctypes import c_int32
 from ctypes.wintypes import DWORD
 from ctypes.wintypes import WORD
 from ctypes.wintypes import BYTE
@@ -278,7 +279,7 @@ MonsterTxt._fields_ = [
 Stat._fields_ = [
     ("wLayer", WORD),  # 0x0
     ("wStatId", WORD),  # 0x2
-    ("dwValue", DWORD),  # 0x4
+    ("dwValue", c_int32),  # 0x4
 ]
 
 StatVector._fields_ = [

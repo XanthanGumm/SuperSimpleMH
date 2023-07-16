@@ -141,22 +141,24 @@ class Window:
         mouse_pos = pm.mouse_position()
         relative_pos = mouse_pos["x"] - overlay_pos["x"], mouse_pos["y"] - overlay_pos["y"]
         pad_height = self._scaleH * 25
-
+        pad_width = self._scaleH * 25
         text_length = pm.measure_text(text, font_size)
         text_length = text_length - 1 / 4 * text_length + self._scaleW
         text_height = font_size * text.count("\n") * 1.6 + self._scaleH
 
-        if relative_pos[1] + pad_height + text_height >= self._height - self._win_pad.y:
-            start_posY = relative_pos[1] - pad_height - text_height
+        if relative_pos[1] + pad_height + text_height >= self._height - self._win_pad.y - pad_height:
+            start_posY = self._height - self._win_pad.y - pad_height - text_height
+        elif relative_pos[1] <= self._win_pad.y:
+            start_posY = self._win_pad.y + pad_height
         else:
             start_posY = relative_pos[1] + pad_height
 
-        if relative_pos[0] + text_length >= self._width - self._win_pad.x:
-            start_posX = relative_pos[0] - text_length
-        elif relative_pos[0] <= self._win_pad.x:
-            start_posX = relative_pos[0] + text_length
+        if relative_pos[0] + pad_width + text_length >= self._width - self._win_pad.x // 2 - pad_width:
+            start_posX = self._width - self._win_pad.x // 2 - text_length - pad_width
+        elif relative_pos[0] <= self._win_pad.x // 2:
+            start_posX = self._win_pad.x // 2 + pad_width
         else:
-            start_posX = relative_pos[0]
+            start_posX = relative_pos[0] + pad_width
 
         start_pos = CSharpVector2(start_posX - self._scaleW, start_posY - self._scaleH)
         TextBox(start_pos, text, text_length, text_height, font_size, text_color, back_color)
@@ -190,25 +192,33 @@ class Canvas:
             root = root.parent
 
         self._logger = manager.get_logger(__name__)
+        # init Canvas deps
         self._win = Window()
+        self.map_cli = RPYClient()
+        # canvas scalers
         self._map_scale = (self._win.width / (2 * 1280)) * 4.8
+        self.su_label_posX = self._win.width * 0.07
+        self.su_label_posY = self._win.height * 0.05
+        self.su_label_font_scale = self._win.width / (2 * 1280)
+        self.hostile_labels_pos = CSharpVector2(self.su_label_posX, self.su_label_posY + 2 * self.su_label_font_scale)
+
+        # init pymeow overlay
         pm.overlay_init()
         fps = pm.get_monitor_refresh_rate()
         pm.set_fps(fps)
         pm.set_window_size(self._win.width, self._win.height)
         pm.set_window_position(self._win.start_pos_x, self._win.start_pos_y)
         pm.load_font(os.path.join(root, "fonts", "formal436bt-regular.otf"), 1)
-        self.su_label_posX = self._win.width * 0.07
-        self.su_label_posY = self._win.height * 0.05
-        self.su_label_font_scale = self._win.width / (2 * 1280)
-        self.hostile_labels_pos = CSharpVector2(self.su_label_posX, self.su_label_posY + 2 * self.su_label_font_scale)
-        self.map_cli = RPYClient()
 
-    # TODO: create log
     # TODO: use r_ctype instead of my function.
-    # TODO: change try catch to if statements
 
     def event_loop(self):
+        # flags
+        pageup = False
+
+        # tooltip
+        tooltip = None
+
         while pm.overlay_loop():
             menu = Menu()
 
@@ -229,7 +239,7 @@ class Canvas:
 
                     # new area
                     if self.map_cli.prev_area != current_area:
-                        self._logger.info(f"Request map data to area: {current_area}")
+                        self._logger.info(f"Request map data for area: {current_area}")
                         # clean the buffer when area is changed
                         pm.end_drawing()
                         self.map_cli.prev_area = current_area
@@ -243,7 +253,35 @@ class Canvas:
                     pm.begin_drawing()
                     pm.draw_fps(self.su_label_posX, self.su_label_posY)
 
-                    if not menu.is_open:
+                    # check for player hover
+                    if pm.key_pressed(33):
+                        self.wait_to_be_released(key=33)
+                        pageup = True
+                        hovered_player = obtain_hovered_player()
+                        if hovered_player is not None:
+                            tooltip = textwrap.dedent(f"""\
+                            {str(hovered_player.name, 'utf8')} Stats:
+                            FasterCastRate: {hovered_player.fcr}
+                            IncreaseAttackSpeed: {hovered_player.ias}
+                            FasterHitRecovery: {hovered_player.fhr}
+                            FasterRunWalk: {hovered_player.frw}
+                            ColdResist: {hovered_player.resists['cold']}
+                            FireResist: {hovered_player.resists["fire"]}
+                            LightResist: {hovered_player.resists["light"]}
+                            PoisonResist: {hovered_player.resists["poison"]}
+                            MagicResist: {hovered_player.resists["magic"]}
+                            PhysicalResist: {hovered_player.resists["physical"]}""")
+                        else:
+                            pageup = False
+                            tooltip = None
+
+                    if pageup and tooltip is not None:
+                        self._win.draw_player_stats(
+                            text=tooltip, font_size=int(self.su_label_font_scale * 30),
+                            text_color="white", back_color="onyx"
+                        )
+
+                    if not menu.is_open and not pageup:
                         texture_pos = self._win.world2map(player.path.position, origin, origin)
                         texture_pos.x = texture_pos.x - map_data["size"][1] * self._map_scale
                         pm.draw_texture(level_texture, texture_pos.x, texture_pos.y, pm_colors["white"], 0, self._map_scale)
@@ -282,27 +320,6 @@ class Canvas:
                                 back_color="redbackground"
                             )
 
-                        # check for player hover
-                        if pm.key_pressed(33):
-                            hovered_player = obtain_hovered_player()
-                            if hovered_player is not None:
-                                tooltip = textwrap.dedent(f"""\
-                                {str(hovered_player.name, 'utf8')} Stats:
-                                FasterCastRate: {hovered_player.fcr}
-                                IncreaseAttackSpeed: {hovered_player.ias}
-                                FasterHitRecovery: {hovered_player.fhr}
-                                FasterRunWalk: {hovered_player.frw}
-                                ColdResist: {hovered_player.resists['cold']}
-                                FireResist: {hovered_player.resists["fire"]}
-                                LightResist: {hovered_player.resists["light"]}
-                                PoisonResist: {hovered_player.resists["poison"]}
-                                MagicResist: {hovered_player.resists["magic"]}
-                                PhysicalResist: {hovered_player.resists["physical"]}""")
-                                self._win.draw_player_stats(
-                                    text=tooltip, font_size=int(self.su_label_font_scale * 30),
-                                    text_color="white", back_color="onyx"
-                                )
-
                         if not player.is_in_town:
                             if map_data["waypoint"] is not None:
                                 end = self._win.world2map(player.path.position, map_data["waypoint"], origin)
@@ -335,6 +352,16 @@ class Canvas:
                                         self._win.draw_cross(icon_pos, size=6, colors=["royalblue"])
 
             pm.end_drawing()
+
+    @staticmethod
+    def wait_to_be_released(key: int, timeout=1):
+        start = time.time()
+        while time.time() - start <= timeout:
+            if not pm.key_pressed(key):
+                break
+            time.sleep(0.01)
+
+
 
 
 if __name__ == "__main__":
