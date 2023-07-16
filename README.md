@@ -23,6 +23,8 @@
 * drawing monster and their immunities
 * drawing super uniques, uniques and champions
 * drawing merc and player minions
+* drawing hostile players and their life
+* hover over players to check their stats
 
 ## Credits
 * [mapview](https://github.com/joffreybesos/d2r-mapview) @joffreybesos for rustdecrypt and many more.
