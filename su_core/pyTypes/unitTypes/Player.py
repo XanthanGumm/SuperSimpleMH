@@ -2,7 +2,8 @@ from su_core.pyTypes import UnitAny
 from su_core.pm import mem
 from su_core.pyTypes import Act
 from su_core.data import Area
-from su_core.data import Stat
+from su_core.data import StatOriginal
+from su_core.pyTypes.unitTypes.Inventories import Inventories
 from su_core.utils.exceptions import InvalidPlayerUnit
 
 
@@ -23,6 +24,7 @@ class Player(UnitAny):
         self._fhr = None
         self._frw = None
         self._resists = dict()
+        self._inventory = None
 
     def update(self):
         super(Player, self).update()
@@ -42,11 +44,11 @@ class Player(UnitAny):
 
         if self.unit_id == self.my_player_id:
             basestats = self.read_stats(self._stats_list_struct.BaseStats)
-            self._life = next(iter(basestats[Stat.Life.name][-1].values())) >> 8
-            if Stat.MaxLife.name in stats:
-                self._maxlife = next(iter(stats[Stat.MaxLife.name][-1].values()))
+            self._life = next(iter(basestats[StatOriginal.Life.name][-1].values())) >> 8
+            if StatOriginal.MaxLife.name in stats:
+                self._maxlife = next(iter(stats[StatOriginal.MaxLife.name][-1].values()))
             else:
-                self._maxlife = next(iter(basestats[Stat.MaxLife.name][-1].values()))
+                self._maxlife = next(iter(basestats[StatOriginal.MaxLife.name][-1].values()))
 
             self._life_percent = self._life // self._maxlife
 
@@ -56,27 +58,27 @@ class Player(UnitAny):
         cold, fire, light, poison, magic, physical = 0, 0, 0, 0, 0, 0
         fcr, frw, fhr, ias = 0, 0, 0, 0
 
-        if Stat.ColdResist.name in stats:
-            cold = next(iter(stats[Stat.ColdResist.name][-1].values()))
-        if Stat.FireResist.name in stats:
-            fire = next(iter(stats[Stat.FireResist.name][-1].values()))
-        if Stat.LightningResist.name in stats:
-            light = next(iter(stats[Stat.LightningResist.name][-1].values()))
-        if Stat.PoisonResist.name in stats:
-            poison = next(iter(stats[Stat.PoisonResist.name][-1].values()))
-        if Stat.MagicResist.name in stats:
-            magic = next(iter(stats[Stat.MagicResist.name][-1].values()))
-        if Stat.DamageReduced.name in stats:
-            physical = next(iter(stats[Stat.DamageReduced.name][-1].values()))
+        if StatOriginal.coldresist.name in stats:
+            cold = next(iter(stats[StatOriginal.coldresist.name][-1].values()))
+        if StatOriginal.fireresist.name in stats:
+            fire = next(iter(stats[StatOriginal.fireresist.name][-1].values()))
+        if StatOriginal.lightresist.name in stats:
+            light = next(iter(stats[StatOriginal.lightresist.name][-1].values()))
+        if StatOriginal.poisonresist.name in stats:
+            poison = next(iter(stats[StatOriginal.poisonresist.name][-1].values()))
+        if StatOriginal.magicresist.name in stats:
+            magic = next(iter(stats[StatOriginal.magicresist.name][-1].values()))
+        if StatOriginal.damageresist.name in stats:
+            physical = next(iter(stats[StatOriginal.damageresist.name][-1].values()))
 
-        if Stat.FasterCastRate.name in stats:
-            fcr = next(iter(stats[Stat.FasterCastRate.name][-1].values()))
-        if Stat.IncreasedAttackSpeed.name in stats:
-            ias = next(iter(stats[Stat.IncreasedAttackSpeed.name][-1].values()))
-        if Stat.FasterRunWalk.name in stats:
-            frw = next(iter(stats[Stat.FasterRunWalk.name][-1].values()))
-        if Stat.FasterHitRecovery.name in stats:
-            fhr = next(iter(stats[Stat.FasterHitRecovery.name][-1].values()))
+        if StatOriginal.item_fastercastrate.name in stats:
+            fcr = next(iter(stats[StatOriginal.item_fastercastrate.name][-1].values()))
+        if StatOriginal.item_fasterattackrate.name in stats:
+            ias = next(iter(stats[StatOriginal.item_fasterattackrate.name][-1].values()))
+        if StatOriginal.item_fastermovevelocity.name in stats:
+            frw = next(iter(stats[StatOriginal.item_fastermovevelocity.name][-1].values()))
+        if StatOriginal.item_fastergethitrate.name in stats:
+            fhr = next(iter(stats[StatOriginal.item_fastergethitrate.name][-1].values()))
 
         self._resists["cold"] = cold - penalty
         self._resists["fire"] = fire - penalty
@@ -89,6 +91,10 @@ class Player(UnitAny):
         self._fhr = fhr
         self._frw = frw
         self._ias = ias
+
+    def read_player_inventory(self):
+        self._inventory = Inventories(self._struct.pInventory)
+        self._inventory.read_equip_items()
 
     @property
     def act(self):
@@ -105,6 +111,10 @@ class Player(UnitAny):
                                                     Area.KurastDocks,
                                                     Area.ThePandemoniumFortress,
                                                     Area.Harrogath]
+
+    @property
+    def inventory(self) -> Inventories:
+        return self._inventory
 
     @property
     def life(self):

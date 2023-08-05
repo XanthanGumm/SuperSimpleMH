@@ -57,11 +57,27 @@ class PlayerInfoStrc(Structure):
     pass
 
 
+class ItemData(Structure):
+    pass
+
+
+# class ItemTxt(Structure):
+#     pass
+
+
 class MonsterData(Structure):
     pass
 
 
 class MonsterTxt(Structure):
+    pass
+
+
+class InventoryGrid(Structure):
+    pass
+
+
+class Inventory(Structure):
     pass
 
 
@@ -259,6 +275,33 @@ PlayerInfoStrc._fields_ = [
     ("expansion", c_bool)
 ]
 
+ItemData._fields_ = [
+    ("ItemQuality", DWORD),  # 0x0
+    ("_1", DWORD * 2),  # 0x4
+    ("dwOwnerId", DWORD),  # 0xC
+    ("_2", DWORD * 2),  # 0x10
+    ("ItemFlags", DWORD),  # 0x18
+    ("_3", DWORD * 6),  # 0x1C
+    ("dwUniqueOrSetId", DWORD),  # 0x34
+    ("_4", DWORD * 2),  # 0x38
+    ("_5", WORD),  # 0x40
+    ("RarePrefix", WORD),  # 0x42
+    ("RareSuffix", WORD),  # 0x44
+    ("AutoAffix", WORD),  # 0x46
+    ("MagicPrefix", WORD * 3),  # 0x48
+    ("MagicSuffix", WORD * 3),  # 0x4E
+    ("bBodyLoc", BYTE),  # 0x54
+    ("bInvPage", BYTE),  # 0x55
+]
+
+# ItemTxt._fields_ = [
+#     ("_1", BYTE * 116),
+#     ("SizeX", BYTE),
+#     ("SizeY", BYTE),
+#     ("_2", BYTE * 0xE),
+#     ("bItemType", BYTE)
+# ]
+
 MonsterData._fields_ = [
     ("pMonsterTxt", c_void_p),  # 0x00
     ("dwShrineType", DWORD),  # 0x08
@@ -274,6 +317,51 @@ MonsterData._fields_ = [
 MonsterTxt._fields_ = [
     ("TxtFileNo", WORD),
     ("name", CHAR * 16)
+]
+
+InventoryGrid._fields_ = [
+    ("pFirstEquipItem", c_void_p),  # 0x00
+    ("pLastEquipItem", c_void_p),  # 0x08
+    ("_1", DWORD * 2),  # 0x10
+    ("pEquipList", c_void_p),  # 0x18
+    ("pFirstBeltItem", c_void_p),  # 0x20
+    ("pLastBeltItem", c_void_p),  # 0x28
+    ("_2", DWORD * 2),  # 0x30
+    ("pBeltList", c_void_p),  # 0x38
+    ("pFirstInvItem", c_void_p),  # 0x40
+    ("pLastInvItem", c_void_p),  # 0x48
+    ("bWidth", BYTE),  # 0x50
+    ("bHeight", BYTE),  # 0x51
+    ("_3", BYTE * 6),  # 0x52
+    ("pInventoryList", c_void_p),  # 0x58
+    ("_4", DWORD * 6),  # 0x60
+    ("pVendorList1", c_void_p),  # 0x78
+    ("_5", DWORD * 6),  # 0x80
+    ("pVendorList2", c_void_p),  # 0x98
+    ("_6", DWORD * 6),  # 0xA0
+    ("pVendorList3", c_void_p),  # 0xB8
+    ("pFirstStashItem", c_void_p),  # 0xC0
+    ("pLastStashItem", c_void_p),  # 0xC8
+    ("bStashWidth", BYTE),  # 0xD0
+    ("bStashHeight", BYTE),  # 0xD1
+    ("_7", BYTE * 6),
+    ("pStashList", c_void_p),  # 0xD8
+]
+
+Inventory._fields_ = [
+    ("dwSignature", DWORD),  # 0x00
+    ("_1", DWORD),  # 0x04
+    ("pOwner", c_void_p),  # 0x08
+    ("pFirstItem", c_void_p),  # 0x10
+    ("pLastItem", c_void_p),  # 0x18
+    ("pInventoryGrid", c_void_p),  # 0x20
+    ("_2", c_void_p),  # 0x28 idk what is this
+    ("_3", c_void_p),  # 0x30 idk what is this
+    ("dwWeaponId", DWORD),  # 0x38
+    ("_4", DWORD),  # 0x3C
+    ("pCursorItem", c_void_p),  # 0x40
+    ("dwOwnerId", DWORD),  # 0x48
+    ("dwFilledSockets", DWORD)  # 0x4C
 ]
 
 Stat._fields_ = [
@@ -296,10 +384,15 @@ StatsList._fields_ = [
     ("dwFlags", DWORD),  # 0x1C
     ("_3", DWORD * 4),  # 0x20
     ("BaseStats", StatVector),  # 0x30
-    ("_4", DWORD * 16),  # 0x48
+    ("pPrev", c_void_p),  # 0x48
+    ("pNext", c_void_p),  # 0x50
+    ("pLast", c_void_p),  # 0x58
+    ("_5", DWORD * 4),  # 0x60
+    ("pMyStats", c_void_p),  # 0x70
+    ("_6", DWORD * 3),  # 0x78
     ("Stats", StatVector),  # 0x88
-    ("_5", DWORD * 0x28C),  # 0x100
-    ("StateFlags", DWORD * 6)  # 0xAc8
+    ("_7", DWORD * 0x28A),  # 0x100
+    ("StateFlags", DWORD * 6)  # 0xAC8
 ]
 
 HostileInfo._fields_ = [
@@ -372,5 +465,5 @@ LastHoverUnit._fields_ = [
 ]
 
 if __name__ == "__main__":
-    for field in UI._fields_:
-        print(field[0], hex(getattr(UI, field[0]).offset))
+    for field in StatsList._fields_:
+        print(field[0], hex(getattr(StatsList, field[0]).offset))

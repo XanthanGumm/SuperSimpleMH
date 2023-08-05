@@ -1,0 +1,129 @@
+index,*ID,set,item,*ItemName,lvl req
+Civerb's Ward,0,Civerb's Vestments,lrg,Large Shield,9
+Civerb's Icon,1,Civerb's Vestments,amu,Amulet,9
+Civerb's Cudgel,2,Civerb's Vestments,gsc,Grand Scepter,9
+Hsarus' Iron Heel,3,Hsarus' Defense,mbt,Chain Boots,3
+Hsarus' Iron Fist,4,Hsarus' Defense,buc,Buckler,3
+Hsarus' Iron Stay,5,Hsarus' Defense,mbl,Belt,3
+Cleglaw's Tooth,6,Cleglaw's Brace,lsd,Long Sword,4
+Cleglaw's Claw,7,Cleglaw's Brace,sml,Small Shield,4
+Cleglaw's Pincers,8,Cleglaw's Brace,mgl,Chain Gloves,4
+Iratha's Collar,9,Iratha's Finery,amu,Amulet,15
+Iratha's Cuff,10,Iratha's Finery,tgl,Light Gauntlets,15
+Iratha's Coil,11,Iratha's Finery,crn,Crown,15
+Iratha's Cord,12,Iratha's Finery,tbl,Heavy Belt,15
+Isenhart's Lightbrand,13,Isenhart's Armory,bsd,Broad Sword,8
+Isenhart's Parry,14,Isenhart's Armory,gts,Gothic Shield,8
+Isenhart's Case,15,Isenhart's Armory,brs,Breast Plate,8
+Isenhart's Horns,16,Isenhart's Armory,fhl,Full Helm,8
+Vidala's Barb,17,Vidala's Rig,lbb,Long Battle Bow,14
+Vidala's Fetlock,18,Vidala's Rig,tbt,Light Plated Boots,14
+Vidala's Ambush,19,Vidala's Rig,lea,Leather Armor,14
+Vidala's Snare,20,Vidala's Rig,amu,Amulet,14
+Milabrega's Orb,21,Milabrega's Regalia,kit,Kite Shield,17
+Milabrega's Rod,22,Milabrega's Regalia,wsp,War Scepter,17
+Milabrega's Diadem,23,Milabrega's Regalia,crn,Crown,17
+Milabrega's Robe,24,Milabrega's Regalia,aar,Ancient Armor,17
+Cathan's Rule,25,Cathan's Traps,bst,Battle Staff,11
+Cathan's Mesh,26,Cathan's Traps,chn,Chain Mail,11
+Cathan's Visage,27,Cathan's Traps,msk,Mask,11
+Cathan's Sigil,28,Cathan's Traps,amu,Amulet,11
+Cathan's Seal,29,Cathan's Traps,rin,Ring,11
+Tancred's Crowbill,30,Tancred's Battlegear,mpi,Military Pick,20
+Tancred's Spine,31,Tancred's Battlegear,ful,Full Plate Mail,20
+Tancred's Hobnails,32,Tancred's Battlegear,lbt,Boots,20
+Tancred's Weird,33,Tancred's Battlegear,amu,Amulet,20
+Tancred's Skull,34,Tancred's Battlegear,bhm,Bone Helm,20
+Sigon's Gage,35,Sigon's Complete Steel,hgl,Gauntlets,6
+Sigon's Visor,36,Sigon's Complete Steel,ghm,Great Helm,6
+Sigon's Shelter,37,Sigon's Complete Steel,gth,Gothic Plate,6
+Sigon's Sabot,38,Sigon's Complete Steel,hbt,Greaves,6
+Sigon's Wrap,39,Sigon's Complete Steel,hbl,Plated Belt,6
+Sigon's Guard,40,Sigon's Complete Steel,tow,Tower Shield,6
+Infernal Cranium,41,Infernal Tools,cap,Cap,5
+Infernal Torch,42,Infernal Tools,gwn,Grim Wand,5
+Infernal Sign,43,Infernal Tools,tbl,Heavy Belt,5
+Berserker's Headgear,44,Berserker's Garb,hlm,Helm,3
+Berserker's Hauberk,45,Berserker's Garb,spl,Splint Mail,3
+Berserker's Hatchet,46,Berserker's Garb,2ax,Double Axe,3
+Death's Hand,47,Death's Disguise,lgl,Leather Gloves,6
+Death's Guard,48,Death's Disguise,lbl,Sash,6
+Death's Touch,49,Death's Disguise,wsd,War Sword,6
+Angelic Sickle,50,Angelical Raiment,sbr,Sabre,12
+Angelic Mantle,51,Angelical Raiment,rng,Ring Mail,12
+Angelic Halo,52,Angelical Raiment,rin,Ring,12
+Angelic Wings,53,Angelical Raiment,amu,Amulet,12
+Arctic Horn,54,Arctic Gear,swb,Short War Bow,2
+Arctic Furs,55,Arctic Gear,qui,Quilted Armor,2
+Arctic Binding,56,Arctic Gear,vbl,Light Belt,2
+Arctic Mitts,57,Arctic Gear,tgl,Light Gauntlets,2
+Arcanna's Sign,58,Arcanna's Tricks,amu,Amulet,15
+Arcanna's Deathwand,59,Arcanna's Tricks,wst,War Staff,15
+Arcanna's Head,60,Arcanna's Tricks,skp,Skull Cap,15
+Arcanna's Flesh,61,Arcanna's Tricks,ltp,Light Plate,15
+Expansion,,,,,
+Natalya's Totem,62,Natalya's Odium,xh9,Grim Helm,59
+Natalya's Mark,63,Natalya's Odium,7qr,Scissors Suwayyah,79
+Natalya's Shadow,64,Natalya's Odium,ucl,Loricated Mail,73
+Natalya's Soul,65,Natalya's Odium,xmb,Mesh Boots,25
+Aldur's Stony Gaze,66,Aldur's Watchtower,dr8,Hunter's Guise,36
+Aldur's Deception,67,Aldur's Watchtower,uul,Shadow Plate,76
+Aldur's Gauntlet,68,Aldur's Watchtower,9mt,Jagged Star,42
+Aldur's Advance,69,Aldur's Watchtower,xtb,Battle Boots,45
+Immortal King's Will,70,Immortal King,ba5,Avenger Guard,47
+Immortal King's Soul Cage,71,Immortal King,uar,Sacred Armor,76
+Immortal King's Detail,72,Immortal King,zhb,War Belt,29
+Immortal King's Forge,73,Immortal King,xhg,War Gauntlets,30
+Immortal King's Pillar,74,Immortal King,xhb,War Boots,31
+Immortal King's Stone Crusher,75,Immortal King,7m7,Ogre Maul,76
+Tal Rasha's Fire-Spun Cloth,76,Tal Rasha's Wrappings,zmb,Mesh Belt,53
+Tal Rasha's Adjudication,77,Tal Rasha's Wrappings,amu,Amulet,67
+Tal Rasha's Lidless Eye,78,Tal Rasha's Wrappings,oba,Swirling Crystal,65
+Tal Rasha's Howling Wind,79,Tal Rasha's Wrappings,uth,Lacquered Plate,71
+Tal Rasha's Horadric Crest,80,Tal Rasha's Wrappings,xsk,Death Mask,66
+Griswold's Valor,81,Griswold's Legacy,urn,Corona,69
+Griswold's Heart,82,Griswold's Legacy,xar,Ornate Plate,45
+Griswolds's Redemption,83,Griswold's Legacy,7ws,Caduceus,53
+Griswold's Honor,84,Griswold's Legacy,paf,Vortex Shield,68
+Trang-Oul's Guise,85,Trang-Oul's Avatar,uh9,Bone Visage,65
+Trang-Oul's Scales,86,Trang-Oul's Avatar,xul,Chaos Armor,49
+Trang-Oul's Wing,87,Trang-Oul's Avatar,ne9,Cantor Trophy,54
+Trang-Oul's Claws,88,Trang-Oul's Avatar,xmg,Heavy Bracers,45
+Trang-Oul's Girth,89,Trang-Oul's Avatar,utc,Troll Belt,47
+M'avina's True Sight,90,M'avina's Battle Hymn,ci3,Diadem,59
+M'avina's Embrace,91,M'avina's Battle Hymn,uld,Kraken Shell,70
+M'avina's Icy Clutch,92,M'avina's Battle Hymn,xtg,Battle Gauntlets,32
+M'avina's Tenet,93,M'avina's Battle Hymn,zvb,Sharkskin Belt,45
+M'avina's Caster,94,M'avina's Battle Hymn,amc,Grand Matron Bow,70
+Telling of Beads,95,The Disciple,amu,Amulet,30
+Laying of Hands,96,The Disciple,ulg,Bramble Mitts,63
+Rite of Passage,97,The Disciple,xlb,Demonhide Boots,29
+Spiritual Custodian,98,The Disciple,uui,Dusk Shroud,43
+Credendum,99,The Disciple,umc,Mithril Coil,65
+Dangoon's Teaching,100,Heaven's Brethren,7ma,Reinforced Mace,68
+Heaven's Taebaek,101,Heaven's Brethren,uts,Ward,81
+Haemosu's Adament,102,Heaven's Brethren,xrs,Cuirass,44
+Ondal's Almighty,103,Heaven's Brethren,uhm,Spired Helm,69
+Guillaume's Face,104,Orphan's Call,xhm,Winged Helm,34
+Wilhelm's Pride,105,Orphan's Call,ztb,Battle Belt,42
+Magnus' Skin,106,Orphan's Call,xvg,Sharkskin Gloves,37
+Wihtstan's Guard,107,Orphan's Call,xml,Round Shield,29
+Hwanin's Splendor,108,Hwanin's Majesty,xrn,Grand Crown,45
+Hwanin's Refuge,109,Hwanin's Majesty,xcl,Tigulated Mail,30
+Hwanin's Seal,110,Hwanin's Majesty,mbl,Belt,35
+Hwanin's Justice,111,Hwanin's Majesty,9vo,Bill,28
+Sazabi's Cobalt Redeemer,112,Sazabi's Grand Tribute,7ls,Cryptic Sword,73
+Sazabi's Ghost Liberator,113,Sazabi's Grand Tribute,upl,Balrog Skin,67
+Sazabi's Mental Sheath,114,Sazabi's Grand Tribute,xhl,Basinet,43
+Bul-Kathos' Sacred Charge,115,Bul-Kathos' Children,7gd,Colossus Blade,61
+Bul-Kathos' Tribal Guardian,116,Bul-Kathos' Children,7wd,Mythical Sword,54
+Cow King's Horns,117,Cow King's Leathers,xap,War Hat,25
+Cow King's Hide,118,Cow King's Leathers,stu,Studded Leather,18
+Cow King's Hoofs,119,Cow King's Leathers,vbt,Heavy Boots,13
+Naj's Puzzler,120,Naj's Ancient Set,6cs,Elder Staff,78
+Naj's Light Plate,121,Naj's Ancient Set,ult,Hellforge Plate,71
+Naj's Circlet,122,Naj's Ancient Set,ci0,Circlet,28
+McAuley's Paragon,123,McAuley's Folly,cap,Cap,25
+McAuley's Riprap,124,McAuley's Folly,vbt,Heavy Boots,20
+McAuley's Taboo,125,McAuley's Folly,vgl,Heavy Gloves,28
+McAuley's Superstition,126,McAuley's Folly,bwn,Bone Wand,25

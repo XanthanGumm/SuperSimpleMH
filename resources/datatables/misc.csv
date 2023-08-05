@@ -1,0 +1,153 @@
+﻿name,level,ShowLevel,levelreq,code,alternategfx
+Elixir,21,0,0,elx,elx
+Healing Potion,0,0,0,hpo,hpo
+Mana Potion,0,0,0,mpo,mpo
+Full Healing Potion,0,0,0,hpf,hpo
+Full Mana Potion,0,0,0,mpf,mpo
+Stamina Potion,0,0,0,vps,vps
+Antidote Potion,0,0,0,yps,yps
+Rejuvenation Potion,0,0,0,rvs,yps
+Full Rejuvenation Potion,0,0,0,rvl,ypl
+Thawing Potion,0,0,0,wms,yps
+Tome of Town Portal,0,0,0,tbk,bbk
+Tome of Identify,0,0,0,ibk,rbk
+Amulet,1,0,0,amu,amu
+Amulet of the Viper,15,0,0,vip,vip
+Ring,1,0,0,rin,rin
+Gold,0,0,0,gld,gld
+Scroll of Inifuss,0,0,0,bks,bks
+Key to the Cairn Stones,0,0,0,bkd,bkd
+Arrows,0,0,0,aqv,aqv
+Torch,0,0,0,tch,bsh
+Bolts,0,0,0,cqv,cqv
+Scroll of Town Portal,0,0,0,tsc,bsc
+Scroll of Identify,0,0,0,isc,rsc
+Heart,0,0,0,hrt,hrt
+Brain,0,0,0,brz,brz
+Jawbone,0,0,0,jaw,jaw
+Eye,0,0,0,eyz,eyz
+Horn,0,0,0,hrn,hrn
+Tail,0,0,0,tal,tal
+Flag,0,0,0,flg,flg
+Fang,0,0,0,fng,fng
+Quill,0,0,0,qll,qll
+Soul,0,0,0,sol,sol
+Scalp,0,0,0,scz,scz
+Spleen,0,0,0,spe,spe
+Key,0,0,0,key,key
+The Black Tower Key,0,0,0,luv,key
+Potion of Life,0,0,0,xyz,scr
+A Jade Figurine,0,0,0,j34,bks
+The Golden Bird,0,0,0,g34,bks
+Lam Esen's Tome,0,0,0,bbb,bbb
+Horadric Cube,0,0,0,box,rbk
+Horadric Scroll,0,0,0,tr1,grg
+Mephisto's Soulstone,0,0,0,mss,scr
+Book of Skill,0,0,0,ass,tbk
+Khalim's Eye,0,0,0,qey,eyz
+Khalim's Heart,0,0,0,qhr,hrt
+Khalim's Brain,0,0,0,qbr,brz
+Ear,0,0,0,ear,ear
+Chipped Amethyst,0,0,1,gcv,gcv
+Flawed Amethyst,0,0,5,gfv,gfv
+Amethyst,0,0,12,gsv,gsv
+Flawless Amethyst,0,0,15,gzv,gzv
+Perfect Amethyst,0,0,18,gpv,gpv
+Chipped Topaz,0,0,1,gcy,gcy
+Flawed Topaz,0,0,5,gfy,gfy
+Topaz,0,0,12,gsy,gsy
+Flawless Topaz,0,0,15,gly,gly
+Perfect Topaz,0,0,18,gpy,gpy
+Chipped Sapphire,0,0,1,gcb,gcb
+Flawed Sapphire,0,0,5,gfb,gfb
+Sapphire,0,0,12,gsb,gsb
+Flawless Sapphire,0,0,15,glb,glb
+Perfect Sapphire,0,0,18,gpb,gpb
+Chipped Emerald,0,0,1,gcg,gcg
+Flawed Emerald,0,0,5,gfg,gfg
+Emerald,0,0,12,gsg,gsg
+Flawless Emerald,0,0,15,glg,glg
+Perfect Emerald,0,0,18,gpg,gpg
+Chipped Ruby,0,0,1,gcr,gcr
+Flawed Ruby,0,0,5,gfr,gfr
+Ruby,0,0,12,gsr,gsr
+Flawless Ruby,0,0,15,glr,glr
+Perfect Ruby,0,0,18,gpr,gpr
+Chipped Diamond,0,0,1,gcw,gcw
+Flawed Diamond,0,0,5,gfw,gfw
+Diamond,0,0,12,gsw,gsw
+Flawless Diamond,0,0,15,glw,glw
+Perfect Diamond,0,0,18,gpw,gpw
+Minor Healing Potion,0,0,0,hp1,hp1
+Light Healing Potion,0,0,0,hp2,hp2
+Healing Potion,0,0,0,hp3,hp3
+Greater Healing Potion,0,0,0,hp4,hp4
+Super Healing Potion,0,0,0,hp5,hp5
+Minor Mana Potion,0,0,0,mp1,mp1
+Light Mana Potion,0,0,0,mp2,mp2
+Mana Potion,0,0,0,mp3,mp3
+Greater Mana Potion,0,0,0,mp4,mp4
+Super Mana Potion,0,0,0,mp5,mp5
+Chipped Skull,0,0,1,skc,skc
+Flawed Skull,0,0,5,skf,skf
+Skull,0,0,12,sku,sku
+Flawless Skull,0,0,15,skl,skl
+Perfect Skull,0,0,18,skz,skz
+Expansion,,,,,
+Herb,3,0,0,hrb,hrb
+Small Charm,28,0,0,cm1,rld
+Large Charm,14,0,0,cm2,rda
+Grand Charm,1,0,0,cm3,rgd
+Small Red Potion,0,0,0,rps,rps
+Large Red Potion,0,0,0,rpl,rpl
+Small Blue Potion,0,0,0,bps,bps
+Large Blue Potion,0,0,0,bpl,bpl
+El Rune,11,0,11,r01,r01
+Eld Rune,11,0,11,r02,r02
+Tir Rune,13,0,13,r03,r03
+Nef Rune,13,0,13,r04,r04
+Eth Rune,15,0,15,r05,r05
+Ith Rune,15,0,15,r06,r06
+Tal Rune,17,0,17,r07,r07
+Ral Rune,19,0,19,r08,r08
+Ort Rune,21,0,21,r09,r09
+Thul Rune,23,0,23,r10,r10
+Amn Rune,25,0,25,r11,r11
+Sol Rune,27,0,27,r12,r12
+Shael Rune,29,0,29,r13,r13
+Dol Rune,31,0,31,r14,r14
+Hel Rune,33,0,0,r15,r15
+Io Rune,35,0,35,r16,r16
+Lum Rune,37,0,37,r17,r17
+Ko Rune,39,0,39,r18,r18
+Fal Rune,41,0,41,r19,r19
+Lem Rune,43,0,43,r20,r20
+Pul Rune,45,0,45,r21,r21
+Um Rune,47,0,47,r22,r22
+Mal Rune,49,0,49,r23,r23
+Ist Rune,51,0,51,r24,r24
+Gul Rune,53,0,53,r25,r25
+Vex Rune,55,0,55,r26,r26
+Ohm Rune,57,0,57,r27,r27
+Lo Rune,59,0,59,r28,r28
+Sur Rune,61,0,61,r29,r29
+Ber Rune,63,0,63,r30,r30
+Jah Rune,65,0,65,r31,r31
+Cham Rune,67,0,67,r32,r32
+Zod Rune,69,0,69,r33,r33
+Jewel,1,0,0,jew,gpw
+Malah's Potion,0,0,0,ice,scr
+Scroll of Knowledge,0,0,0,0sc,rsc
+Scroll of Resistance,0,0,0,tr2,scr
+Key of Terror,0,0,0,pk1,key
+Key of Hate,0,0,0,pk2,key
+Key of Destruction,0,0,0,pk3,key
+Diablo's Horn,0,0,0,dhn,fng
+Baal's Eye,0,0,0,bey,eyz
+Mephisto's Brain,0,0,0,mbr,brz
+Token of Absolution,0,0,0,toa,toa
+Twisted Essence of Suffering,0,0,0,tes,fng
+Charged Essense of Hatred,0,0,0,ceh,eyz
+Burning Essence of Terror,0,0,0,bet,fng
+Festering Essence of Destruction,0,0,0,fed,brz
+Standard of Heroes,90,0,90,std,flg

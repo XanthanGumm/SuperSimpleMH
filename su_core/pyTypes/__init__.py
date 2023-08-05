@@ -11,13 +11,15 @@ from su_core.pyStructures import Room2 as StructRoom2
 from su_core.pyStructures import Level as StructLevel
 from su_core.pyStructures import StatsList as StructStatList
 from su_core.pyStructures import Stat as StructStat
+from su_core.pyStructures import ItemPath as StructItemPath
 from su_core.data import *
 
 
 class UnitAny:
 
-    def __init__(self, address):
+    def __init__(self, address, path_type="dynamic"):
         self._address = address
+        self._path_type = path_type
         self._struct = self.read_unit_struct()
         self._unit_id = self._struct.dwUnitId
         self._txt_file_no = self._struct.dwTxtFileNo
@@ -27,17 +29,20 @@ class UnitAny:
         self._stats_list_struct = None
 
     def update(self):
-        # self._struct = self.read_unit_struct()
-        # self._unit_id = self._struct.dwUnitId
-        # self._txt_file_no = self._struct.dwTxtFileNo
-        # self._next = self._struct.pListNext
         self._stats_list_struct = mem.read_struct(self._struct.pStatList, StructStatList)
-        self._path = Path(self._struct.pPath)
+
+        if self._path_type == "dynamic":
+            self._path = Path(self._struct.pPath)
+        elif self._path_type == "item":
+            self._path = ItemPath(self._struct.pPath)
+        elif self._path_type == "object":
+            pass
 
     def read_unit_struct(self) -> StructUnitAny:
         return mem.read_struct(self._address, StructUnitAny)
 
-    def read_stats(self, stat_vector):
+    @staticmethod
+    def read_stats(stat_vector):
         num_of_stats = stat_vector.dwlSize
         raw_stats = mem.read_bytes(stat_vector.pStats, num_of_stats * ct.sizeof(StructStat))
         stats_array = StructStat * num_of_stats
@@ -46,9 +51,9 @@ class UnitAny:
         stats = dict()
 
         for stat_struct in stats_array:
-            stat = Stat(stat_struct.wStatId)
+            stat = StatOriginal(stat_struct.wStatId)
             stat_layer = {stat_struct.wLayer: stat_struct.dwValue}
-            if stats.get(stat.name) is None:
+            if stat.name not in stats:
                 stats[stat.name] = []
             if stat_layer not in stats[stat.name]:
                 stats[stat.name].append(stat_layer)
@@ -165,6 +170,21 @@ class Path:
     @property
     def is_act_loaded(self):
         return self._is_level_loaded and self.position[0] > 1 and self.position[1] > 1
+
+
+class ItemPath:
+
+    def __init__(self, address):
+        self._address = address
+        self._struct = None
+        self.update()
+
+    def update(self):
+        self._struct = mem.read_struct(self._address, StructItemPath)
+
+    @property
+    def position(self):
+        return self._struct.xPos, self._struct.yPos
 
 
 class Room1:

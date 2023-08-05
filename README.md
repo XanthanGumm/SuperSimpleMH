@@ -24,7 +24,8 @@
 * drawing super uniques, uniques and champions
 * drawing merc and player minions
 * drawing hostile players and their life
-* hover over players to check their stats
+* hover over players to check their stats - deprecated in this release
+* display other players inventory
 
 ## Credits
 * [mapview](https://github.com/joffreybesos/d2r-mapview) @joffreybesos for rustdecrypt and many more.

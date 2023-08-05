@@ -1,0 +1,8 @@
+﻿class,ID,StrAllSkills,StrSkillTab1,StrSkillTab2,StrSkillTab3,StrClassOnly,skRangeMin,skRangeMax
+Amazon,0,ModStr3a,StrSklTabItem3,StrSklTabItem2,StrSklTabItem1,AmaOnly,6,35
+Sorceress,1,ModStr3d,StrSklTabItem15,StrSklTabItem14,StrSklTabItem13,SorOnly,36,65
+Necromancer,2,ModStr3c,StrSklTabItem8,StrSklTabItem7,StrSklTabItem9,NecOnly,66,95
+Paladin,3,ModStr3b,StrSklTabItem6,StrSklTabItem5,StrSklTabItem4,PalOnly,96,125
+Barbarian,4,ModStr3e,StrSklTabItem11,StrSklTabItem12,StrSklTabItem10,BarOnly,126,155
+Druid,5,ModStre8a,StrSklTabItem16,StrSklTabItem17,StrSklTabItem18,DruOnly,221,249
+Assassin,6,ModStre8b,StrSklTabItem19,StrSklTabItem20,StrSklTabItem21,AssOnly,250,280

@@ -10,6 +10,7 @@ class Roster:
         self._name = bytes(self._struct.name).rstrip(b"\x00")
         self._unit_id = self._struct.dwUnitId
         self._life_percent = self._struct.dwLifePercentage
+        self._player_level = self._struct.wPlayerLevel
         self._position = self._struct.dwPosX, self._struct.dwPosY
         self._next = self._struct.pNext
 
@@ -42,6 +43,10 @@ class Roster:
     @property
     def life_percent(self):
         return self._life_percent
+
+    @property
+    def player_level(self):
+        return self._player_level
 
     @property
     def name(self):

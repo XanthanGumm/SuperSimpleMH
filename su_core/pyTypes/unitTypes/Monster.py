@@ -1,7 +1,7 @@
 from su_core.pyTypes import UnitAny
 from su_core.pyStructures import MonsterData, MonsterTxt
 from su_core.pm import mem
-from su_core.data import PlrMode, MonsterTypeFlag, Npc, UselessNpc, Stat
+from su_core.data import PlrMode, MonsterTypeFlag, Npc, UselessNpc, StatOriginal
 
 
 class Monster(UnitAny):
@@ -30,32 +30,32 @@ class Monster(UnitAny):
             return False
 
         stats = self.read_stats(self._stats_list_struct.Stats)
-        if Stat.ColdResist.name in stats:
-            cold_res = next(iter(stats[Stat.ColdResist.name][-1].values()))
+        if StatOriginal.coldresist.name in stats:
+            cold_res = next(iter(stats[StatOriginal.coldresist.name][-1].values()))
             self._resists["cold"] = cold_res
             if cold_res >= 100:
                 self._immunities_colors.append("blue")
-        if Stat.FireResist.name in stats:
-            fire_res = next(iter(stats[Stat.FireResist.name][-1].values()))
+        if StatOriginal.fireresist.name in stats:
+            fire_res = next(iter(stats[StatOriginal.fireresist.name][-1].values()))
             self._resists["fire"] = fire_res
             if fire_res >= 100:
                 self._immunities_colors.append("red")
-        if Stat.LightningResist.name in stats:
-            light_res = next(iter(stats[Stat.LightningResist.name][-1].values()))
+        if StatOriginal.lightresist.name in stats:
+            light_res = next(iter(stats[StatOriginal.lightresist.name][-1].values()))
             self._resists["light"] = light_res
             if light_res >= 100:
                 self._immunities_colors.append("yellow")
-        if Stat.PoisonResist.name in stats:
-            poison_res = next(iter(stats[Stat.PoisonResist.name][-1].values()))
+        if StatOriginal.poisonresist.name in stats:
+            poison_res = next(iter(stats[StatOriginal.poisonresist.name][-1].values()))
             self._resists["poison"] = poison_res
             if poison_res >= 100:
                 self._immunities_colors.append("green")
-        if Stat.MagicResist.name in stats:
-            magic_res = next(iter(stats[Stat.MagicResist.name][-1].values()))
+        if StatOriginal.magicresist.name in stats:
+            magic_res = next(iter(stats[StatOriginal.magicresist.name][-1].values()))
             if magic_res >= 100:
                 self._immunities_colors.append("gold")
-        if Stat.DamageReduced.name in stats:
-            physical_res = next(iter(stats[Stat.DamageReduced.name][-1].values()))
+        if StatOriginal.damageresist.name in stats:
+            physical_res = next(iter(stats[StatOriginal.damageresist.name][-1].values()))
             if physical_res >= 100:
                 self._immunities_colors.append("saddlebrown")
 

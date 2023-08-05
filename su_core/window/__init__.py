@@ -5,13 +5,23 @@ import pathlib
 import win32gui
 import win32con
 import win32process
-import textwrap
+from su_core.window.Inventory import Inventory
 from su_core.utils import RPYClient
-from logger import manager
-from su_core.pyTypes.unitTypes import *
+from logger import traceback, manager
+from su_core.utils.exceptions import FailedReadInventory
 from su_core.window.drawings import pm_colors
-from su_core.window.drawings.shapes import *
-from su_core.math import *
+from su_core.math import CSharpVector2, CSharpMatrix3X2
+from su_core.window.drawings.shapes import Arrow, Cross, PlayerLabel, HostileLabel, TextBox, pm, math
+from su_core.pyTypes.unitTypes import (
+    obtain_player,
+    obtain_npcs,
+    obtain_hostiled_players,
+    obtain_hovered_player,
+    obtain_player_minions,
+    Menu
+)
+
+_logger = manager.get_logger(__file__)
 
 
 class Window:
@@ -201,9 +211,14 @@ class Canvas:
         self.su_label_posY = self._win.height * 0.05
         self.su_label_font_scale = self._win.width / (2 * 1280)
         self.hostile_labels_pos = CSharpVector2(self.su_label_posX, self.su_label_posY + 2 * self.su_label_font_scale)
+        self.textures = {"amulet": dict(), "arm": dict(), "armor": dict(), "helm": dict(), "belt": dict(), "boots": dict(), "gloves": dict(), "ring": dict()}
+
+        self._hover_player = None
+        self._player_inv_tooltip = dict()
 
         # init pymeow overlay
         pm.overlay_init()
+        self._inv_win = Inventory(self._win.width, self._win.height, self._win.start_pos_x, self._win.start_pos_y, int(self.su_label_font_scale * 30))
         fps = pm.get_monitor_refresh_rate()
         pm.set_fps(fps)
         pm.set_window_size(self._win.width, self._win.height)
@@ -211,13 +226,13 @@ class Canvas:
         pm.load_font(os.path.join(root, "fonts", "formal436bt-regular.otf"), 1)
 
     # TODO: use r_ctype instead of my function.
-
     def event_loop(self):
         # flags
-        pageup = False
+        pageup_key = False
+        insert_key = False
 
-        # tooltip
-        tooltip = None
+        # player_tooltip
+        player_tooltip = None
 
         while pm.overlay_loop():
             menu = Menu()
@@ -254,37 +269,57 @@ class Canvas:
                     pm.draw_fps(self.su_label_posX, self.su_label_posY)
 
                     # check for player hover
-                    if pm.key_pressed(33):
-                        self.wait_to_be_released(key=33)
-                        pageup = True
-                        hovered_player = obtain_hovered_player()
-                        if hovered_player is not None:
-                            tooltip = textwrap.dedent(f"""\
-                            {str(hovered_player.name, 'utf8')} Stats:
-                            FasterCastRate: {hovered_player.fcr}
-                            IncreaseAttackSpeed: {hovered_player.ias}
-                            FasterHitRecovery: {hovered_player.fhr}
-                            FasterRunWalk: {hovered_player.frw}
-                            ColdResist: {hovered_player.resists['cold']}
-                            FireResist: {hovered_player.resists["fire"]}
-                            LightResist: {hovered_player.resists["light"]}
-                            PoisonResist: {hovered_player.resists["poison"]}
-                            MagicResist: {hovered_player.resists["magic"]}
-                            PhysicalResist: {hovered_player.resists["physical"]}""")
+                    # TODO: fix bug when display default values when player_tooltip is None
+                    # if pm.key_pressed(33):
+                    #     self._wait_to_be_released(key=33)
+                    #     pageup_key = True
+                    #     hovered_player = obtain_hovered_player()
+                    #     if hovered_player is not None:
+                    #         player_tooltip = textwrap.dedent(f"""\
+                    #         {str(hovered_player.name, 'utf8')} Stats:
+                    #         FasterCastRate: {hovered_player.fcr}
+                    #         IncreaseAttackSpeed: {hovered_player.ias}
+                    #         FasterHitRecovery: {hovered_player.fhr}
+                    #         FasterRunWalk: {hovered_player.frw}
+                    #         ColdResist: {hovered_player.resists['cold']}
+                    #         FireResist: {hovered_player.resists["fire"]}
+                    #         LightResist: {hovered_player.resists["light"]}
+                    #         PoisonResist: {hovered_player.resists["poison"]}
+                    #         MagicResist: {hovered_player.resists["magic"]}
+                    #         PhysicalResist: {hovered_player.resists["physical"]}""")
+                    #     else:
+                    #         pageup_key = False
+                    #         player_tooltip = None
+                    #
+                    # if pageup_key and player_tooltip is not None:
+                    #     self._win.draw_player_stats(
+                    #         text=player_tooltip, font_size=int(self.su_label_font_scale * 30),
+                    #         text_color="white", back_color="onyx"
+                    #     )
+
+                    if pm.key_pressed(0x2d):
+                        self._wait_to_be_released(0x2d)
+                        insert_key = True
+                        hovered = obtain_hovered_player()
+                        if hovered is not None:
+                            self._inv_win.hover_player = hovered
+                            try:
+                                self._inv_win.create_tooltips()
+
+                            except FailedReadInventory:
+                                insert_key = False
                         else:
-                            pageup = False
-                            tooltip = None
+                            insert_key = False
 
-                    if pageup and tooltip is not None:
-                        self._win.draw_player_stats(
-                            text=tooltip, font_size=int(self.su_label_font_scale * 30),
-                            text_color="white", back_color="onyx"
-                        )
+                    if insert_key:
+                        self._inv_win.draw_inventory()
+                        self._inv_win.draw_item_tooltip()
 
-                    if not menu.is_open and not pageup:
+                    if not menu.is_open and not pageup_key:
                         texture_pos = self._win.world2map(player.path.position, origin, origin)
                         texture_pos.x = texture_pos.x - map_data["size"][1] * self._map_scale
-                        pm.draw_texture(level_texture, texture_pos.x, texture_pos.y, pm_colors["white"], 0, self._map_scale)
+                        pm.draw_texture(level_texture, texture_pos.x, texture_pos.y, pm_colors["white"], 0,
+                                        self._map_scale)
 
                         player_icon_pos = self._win.world2map(player.path.position, player.path.position, origin)
                         self._win.draw_cross(player_icon_pos, size=6, colors=["cyan"])
@@ -354,14 +389,12 @@ class Canvas:
             pm.end_drawing()
 
     @staticmethod
-    def wait_to_be_released(key: int, timeout=1):
+    def _wait_to_be_released(key: int, timeout=1):
         start = time.time()
         while time.time() - start <= timeout:
             if not pm.key_pressed(key):
                 break
             time.sleep(0.01)
-
-
 
 
 if __name__ == "__main__":

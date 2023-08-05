@@ -1,0 +1,409 @@
+index,*ID,lvl req,code,*ItemName
+The Gnasher,0,5,hax,Hand Axe
+Deathspade,1,9,axe,Axe
+Bladebone,2,15,2ax,Double Axe
+Mindrend,3,21,mpi,Military Pick
+Rakescar,4,27,wax,War Axe
+Fechmars Axe,5,8,lax,Large Axe
+Goreshovel,6,14,bax,Broad Axe
+The Chieftan,7,19,btx,Battle Axe
+Brainhew,8,25,gax,Great Axe
+The Humongous,9,29,gix,Giant Axe
+Iros Torch,10,5,wnd,Wand
+Maelstromwrath,11,14,ywn,Yew Wand
+Gravenspine,12,20,bwn,Bone Wand
+Umes Lament,13,28,gwn,Grim Wand
+Felloak,14,3,clb,Club
+Knell Striker,15,5,scp,Scepter
+Rusthandle,16,17,gsc,Grand Scepter
+Stormeye,17,23,wsp,War Scepter
+Stoutnail,18,5,spc,Spiked Club
+Crushflange,19,9,mac,Mace
+Bloodrise,20,15,mst,Morning Star
+The Generals Tan Do Li Ga,21,21,fla,Flail
+Ironstone,22,27,whm,War Hammer
+Bonesob,23,24,mau,Maul
+Steeldriver,24,29,gma,Great Maul
+Rixots Keen,25,2,ssd,Short Sword
+Blood Crescent,26,7,scm,Scimitar
+Krintizs Skewer,27,10,sbr,Saber
+Gleamscythe,28,13,flc,Falchion
+Azurewrath,29,13,crs,Crystal Sword
+Griswolds Edge,30,17,bsd,Broad Sword
+Hellplague,31,22,lsd,Long Sword
+Culwens Point,32,29,wsd,War Sword
+Shadowfang,33,12,2hs,2-Handed Sword
+Soulflay,34,19,clm,Claymore
+Kinemils Awl,35,23,gis,Giant Sword
+Blacktongue,36,26,bsw,Bastard Sword
+Ripsaw,37,26,flb,Flamberge
+The Patriarch,38,29,gsd,Great Sword
+Gull,39,4,dgr,Dagger
+The Diggler,40,11,dir,Dirk
+The Jade Tan Do,41,19,kri,Kris
+Irices Shard,42,25,bld,Blade
+The Dragon Chang,43,8,spr,Spear
+Razortine,44,12,tri,Trident
+Bloodthief,45,17,brn,Brandistock
+Lance of Yaggai,46,22,spt,Spetum
+The Tannr Gorerod,47,27,pik,Pike
+Dimoaks Hew,48,8,bar,Bardiche
+Steelgoad,49,14,vou,Voulge
+Soul Harvest,50,19,scy,Scythe
+The Battlebranch,51,25,pax,Poleaxe
+Woestave,52,28,hal,Halberd
+The Grim Reaper,53,29,wsc,War Scythe
+Bane Ash,54,5,sst,Short Staff
+Serpent Lord,55,9,lst,Long Staff
+Lazarus Spire,56,18,cst,Gnarled Staff
+The Salamander,57,21,bst,Battle Staff
+The Iron Jang Bong,58,28,wst,War Staff
+Pluckeye,59,7,sbw,Short Bow
+Witherstring,60,13,hbw,Hunter\92s Bow
+Rimeraven,61,15,lbw,Long Bow
+Piercerib,62,20,cbw,Composite Bow
+Pullspite,63,25,sbb,Short Battle Bow
+Wizendraw,64,26,lbb,Long Battle Bow
+Hellclap,65,27,swb,Short War Bow
+Blastbark,66,28,lwb,Long War Bow
+Leadcrow,67,9,lxb,Light Crossbow
+Ichorsting,68,18,mxb,Crossbow
+Hellcast,69,27,hxb,Heavy Crossbow
+Doomspittle,70,28,rxb,Repeating Crossbow
+War Bonnet,71,3,cap,Cap
+Tarnhelm,72,15,skp,Skull Cap
+Coif of Glory,73,14,hlm,Helm
+Duskdeep,74,17,fhl,Full Helm
+Wormskull,75,21,bhm,Bone Helm
+Howltusk,76,25,ghm,Great Helm
+Undead Crown,77,29,crn,Crown
+The Face of Horror,78,20,msk,Mask
+Greyform,79,7,qui,Quilted Armor
+Blinkbats Form,80,12,lea,Leather Armor
+The Centurion,81,14,hla,Hard Leather
+Twitchthroe,82,16,stu,Studded Leather
+Darkglow,83,14,rng,Ring Mail
+Hawkmail,84,15,scl,Scale Mail
+Sparking Mail,85,17,chn,Chain Mail
+Venomsward,86,20,brs,Breast Plate
+Iceblink,87,22,spl,Splint Mail
+Boneflesh,88,26,plt,Plate Mail
+Rockfleece,89,28,fld,Field Plate
+Rattlecage,90,29,gth,Gothic Plate
+Goldskin,91,28,ful,Full Plate Mail
+Victors Silk,92,28,aar,AncientArmor
+Heavenly Garb,93,29,ltp,Light Plate
+Pelta Lunata,94,2,buc,Buckler
+Umbral Disk,95,9,sml,Small Shield
+Stormguild,96,13,lrg,Large Shield
+Wall of the Eyeless,97,20,bsh,Bone Shield
+Swordback Hold,98,15,spk,Spiked Shield
+Steelclash,99,17,kit,Kite Shield
+Bverrit Keep,100,19,tow,Tower Shield
+The Ward,101,26,gts,Gothic Shield
+The Hand of Broc,102,5,lgl,Gloves
+Bloodfist,103,9,vgl,Heavy Gloves
+Chance Guards,104,15,mgl,Bracers
+Magefist,105,23,tgl,Light Gauntlets
+Frostburn,106,29,hgl,Gauntlets
+Hotspur,107,5,lbt,Leather Boots
+Gorefoot,108,9,vbt,Heavy Boots
+Treads of Cthon,109,15,mbt,Chain Boots
+Goblin Toe,110,22,tbt,Light Plate Boots
+Tearhaunch,111,29,hbt,Plate Boots
+Lenyms Cord,112,7,lbl,Sash
+Snakecord,113,12,vbl,Light Belt
+Nightsmoke,114,20,mbl,Belt
+Goldwrap,115,27,tbl,Heavy Belt
+Bladebuckle,116,29,hbl,Girdle
+Nokozan Relic,117,10,amu,Amulet
+The Eye of Etlich,118,15,amu,Amulet
+The Mahim-Oak Curio,119,25,amu,Amulet
+Nagelring,120,7,rin,Ring
+Manald Heal,121,15,rin,Ring
+The Stone of Jordan,122,29,rin,Ring
+Amulet of the Viper,123,0,vip,Amulet
+Staff of Kings,124,0,msf,Staff
+Horadric Staff,125,0,hst,Staff
+Hell Forge Hammer,126,0,hfh,Hammer
+KhalimFlail,127,0,qf1,Flail
+SuperKhalimFlail,128,0,qf2,Flail
+Expansion,,,,
+Coldkill,129,36,9ha,Hatchet
+Butcher's Pupil,130,39,9ax,Cleaver
+Islestrike,131,43,92a,Twin Axe
+Pompe's Wrath,132,45,9mp,Crowbill
+Guardian Naga,133,48,9wa,Naga
+Warlord's Trust,134,35,9la,Military Axe
+Spellsteel,135,39,9ba,Bearded Axe
+Stormrider,136,41,9bt,Tabar
+Boneslayer Blade,137,42,9ga,Gothic Axe
+The Minataur,138,45,9gi,Ancient Axe
+Suicide Branch,139,33,9wn,Burnt Wand
+Carin Shard,140,35,9yw,Petrified Wand
+Arm of King Leoric,141,36,9bw,Tomb Wand
+Blackhand Key,142,41,9gw,Grave Wand
+Dark Clan Crusher,143,34,9cl,Cudgel
+Zakarum's Hand,144,37,9sc,Rune Scepter
+The Fetid Sprinkler,145,38,9qs,Holy Water Sprinkler
+Hand of Blessed Light,146,42,9ws,Divine Scepter
+Fleshrender,147,38,9sp,Barbed Club
+Sureshrill Frost,148,39,9ma,Flanged Mace
+Moonfall,149,42,9mt,Jagged Star
+Baezil's Vortex,150,45,9fl,Knout
+Earthshaker,151,43,9wh,Battle Hammer
+Bloodtree Stump,152,48,9m9,War Club
+The Gavel of Pain,153,45,9gm,Martel de Fer
+Bloodletter,154,30,9ss,Gladius
+Coldsteel Eye,155,31,9sm,Cutlass
+Hexfire,156,33,9sb,Shamshir
+Blade of Ali Baba,157,35,9fc,Tulwar
+Ginther's Rift,158,37,9cr,Dimensional Blade
+Headstriker,159,39,9bs,Battle Sword
+Plague Bearer,160,41,9ls,Rune Sword
+The Atlantian,161,42,9wd,Ancient Sword
+Crainte Vomir,162,42,92h,Espadon
+Bing Sz Wang,163,43,9cm,Dacian Falx
+The Vile Husk,164,44,9gs,Tusk Sword
+Cloudcrack,165,45,9b9,Gothic Sword
+Todesfaelle Flamme,166,46,9fb,Zweihander
+Swordguard,167,48,9gd,Executioner Sword
+Spineripper,168,32,9dg,Poignard
+Heart Carver,169,36,9di,Rondel
+Blackbog's Sharp,170,38,9kr,Cinquedeas
+Stormspike,171,41,9bl,Stilleto
+The Impaler,172,31,9sr,War Spear
+Kelpie Snare,173,33,9tr,Fuscina
+Soulfeast Tine,174,35,9br,War Fork
+Hone Sundan,175,37,9st,Yari
+Spire of Honor,176,39,9p9,Lance
+The Meat Scraper,177,41,9b7,Lochaber Axe
+Blackleach Blade,178,42,9vo,Bill
+Athena's Wrath,179,42,9s8,Battle Scythe
+Pierre Tombale Couant,180,43,9pa,Partizan
+Husoldal Evo,181,44,9h9,Bec-de-Corbin
+Grim's Burning Dead,182,45,9wc,Grim Scythe
+Razorswitch,183,28,8ss,Jo Stalf
+Ribcracker,184,31,8ls,Quarterstaff
+Chromatic Ire,185,35,8cs,Cedar Staff
+Warpspear,186,39,8bs,Gothic Staff
+Skullcollector,187,41,8ws,Rune Staff
+Skystrike,188,28,8sb,Edge Bow
+Riphook,189,31,8hb,Razor Bow
+Kuko Shakaku,190,33,8lb,CedarBow
+Endlesshail,191,36,8cb,Double Bow
+Whichwild String,192,39,8s8,Short Siege Bow
+Cliffkiller,193,41,8l8,Long Siege Bow
+Magewrath,194,43,8sw,Rune Bow
+Godstrike Arch,195,46,8lw,Gothic Bow
+Langer Briser,196,32,8lx,Arbalest
+Pus Spiter,197,36,8mx,Siege Crossbow
+Buriza-Do Kyanon,198,41,8hx,Balista
+Demon Machine,199,49,8rx,Chu-Ko-Nu
+Armor,,,,
+Peasent Crown,201,28,xap,War Hat
+Rockstopper,202,31,xkp,Sallet
+Stealskull,203,35,xlm,Casque
+Darksight Helm,204,38,xhl,Basinet
+Valkiry Wing,205,44,xhm,Winged Helm
+Crown of Thieves,206,49,xrn,Grand Crown
+Blackhorn's Face,207,41,xsk,Death Mask
+Vampiregaze,208,41,xh9,Grim Helm
+The Spirit Shroud,209,28,xui,Ghost Armor
+Skin of the Vipermagi,210,29,xea,SerpentSkin Armor
+Skin of the Flayerd One,211,31,xla,Demonhide Armor
+Ironpelt,212,33,xtu,Tresllised Armor
+Spiritforge,213,35,xng,Linked Mail
+Crow Caw,214,37,xcl,Tigulated Mail
+Shaftstop,215,38,xhn,Mesh Armor
+Duriel's Shell,216,41,xrs,Cuirass
+Skullder's Ire,217,42,xpl,Russet Armor
+Guardian Angel,218,45,xlt,Templar Coat
+Toothrow,219,48,xld,Sharktooth Armor
+Atma's Wail,220,51,xth,Embossed Plate
+Black Hades,221,53,xul,Chaos Armor
+Corpsemourn,222,55,xar,Ornate Armor
+Que-Hegan's Wisdon,223,51,xtp,Mage Plate
+Visceratuant,224,28,xuc,Defender
+Mosers Blessed Circle,225,31,xml,Round Shield
+Stormchaser,226,35,xrg,Scutum
+Tiamat's Rebuke,227,38,xit,Dragon Shield
+Kerke's Sanctuary,228,44,xow,Pavise
+Radimant's Sphere,229,50,xts,Ancient Shield
+Lidless Wall,230,41,xsh,Grim Shield
+Lance Guard,231,35,xpk,Barbed Shield
+Venom Grip,232,29,xlg,Demonhide Gloves
+Gravepalm,233,32,xvg,Sharkskin Gloves
+Ghoulhide,234,36,xmg,Heavy Bracers
+Lavagout,235,42,xtg,Battle Guantlets
+Hellmouth,236,47,xhg,War Gauntlets
+Infernostride,237,29,xlb,Demonhide Boots
+Waterwalk,238,32,xvb,Sharkskin Boots
+Silkweave,239,36,xmb,Mesh Boots
+Wartraveler,240,42,xtb,Battle Boots
+Gorerider,241,47,xhb,War Boots
+String of Ears,242,29,zlb,Demonhide Sash
+Razortail,243,32,zvb,Sharkskin Belt
+Gloomstrap,244,36,zmb,Mesh Belt
+Snowclash,245,42,ztb,Battle Belt
+Thudergod's Vigor,246,47,zhb,War Belt
+Elite Uniques,,,,
+Harlequin Crest,248,62,uap,Shako
+Veil of Steel,249,73,uhm,Spired Helm
+The Gladiator's Bane,250,85,utu,Wire Fleece
+Arkaine's Valor,251,85,upl,Balrog Skin
+Blackoak Shield,252,61,uml,Luna
+Stormshield,253,73,uit,Monarch
+Hellslayer,254,66,7bt,Decapitator
+Messerschmidt's Reaver,255,70,7ga,Champion Axe
+Baranar's Star,256,65,7mt,Devil Star
+Schaefer's Hammer,257,79,7wh,Legendary Mallet
+The Cranium Basher,258,87,7gm,Thunder Maul
+Lightsabre,259,58,7cr,Phase Blade
+Doombringer,260,69,7b7,Champion Sword
+The Grandfather,261,81,7gd,Colossus Blade
+Wizardspike,262,61,7dg,Bone Knife
+Constricting Ring,263,95,rin,Ring
+Stormspire,264,70,7wc,Giant Thresher
+Eaglehorn,265,69,6l7,Crusader Bow
+Windforce,266,73,6lw,Hydra Bow
+Rings,,,,
+Bul Katho's Wedding Band,268,58,rin,Ring
+The Cat's Eye,269,50,amu,Amulet
+The Rising Sun,270,65,amu,Amulet
+Crescent Moon,271,50,amu,Amulet
+Mara's Kaleidoscope,272,67,amu,Amulet
+Atma's Scarab,273,60,amu,Amulet
+Dwarf Star,274,45,rin,Ring
+Raven Frost,275,45,rin,Ring
+Highlord's Wrath,276,65,amu,Amulet
+Saracen's Chance,277,47,amu,Amulet
+Class Specific,,,,
+Arreat's Face,279,42,baa,Slayer Guard
+Homunculus,280,42,nea,Heirophant Trophy
+Titan's Revenge,281,42,ama,Ceremonial Javelin
+Lycander's Aim,282,42,am7,Ceremonial Bow
+Lycander's Flank,283,42,am9,Ceremonial Pike
+The Oculus,284,42,oba,Swirling Crystal
+Herald of Zakarum,285,42,pa9,Aerin Shield
+Cutthroat1,286,42,9tw,Runic Talons
+Jalal's Mane,287,42,dra,Dream Spirit
+The Scalper,288,57,9ta,Francisca
+Bloodmoon,289,61,7sb,elegant blade
+Djinnslayer,290,65,7sm,ataghan
+Deathbit,291,44,9tk,battle dart
+Warshrike,292,75,7bk,winged knife
+Gutsiphon,293,71,6rx,demon crossbow
+Razoredge,294,67,7ha,tomahawk
+Gore Ripper,295,,,
+Demonlimb,296,63,7sp,tyrant club
+Steelshade,297,62,ulm,armet
+Tomb Reaver,298,84,7pa,cryptic axe
+Deaths's Web,299,66,7gw,unearthed wand
+Nature's Peace,300,69,rin,ring
+Azurewrath,301,85,7cr,phase blade
+Seraph's Hymn,302,65,amu,amulet
+Zakarum's Salvation,303,,,
+Fleshripper,304,68,7kr,fanged knife
+Odium,305,,,
+Horizon's Tornado,306,64,7fl,scourge
+Stone Crusher,307,68,7wh,legendary mallet
+Jadetalon,308,66,7wb,wrist sword
+Shadowdancer,309,71,uhb,myrmidon greaves
+Cerebus,310,63,drb,blood spirit
+Tyrael's Might,311,84,uar,sacred armor
+Souldrain,312,74,umg,vambraces
+Runemaster,313,72,72a,ettin axe
+Deathcleaver,314,70,7wa,berserker axe
+Executioner's Justice,315,75,7gi,glorious axe
+Stoneraven,316,64,amd,matriarchal spear
+Leviathan,317,65,uld,kraken shell
+Larzuk's Champion,318,,,
+Wisp,319,76,rin,ring
+Gargoyle's Bite,320,70,7ts,winged harpoon
+Lacerator,321,68,7b8,winged axe
+Mang Song's Lesson,322,82,6ws,archon staff
+Viperfork,323,71,7br,war fork
+Ethereal Edge,324,74,7ba,silver-edged axe
+Demonhorn's Edge,325,61,bad,destroyer helm
+The Reaper's Toll,326,75,7s8,thresher
+Spiritkeeper,327,67,drd,earth spirit
+Hellrack,328,76,6hx,colossus crossbow
+Alma Negra,329,77,pac,sacred rondache
+Darkforge Spawn,330,64,nef,bloodlord skull
+Widowmaker,331,65,6sw,ward bow
+Bloodraven's Charge,332,71,amb,matriarchal bow
+Ghostflame,333,62,7bl,legend spike
+Shadowkiller,334,78,7cs,battle cestus
+Gimmershred,335,70,7ta,flying axe
+Griffon's Eye,336,76,ci3,diadem
+Windhammer,337,68,7m7,ogre maul
+Thunderstroke,338,69,amf,matriarchal javelin
+Giantmaimer,339,,,
+Demon's Arch,340,68,7s7,balrog spear
+Boneflame,341,72,nee,succubae skull
+Steelpillar,342,69,7p7,war pike
+Nightwing's Veil,343,67,uhm,spired helm
+Crown of Ages,344,82,urn,corona
+Andariel's Visage,345,83,usk,demonhead
+Darkfear,346,,ulm,armet
+Dragonscale,347,80,pae,zakarum shield
+Steel Carapice,348,66,uul,shadow plate
+Medusa's Gaze,349,76,uow,aegis
+Ravenlore,350,74,dre,sky spirit
+Boneshade,351,79,7bw,lich wand
+Nethercrow,352,,,
+Flamebellow,353,71,7gs,balrog blade
+Fathom,354,73,obf,dimensional shard
+Wolfhowl,355,79,bac,fury visor
+Spirit Ward,356,68,uts,ward
+Kira's Guardian,357,77,ci2,tiara
+Ormus' Robes,358,75,uui,dusk shroud
+Gheed's Fortune,359,62,cm3,charm
+Stormlash,360,82,7fl,scourge
+Halaberd's Reign,361,77,bae,conqueror crown
+Warriv's Warder,362,,,
+Spike Thorn,363,70,upk,blade barrier
+Dracul's Grasp,364,76,uvg,vampirebone gloves
+Frostwind,365,70,7ls,cryptic sword
+Templar's Might,366,74,uar,sacred armor
+Eschuta's temper,367,72,obc,eldritch orb
+Firelizard's Talons,368,67,7lw,feral claws
+Sandstorm Trek,369,64,uvb,scarabshell boots
+Marrowwalk,370,66,umb,boneweave boots
+Heaven's Light,371,61,7sc,mighty scepter
+Merman's Speed,372,,,
+Arachnid Mesh,373,80,ulc,spiderweb sash
+Nosferatu's Coil,374,51,uvc,vampirefang belt
+Metalgrid,375,81,amu,amulet
+Verdugo's Hearty Cord,376,63,umc,mithril coil
+Sigurd's Staunch,377,,,
+Carrion Wind,378,60,rin,ring
+Giantskull,379,65,uh9,bone visage
+Ironward,380,60,7ws,caduceus
+Annihilus,381,70,cm1,charm
+Arioc's Needle,382,81,7sr,hyperion spear
+Cranebeak,383,63,7mp,war spike
+Nord's Tenderizer,384,68,7cl,truncheon
+Earthshifter,385,69,7gm,thunder maul
+Wraithflight,386,76,7gl,ghost glaive
+Bonehew,387,64,7o7,ogre axe
+Ondal's Wisdom,388,66,6cs,elder staff
+The Reedeemer,389,72,7sc,mighty scepter
+Headhunter's Glory,390,75,ush,troll nest
+Steelrend,391,70,uhg,ogre gauntlets
+Rainbow Facet,392,49,jew,jewel
+Rainbow Facet,393,49,jew,jewel
+Rainbow Facet,394,49,jew,jewel
+Rainbow Facet,395,49,jew,jewel
+Rainbow Facet,396,49,jew,jewel
+Rainbow Facet,397,49,jew,jewel
+Rainbow Facet,398,49,jew,jewel
+Rainbow Facet,399,49,jew,jewel
+Hellfire Torch,400,75,cm2,charm
+Cold Rupture,401,75,cm3,charm
+Flame Rift,402,75,cm3,charm
+Crack of the Heavens,403,75,cm3,charm
+Rotting Fissure,404,75,cm3,charm
+Bone Break,405,75,cm3,charm
+Black Cleft,406,75,cm3,charm

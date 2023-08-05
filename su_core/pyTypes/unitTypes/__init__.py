@@ -1,4 +1,3 @@
-import traceback
 from su_core.pm import mem
 from su_core.pyStructures import UnitHashTable, Minions, LastHoverUnit
 from su_core.pyTypes.unitTypes.Player import Player
@@ -7,7 +6,7 @@ from su_core.pyTypes.unitTypes.Roster import Roster
 from su_core.pyTypes.unitTypes.Menu import Menu, Menus
 from su_core.utils.exceptions import PlayerNotFound, InvalidPlayerUnit
 from su_core.data import TownNpc, MercNpc, PlayerMinionNpc
-from logger import manager
+from logger import manager, traceback
 _logger = manager.get_logger(__name__)
 
 

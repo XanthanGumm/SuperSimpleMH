@@ -1,0 +1,166 @@
+key,value
+ModStr1a,to Strength
+ModStr1b,to Dexterity
+ModStr1c,to Vitality
+ModStr1d,to Energy
+ModStr1e,to Mana
+ModStr1f,to Maximum Damage
+ModStr1g,to Minimum Damage
+ModStr1h,to Attack Rating
+ModStr1i,Defense
+ModStr1j,Fire Resist
+ModStr1k,Cold Resist
+ModStr1l,Lightning Resist
+ModStr1m,Magic Resist
+ModStr1n,Poison Resist
+ModStr1o,to Maximum Fire Damage
+ModStr1p,to Minimum Fire Damage
+ModStr1q,to Maximum Lightning Damage
+ModStr1r,to Minimum Lightning Damage
+ModStr1s,to Maximum Cold Damage
+ModStr1t,to Minimum Cold Damage
+ModStr1u,to Life
+ModStr1v,Attacker Takes Damage of
+ModStr1y,Knockback
+ModStr2g,Increase Maximum Life
+ModStr2h,Increase Maximum Mana
+ModStr2i,Increase Maximum Durability
+ModStr2j,Enhanced Maximum Damage
+ModStr2k,Enhanced Minimum Damage
+ModStr2l,Replenish Life
+ModStr2t,Magic Damage Reduced by
+ModStr2u,Damage Reduced by
+Modstr2v,Enhanced Defense
+ModStr2y,Mana stolen per hit
+ModStr2z,Life stolen per hit
+ModStr3a,to Amazon Skill Levels
+ModStr3f,to Light Radius
+ModStr3g,Increased Chance of Blocking
+ModStr3h,Requirements
+ModStr3i,to Fire Skills
+ModStr3j,Attacker Takes Lightning Damage of
+ModStr3k,to All Skills
+ModStr3l,Freezes target
+ModStr3m,Chance of Open Wounds
+ModStr3r,Poison Length Reduced by
+ModStr3u,Hit Causes Monster To Flee
+ModStr3v,Heal Stamina Plus
+ModStr3w,Damage Taken Goes To Mana
+ModStr3y,Ignore Target's Defense
+ModStr4a,Prevent Monster Heal
+ModStr4b,Half Freeze Duration
+ModStr4d,to Monster Defense Per Hit
+ModStr4e,Damage to Demons
+ModStr4f,Damage to Undead
+ModStr4g,Regenerate Mana
+ModStr4h,to Maximum Poison Damage
+ModStr4i,to Minimum Poison Damage
+ModStr4j,to Attack Rating against Demons
+ModStr4k,to Attack Rating against Undead
+ModStr4m,Increased Attack Speed
+ModStr4p,Faster Hit Recovery
+ModStr4s,Faster Run/Walk
+ModStr4v,Faster Cast Rate
+ModStr4y,Faster Block Rate
+ModStr5a,Throwable
+ModStr5b,Damage
+ModStr5c,Chance of Crushing Blow
+ModStr5d,Maximum Stamina
+ModStr5e,Kick Damage
+ModStr5f,to Mana after each Kill
+ModStr5g,Fire Absorb
+ModStr5h,Fire Absorb
+ModStr5i,Lightning Absorb
+ModStr5j,Lightning Absorb
+ModStr5k,Magic Absorb
+ModStr5l,Magic Absorb
+ModStr5m,Cold Absorb
+ModStr5n,Cold Absorb
+ModStr5o,Target Defense
+ModStr5q,Deadly Strike
+ModStr5u,to Maximum Fire Resist
+ModStr5v,to Maximum Cold Resist
+ModStr5w,to Maximum Lightning Resist
+ModStr5x,to Maximum Magic Resist
+ModStr5y,to Maximum Poison Resist
+ModStr5z,Cannot Be Frozen
+ModStr6a,Defense vs. Missile
+ModStr6b,Defense vs. Melee
+ModStr6c,Life after each Demon Kill
+ModStr6g,Piercing Attack
+ModStr6h,Fires Magic Arrows
+ModStr6i,Fires Explosive Arrows or Bolts
+ModStr6e,Slower Stamina Drain
+strModMagicDamage,+%d magic damage
+ModStre9o,Absorbs Fire Damage
+ModStre9p,Absorbs Cold Damage
+ModStre9q,Absorbs Lightning Damage
+ModitemAura,Level %d %s Aura When Equipped
+Moditem2ExpG,to Experience Gained
+ModitemHPaK,Life after each Kill
+ModitemRedVendP,Reduces all Vendor Prices
+ModitemSMRIP,Slain Monsters Rest in Peace
+ModitemAttratvsM,to Attack Rating versus
+Moditemdamvsm,to Damage versus
+Moditemreanimas,Reanimate as:
+Moditemenrescoldsk,to Enemy Cold Resistance
+Moditemenresfiresk,to Enemy Fire Resistance
+Moditemenresltngsk,to Enemy Lightning Resistance
+Moditemenrespoissk,to Enemy Poison Resistance
+ModitemdamFiresk,to Fire Skill Damage
+ModitemdamColdsk,to Cold Skill Damage
+ModitemdamLtngsk,to Lightning Skill Damage
+ModitemdamPoissk,to Poison Skill Damage
+Moditemskondeath,%d%% Chance to cast level %d %s when you Die
+ModitemskonLevel,%d%% Chance to cast level %d %s when you Level-Up
+ModitemskonKill,%d%% Chance to cast level %d %s when you Kill an Enemy
+ModStr1w,Extra Gold from Monsters
+ModStr1x,Better Chance of Getting Magic Items
+ModStr4c,Bonus to Attack Rating
+ModStr5r,Slows Target by
+ModStr6d,Hit Blinds Target
+ModStre9i,Increased Stack Size
+ModStre9s,Indestructible
+ModStre9t,Repairs %d durability per second
+ModStre9v,Replenishes quantity
+ModStre10d,(%d/%d Charges)
+ItemExpansiveChancX,%d%% Chance to cast level %d %s on attack
+ItemExpansiveChanc1,%d%% Chance to cast level %d %s on striking
+ItemExpansiveChanc2,%d%% Chance to cast level %d %s when struck
+ModStr2w,Drain Life
+ModItemSock,Socketed (%d)
+ModStr2uPercent,Physical Damage Recevied Reduced by
+Mod2StrAllRes,All Resistances
+strModFireDamageRange,Adds %d-%d fire damage
+strModColdDamageRange,Adds %d-%d cold damage
+strModLighDamageRange,Adds %d-%d lightning damage
+strModMagicDamageRange,Adds %d-%d magic damage
+strModPoisonDamageRange,Adds %d-%d poison damage over %d seconds
+Mod2StrAllAtt,to All Attributes
+StrSklTabItem1,+%d to Javelin and Spear Skills
+StrSklTabItem2,+%d to Passive and Magic Skills
+StrSklTabItem3,+%d to Bow and Crossbow Skills
+StrSklTabItem4,+%d to Defensive Auras
+StrSklTabItem5,+%d to Offensive Auras
+StrSklTabItem6,+%d to Combat Skills
+StrSklTabItem7,+%d to Poison and Bone Skills
+StrSklTabItem8,+%d to Curses
+StrSklTabItem10,+%d to Warcries
+StrSklTabItem11,+%d to Combat Skills
+StrSklTabItem12,+%d to Masteries
+StrSklTabItem13,+%d to Cold Skills
+StrSklTabItem14,+%d to Lightning Skills
+StrSklTabItem15,+%d to Fire Skills
+StrSklTabItem16,+%d to Summoning Skills
+StrSklTabItem17,+%d to Shape Shifting Skills
+StrSklTabItem18,+%d to Elemental Skills
+StrSklTabItem19,+%d to Traps
+StrSklTabItem20,+%d to Shadow Disciplines
+StrSklTabItem21,+%d to Martial Arts
+ModStr3d,to Sorceress Skill Levels
+ModStr3c,to Necromancer Skill Levels
+ModStr3b,to Paladin Skill Levels
+ModStr3e,to Barbarian Skill Levels
+ModStre8a,to Druid Skill Levels
+ModStre8b,to Assasin Skill Levels
+StrSklTabItem9,+%d to Summoning Skills

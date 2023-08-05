@@ -1,0 +1,63 @@
+[size]
+width = 1162
+height = 1507
+
+[helm]
+xmin = 489
+ymin = 193
+xmax = 671
+ymax = 375
+
+[amulet]
+xmin = 724
+ymin = 362
+xmax = 811
+ymax = 446
+
+[armor]
+xmin = 490
+ymin = 437
+xmax = 673
+ymax = 711
+
+[arm_left]
+xmin = 112
+ymin = 235
+xmax = 296
+ymax = 618
+
+[arm_right]
+xmin = 868
+ymin = 234
+xmax = 1052
+ymax = 617
+
+[ring_left]
+xmin = 351
+ymin = 776
+xmax = 438
+ymax = 860
+
+[ring_right]
+xmin = 725
+ymin = 776
+xmax = 812
+ymax = 860
+
+[belt]
+xmin = 489
+ymin = 775
+xmax = 676
+ymax = 862
+
+[boots]
+xmin = 868
+ymin = 674
+xmax = 1051
+ymax = 858
+
+[gloves]
+xmin = 115
+ymin = 676
+xmax = 298
+ymax = 860
