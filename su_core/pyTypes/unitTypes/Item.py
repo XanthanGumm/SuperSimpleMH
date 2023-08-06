@@ -30,7 +30,8 @@ class Item(UnitAny):
     _stats_ignore_list = ["durability", "maxdurability", "armorclass", "toblock", "item_throwable",
                           "item_kickdamage", "item_staminadrainpct", "item_regenstamina_perlevel",
                           "item_kick_damage_perlevel", "coldlength", "attackrate", "item_mindamage_percent",
-                          "item_maxdurability_percent", "item_levelreq", "quantity", "velocitypercent"]
+                          "item_maxdurability_percent", "item_levelreq", "quantity", "velocitypercent",
+                          "poisonlength", "poison_count"]
 
     def __init__(self, address):
         super(Item, self).__init__(address, path_type="item")
@@ -87,6 +88,8 @@ class Item(UnitAny):
 
         return added_basestats, added_stats
 
+    # TODO: add poison dmg
+    # TODO: fix magic absorb ,,,,,,,,,m
     def create_tooltip(self, player_level=0):
         item_code = items_codes[self._item_type.value]
         self._stats = self.read_stats(self._stats_list_struct.Stats)
@@ -287,11 +290,11 @@ class Item(UnitAny):
                 stat_tooltip += "\n"
 
             elif descfunc == 1:  # plus or minus
-
+                sign = "+" if value > 0 else ""
                 if descval == 2:
-                    stat_tooltip = f"{stat_tooltip} {value}\n"
+                    stat_tooltip = f"{stat_tooltip} {sign}{value}\n"
                 else:
-                    stat_tooltip = f"{value} {stat_tooltip}\n"
+                    stat_tooltip = f"{sign}{value} {stat_tooltip}\n"
 
             elif descfunc == 2:  # percent
                 if descval == 2:
@@ -415,7 +418,9 @@ class Item(UnitAny):
 
             elif descfunc == 31:  # elemental range damage
                 if name == "poisondam":
-                    pass
+                    # blame mapview for this hack
+                    psn_len = get_last_val(self._stats['poisonlength']) // 25
+                    stat_tooltip = f"+{int(value / (10.2 / psn_len))} poison damage over {psn_len} seconds"
                 else:
                     stat_tooltip = stat_tooltip.replace('%d-%d', f"{layer}-{value}") + "\n"
 

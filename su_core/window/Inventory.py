@@ -37,19 +37,22 @@ class Inventory:
         self._scale_w = img.size[0] / self._coords["size"]["width"]
         self._scale_h = img.size[1] / self._coords["size"]["height"]
         self._tooltips = dict()
-        self._item_textures = {"amulet": dict(), "arm": dict(), "armor": dict(), "helm": dict(),
-                               "belt": dict(), "boots": dict(), "gloves": dict(), "ring": dict()}
+        self._item_textures = {"amulet": dict(), "arm": dict(), "armor": dict(), "helm": dict(), "belt": dict(),
+                               "boots": dict(), "gloves": dict(), "ring": dict()}
+        self._switch_textures = []
+        self._is_on_switch = False
         self._hover_player = None
-        self._helm_unit_id = None
-        self._amulet_unit_id = None
-        self._armor_unit_id = None
-        self._arm_left_unit_id = None
-        self._arm_right_unit_id = None
-        self._ring_left_unit_id = None
-        self._ring_right_unit_id = None
-        self._belt_unit_id = None
-        self._boots_unit_id = None
-        self._gloves_unit_id = None
+
+        # load switch textures
+        for i in range(1, 3):
+            img_switch = Image.open(os.path.join(sprites_path, f"tab{i}.png"))
+            img_switch = img_switch.resize(
+                (int(self._scale_w * img_switch.size[0]), int(self._scale_h * img_switch.size[1]))
+            )
+            img_byte_arr = io.BytesIO()
+            img_switch.save(img_byte_arr, format="PNG")
+            img_bytes = img_byte_arr.getvalue()
+            self._switch_textures.append(pm.load_texture_bytes(".png", img_bytes))
 
         # load items textures
         for cur_root, _, files in os.walk(os.path.join(root, "resources", "sprites", "items")):
@@ -69,6 +72,7 @@ class Inventory:
     def create_tooltips(self):
         player_level = 0
         self._tooltips.clear()
+        self._is_on_switch = False
         if self._hover_player is not None:
             try:
                 self._hover_player.read_player_inventory()
@@ -121,17 +125,29 @@ class Inventory:
             if self._hover_player.inventory.gloves is not None:
                 self._tooltips["gloves"] = self._hover_player.inventory.gloves.create_tooltip(player_level)
 
+            if self._hover_player.inventory.switch_left is not None:
+                self._tooltips["switch_left"] = self._hover_player.inventory.switch_left.create_tooltip(player_level)
+
+            if self._hover_player.inventory.switch_right is not None:
+                self._tooltips["switch_right"] = self._hover_player.inventory.switch_right.create_tooltip(player_level)
+
+    # TODO: finish drawing switch, inventory
     def draw_inventory(self):
         pm.draw_texture(self._texture, 0, self._height_pad, pm_colors["white"], 0, 1)
+
+        switch_texture = self._switch_textures[0] if not self._is_on_switch else self._switch_textures[1]
+        pm.draw_texture(switch_texture, self._scale_w * self._coords["switch1"]["xmin"], self._scale_h * self._coords["switch1"]["ymin"] + self._height_pad, pm_colors["white"], 0, 1)
+        pm.draw_texture(switch_texture, self._scale_w * self._coords["switch2"]["xmin"], self._scale_h * self._coords["switch2"]["ymin"] + self._height_pad, pm_colors["white"], 0, 1)
+
         if "helm" in self._tooltips:
             self._draw_inventory_item("helm")
         if "amulet" in self._tooltips:
             self._draw_inventory_item("amulet")
         if "armor" in self._tooltips:
             self._draw_inventory_item("armor")
-        if "arm_left" in self._tooltips:
+        if "arm_left" in self._tooltips and not self._is_on_switch:
             self._draw_inventory_item("arm_left")
-        if "arm_right" in self._tooltips:
+        if "arm_right" in self._tooltips and not self._is_on_switch:
             self._draw_inventory_item("arm_right")
         if "ring_left" in self._tooltips:
             self._draw_inventory_item("ring_left")
@@ -143,6 +159,10 @@ class Inventory:
             self._draw_inventory_item("boots")
         if "gloves" in self._tooltips:
             self._draw_inventory_item("gloves")
+        if "switch_left" in self._tooltips and self._is_on_switch:
+            self._draw_inventory_item("switch_left")
+        if "switch_right" in self._tooltips and self._is_on_switch:
+            self._draw_inventory_item("switch_right")
 
     def draw_item_tooltip(self):
         if self._is_loc_hovered("helm") and self._hover_player.inventory.helm is not None:
@@ -156,10 +176,16 @@ class Inventory:
             self._draw_item_tooltip("armor", x + w // 2, y + h + self._height_pad)
         elif self._is_loc_hovered("arm_left") and self._hover_player.inventory.arm_left is not None:
             x, y, w, h = self._body_loc_position("arm_left")
-            self._draw_item_tooltip("arm_left", x + w // 2, y + h + self._height_pad)
-        elif self._is_loc_hovered("arm_right") and self._hover_player.inventory.arm_right is not None:
+            if self._is_on_switch and self._hover_player.inventory.switch_left is not None:
+                self._draw_item_tooltip("switch_left", x + w // 2, y + h + self._height_pad)
+            if not self._is_on_switch and self._hover_player.inventory.arm_left is not None:
+                self._draw_item_tooltip("arm_left", x + w // 2, y + h + self._height_pad)
+        elif self._is_loc_hovered("arm_right"):
             x, y, w, h = self._body_loc_position("arm_right")
-            self._draw_item_tooltip("arm_right", x + w // 2, y + h + self._height_pad)
+            if self._is_on_switch and self._hover_player.inventory.switch_right is not None:
+                self._draw_item_tooltip("switch_right", x + w // 2, y + h + self._height_pad)
+            if not self._is_on_switch and self._hover_player.inventory.arm_right:
+                self._draw_item_tooltip("arm_right", x + w // 2, y + h + self._height_pad)
         elif self._is_loc_hovered("ring_left") and self._hover_player.inventory.ring_left is not None:
             x, y, w, h = self._body_loc_position("ring_left")
             self._draw_item_tooltip("ring_left", x + w // 2, y + self._height_pad, direction="up")
@@ -178,7 +204,7 @@ class Inventory:
 
     def _draw_inventory_item(self, loc: str):
         try:
-            dir_name = loc.split("_")[0]
+            dir_name = loc.split("_")[0] if loc.split("_")[0] != "switch" else "arm"  # this is ugly
             unique_texture_name = self._hover_player.inventory[loc].unique_texture_name
 
             if unique_texture_name in self._item_textures[dir_name]:
@@ -314,3 +340,11 @@ class Inventory:
     @hover_player.setter
     def hover_player(self, player):
         self._hover_player = player
+
+    @property
+    def is_on_switch(self):
+        return self._is_on_switch
+
+    @is_on_switch.setter
+    def is_on_switch(self, value):
+        self._is_on_switch = value

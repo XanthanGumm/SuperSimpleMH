@@ -23,8 +23,8 @@ class Inventories:
         self._belt = None
         self._gloves = None
         self._boots = None
-        self._left_hand_switch = None
-        self._right_hand_switch = None
+        self._switch_left = None
+        self._switch_right = None
         self._grid = None
         self.update()
 
@@ -59,9 +59,9 @@ class Inventories:
         if equip_items_addresses[10]:
             self._gloves = Item(equip_items_addresses[10])
         if equip_items_addresses[11]:
-            self._left_hand_switch = Item(equip_items_addresses[11])
+            self._switch_left = Item(equip_items_addresses[11])
         if equip_items_addresses[12]:
-            self._right_hand_switch = Item(equip_items_addresses[12])
+            self._switch_right = Item(equip_items_addresses[12])
 
     @property
     def helm(self) -> Item:
@@ -104,12 +104,12 @@ class Inventories:
         return self._boots
 
     @property
-    def left_hand_switch(self) -> Item:
-        return self._left_hand_switch
+    def switch_left(self) -> Item:
+        return self._switch_left
 
     @property
-    def right_hand_switch(self) -> Item:
-        return self._right_hand_switch
+    def switch_right(self) -> Item:
+        return self._switch_right
 
     def __getitem__(self, key):
         if key == "helm":
@@ -132,10 +132,10 @@ class Inventories:
             return self._gloves
         elif key == "boots":
             return self._boots
-        elif key == "arm_left_w":
-            return self._left_hand_switch
-        elif key == "arm_right_w":
-            return self._right_hand_switch
+        elif key == "switch_left":
+            return self._switch_left
+        elif key == "switch_right":
+            return self._switch_right
         else:
             raise KeyError(f"Key: {key} is not a body location")
 

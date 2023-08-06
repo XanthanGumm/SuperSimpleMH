@@ -312,6 +312,9 @@ class Canvas:
                             insert_key = False
 
                     if insert_key:
+                        if pm.key_pressed(0x21):
+                            self._wait_to_be_released(0x21)
+                            self._inv_win.is_on_switch = not self._inv_win.is_on_switch
                         self._inv_win.draw_inventory()
                         self._inv_win.draw_item_tooltip()
 

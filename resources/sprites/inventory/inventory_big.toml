@@ -32,6 +32,18 @@ ymin = 234
 xmax = 1052
 ymax = 617
 
+[switch_left]
+xmin = 112
+ymin = 235
+xmax = 296
+ymax = 618
+
+[switch_right]
+xmin = 868
+ymin = 234
+xmax = 1052
+ymax = 617
+
 [ring_left]
 xmin = 351
 ymin = 776
@@ -61,3 +73,15 @@ xmin = 115
 ymin = 676
 xmax = 298
 ymax = 860
+
+[switch1]
+xmin = 101
+ymin = 181
+xmax = 312
+ymax = 217
+
+[switch2]
+xmin = 853
+ymin = 181
+xmax = 1064
+ymax = 217

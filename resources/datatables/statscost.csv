@@ -58,7 +58,7 @@ coldmaxdam,55,95,ModStr1s,ModStr1s,,19,,-1,-1
 coldlength,56,,,,,,,,
 poisonmindam,57,92,ModStr4i,ModStr4i,,19,,-1,-1
 poisonmaxdam,58,91,ModStr4h,ModStr4h,,19,,-1,-1
-poisonlength,59,,,,,,,,
+poisonlength,59,,,,,,,-1,-1
 lifedrainmindam,60,88,ModStr2z,ModStr2z,,2,,-1,-1
 lifedrainmaxdam,61,,,,,,,,
 manadrainmindam,62,89,ModStr2y,ModStr2y,,2,,-1,-1
@@ -142,13 +142,13 @@ item_healafterdemonkill,139,15,ModStr6c,ModStr6c,,19,,-1,-1
 item_extrablood,140,,,,,,,,
 item_deadlystrike,141,85,ModStr5q,ModStr5q,,4,,-1,-1
 item_absorbfire_percent,142,23,ModStr5g,ModStr5g,,2,2,-1,-1
-item_absorbfire,143,27,ModStr5h,ModStr5h,,19,,-1,-1
+item_absorbfire,143,27,ModStr5h,ModStr5h,,1,,-1,-1
 item_absorblight_percent,144,24,ModStr5i,ModStr5i,,2,2,-1,-1
-item_absorblight,145,29,ModStr5j,ModStr5j,,19,,-1,-1
+item_absorblight,145,29,ModStr5j,ModStr5j,,1,,-1,-1
 item_absorbmagic_percent,146,26,ModStr5k,ModStr5k,,2,2,-1,-1
-item_absorbmagic,147,33,ModStr5l,ModStr5l,,19,,-1,-1
+item_absorbmagic,147,33,ModStr5l,ModStr5l,,1,,-1,-1
 item_absorbcold_percent,148,25,ModStr5m,ModStr5m,,2,2,-1,-1
-item_absorbcold,149,31,ModStr5n,ModStr5n,,19,,-1,-1
+item_absorbcold,149,31,ModStr5n,ModStr5n,,1,,-1,-1
 item_slow,150,77,ModStr5r,ModStr5r,,2,2,-1,-1
 item_aura,151,159,ModitemAura,ModitemAura,,16,,-1,-1
 item_indesctructible,152,160,ModStre9s,ModStre9s,,0,,-1,-1
