@@ -38,7 +38,7 @@ class Inventory:
         self._scale_h = img.size[1] / self._coords["size"]["height"]
         self._tooltips = dict()
         self._item_textures = {"amulet": dict(), "arm": dict(), "armor": dict(), "helm": dict(), "belt": dict(),
-                               "boots": dict(), "gloves": dict(), "ring": dict()}
+                               "boots": dict(), "gloves": dict(), "ring": dict(), "charms": dict()}
         self._switch_textures = []
         self._is_on_switch = False
         self._hover_player = None
@@ -125,11 +125,15 @@ class Inventory:
             if self._hover_player.inventory.gloves is not None:
                 self._tooltips["gloves"] = self._hover_player.inventory.gloves.create_tooltip(player_level)
 
-            if self._hover_player.inventory.switch_left is not None:
-                self._tooltips["switch_left"] = self._hover_player.inventory.switch_left.create_tooltip(player_level)
+            if self._hover_player.inventory.arm_switch_left is not None:
+                self._tooltips["arm_switch_left"] = self._hover_player.inventory.arm_switch_left.create_tooltip(
+                    player_level
+                )
 
-            if self._hover_player.inventory.switch_right is not None:
-                self._tooltips["switch_right"] = self._hover_player.inventory.switch_right.create_tooltip(player_level)
+            if self._hover_player.inventory.arm_switch_right is not None:
+                self._tooltips["arm_switch_right"] = self._hover_player.inventory.arm_switch_right.create_tooltip(
+                    player_level
+                )
 
     # TODO: finish drawing switch, inventory
     def draw_inventory(self):
@@ -159,10 +163,10 @@ class Inventory:
             self._draw_inventory_item("boots")
         if "gloves" in self._tooltips:
             self._draw_inventory_item("gloves")
-        if "switch_left" in self._tooltips and self._is_on_switch:
-            self._draw_inventory_item("switch_left")
-        if "switch_right" in self._tooltips and self._is_on_switch:
-            self._draw_inventory_item("switch_right")
+        if "arm_switch_left" in self._tooltips and self._is_on_switch:
+            self._draw_inventory_item("arm_switch_left")
+        if "arm_switch_right" in self._tooltips and self._is_on_switch:
+            self._draw_inventory_item("arm_switch_right")
 
     def draw_item_tooltip(self):
         if self._is_loc_hovered("helm") and self._hover_player.inventory.helm is not None:
@@ -176,14 +180,14 @@ class Inventory:
             self._draw_item_tooltip("armor", x + w // 2, y + h + self._height_pad)
         elif self._is_loc_hovered("arm_left") and self._hover_player.inventory.arm_left is not None:
             x, y, w, h = self._body_loc_position("arm_left")
-            if self._is_on_switch and self._hover_player.inventory.switch_left is not None:
-                self._draw_item_tooltip("switch_left", x + w // 2, y + h + self._height_pad)
+            if self._is_on_switch and self._hover_player.inventory.arm_switch_left is not None:
+                self._draw_item_tooltip("arm_switch_left", x + w // 2, y + h + self._height_pad)
             if not self._is_on_switch and self._hover_player.inventory.arm_left is not None:
                 self._draw_item_tooltip("arm_left", x + w // 2, y + h + self._height_pad)
         elif self._is_loc_hovered("arm_right"):
             x, y, w, h = self._body_loc_position("arm_right")
-            if self._is_on_switch and self._hover_player.inventory.switch_right is not None:
-                self._draw_item_tooltip("switch_right", x + w // 2, y + h + self._height_pad)
+            if self._is_on_switch and self._hover_player.inventory.arm_switch_right is not None:
+                self._draw_item_tooltip("arm_switch_right", x + w // 2, y + h + self._height_pad)
             if not self._is_on_switch and self._hover_player.inventory.arm_right:
                 self._draw_item_tooltip("arm_right", x + w // 2, y + h + self._height_pad)
         elif self._is_loc_hovered("ring_left") and self._hover_player.inventory.ring_left is not None:
@@ -204,7 +208,7 @@ class Inventory:
 
     def _draw_inventory_item(self, loc: str):
         try:
-            dir_name = loc.split("_")[0] if loc.split("_")[0] != "switch" else "arm"  # this is ugly
+            dir_name = loc.split("_")[0]
             unique_texture_name = self._hover_player.inventory[loc].unique_texture_name
 
             if unique_texture_name in self._item_textures[dir_name]:

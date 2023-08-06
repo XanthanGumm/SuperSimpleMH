@@ -1536,4 +1536,7 @@ item_texture_name.update(item_texture_name.fromkeys([GameItem.Circlet], "circlet
 item_texture_name.update(item_texture_name.fromkeys([GameItem.Coronet], "coronet"))
 item_texture_name.update(item_texture_name.fromkeys([GameItem.Diadem], "diadem"))
 item_texture_name.update(item_texture_name.fromkeys([GameItem.Tiara], "tiara"))
+item_texture_name.update(item_texture_name.fromkeys([GameItem.GrandCharm], "grand_charm"))
+item_texture_name.update(item_texture_name.fromkeys([GameItem.LargeCharm], "large_charm"))
+item_texture_name.update(item_texture_name.fromkeys([GameItem.SmallCharm], "small_charm"))
 

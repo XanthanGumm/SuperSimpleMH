@@ -53,6 +53,10 @@ class Item(UnitAny):
         self._is_ethereal = self._item_data.ItemFlags & ItemFlag.IFLAG_ETHEREAL.value == ItemFlag.IFLAG_ETHEREAL.value
         self._item_quality = ItemQuality(self._item_data.ItemQuality)
         self._texture_name = item_texture_name[self._item_type]
+        if self._item_type in [GameItem.GrandCharm, GameItem.LargeCharm,
+                               GameItem.SmallCharm, GameItem.Ring, GameItem.Amulet]:  # means that item has skin
+            self._texture_name += str(self._item_data.wSkinId)
+
         if self._item_quality == ItemQuality.UNIQUE:
             item_name = uniques.loc[self._item_data.dwUniqueOrSetId, "index"]
             self._unique_texture_name = item_name.replace(" ", "_").replace("'", "").lower()
@@ -88,8 +92,6 @@ class Item(UnitAny):
 
         return added_basestats, added_stats
 
-    # TODO: add poison dmg
-    # TODO: fix magic absorb ,,,,,,,,,m
     def create_tooltip(self, player_level=0):
         item_code = items_codes[self._item_type.value]
         self._stats = self.read_stats(self._stats_list_struct.Stats)

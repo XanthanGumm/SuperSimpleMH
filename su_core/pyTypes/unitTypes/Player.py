@@ -95,6 +95,7 @@ class Player(UnitAny):
     def read_player_inventory(self):
         self._inventory = Inventories(self._struct.pInventory)
         self._inventory.read_equip_items()
+        self._inventory.read_grid_charms()
 
     @property
     def act(self):

@@ -23,9 +23,9 @@ class Inventories:
         self._belt = None
         self._gloves = None
         self._boots = None
-        self._switch_left = None
-        self._switch_right = None
-        self._grid = None
+        self._arm_switch_left = None
+        self._arm_switch_right = None
+        self._grid: list[list[Item | None]] = [[None] * 10 for _ in range(4)]
         self.update()
 
     def update(self):
@@ -36,32 +36,43 @@ class Inventories:
         self._sig = self._struct.dwSignature
 
     def read_equip_items(self):
-        raw_address = mem.read_bytes(self._struct_inventories.pEquipList, 13 * 8)
-        equip_items_addresses = (ct.c_void_p * 13).from_buffer_copy(raw_address)
-        if equip_items_addresses[1]:
-            self._helm = Item(equip_items_addresses[1])
-        if equip_items_addresses[2]:
-            self._amulet = Item(equip_items_addresses[2])
-        if equip_items_addresses[3]:
-            self._armor = Item(equip_items_addresses[3])
-        if equip_items_addresses[4]:
-            self._arm_left = Item(equip_items_addresses[4])
-        if equip_items_addresses[5]:
-            self._arm_right = Item(equip_items_addresses[5])
-        if equip_items_addresses[6]:
-            self._ring_left = Item(equip_items_addresses[6])
-        if equip_items_addresses[7]:
-            self._ring_right = Item(equip_items_addresses[7])
-        if equip_items_addresses[8]:
-            self._belt = Item(equip_items_addresses[8])
-        if equip_items_addresses[9]:
-            self._boots = Item(equip_items_addresses[9])
-        if equip_items_addresses[10]:
-            self._gloves = Item(equip_items_addresses[10])
-        if equip_items_addresses[11]:
-            self._switch_left = Item(equip_items_addresses[11])
-        if equip_items_addresses[12]:
-            self._switch_right = Item(equip_items_addresses[12])
+        body_raw_ptrs = mem.read_bytes(self._struct_inventories.pEquipList, 13 * 8)
+        equip_items_arr = (ct.c_void_p * 13).from_buffer_copy(body_raw_ptrs)
+        if equip_items_arr[1]:
+            self._helm = Item(equip_items_arr[1])
+        if equip_items_arr[2]:
+            self._amulet = Item(equip_items_arr[2])
+        if equip_items_arr[3]:
+            self._armor = Item(equip_items_arr[3])
+        if equip_items_arr[4]:
+            self._arm_left = Item(equip_items_arr[4])
+        if equip_items_arr[5]:
+            self._arm_right = Item(equip_items_arr[5])
+        if equip_items_arr[6]:
+            self._ring_left = Item(equip_items_arr[6])
+        if equip_items_arr[7]:
+            self._ring_right = Item(equip_items_arr[7])
+        if equip_items_arr[8]:
+            self._belt = Item(equip_items_arr[8])
+        if equip_items_arr[9]:
+            self._boots = Item(equip_items_arr[9])
+        if equip_items_arr[10]:
+            self._gloves = Item(equip_items_arr[10])
+        if equip_items_arr[11]:
+            self._arm_switch_left = Item(equip_items_arr[11])
+        if equip_items_arr[12]:
+            self._arm_switch_right = Item(equip_items_arr[12])
+
+    def read_grid_charms(self):
+        r_l = len(self._grid[0])  # grid row length - number of nodes in a raw
+        c_l = len(self._grid)  # grid col length - number of nodes in a column
+        grid_raw_ptrs = mem.read_bytes(self._struct_inventories.pInventoryList, 40 * 8)
+        grid_ptrs = (ct.c_void_p * 40).from_buffer_copy(grid_raw_ptrs)
+        for i in range(40):
+            if grid_ptrs[i]:
+                g_r = i // r_l  # grid raw in 2d array
+                g_c = i % r_l  # grid col in 2d array
+                self._grid[g_r][g_c] = Item(grid_ptrs[i])
 
     @property
     def helm(self) -> Item:
@@ -104,12 +115,16 @@ class Inventories:
         return self._boots
 
     @property
-    def switch_left(self) -> Item:
-        return self._switch_left
+    def arm_switch_left(self) -> Item:
+        return self._arm_switch_left
 
     @property
-    def switch_right(self) -> Item:
-        return self._switch_right
+    def arm_switch_right(self) -> Item:
+        return self._arm_switch_right
+
+    @property
+    def inv_grid(self) -> list[list[Item | None]]:
+        return self._grid
 
     def __getitem__(self, key):
         if key == "helm":
@@ -132,10 +147,10 @@ class Inventories:
             return self._gloves
         elif key == "boots":
             return self._boots
-        elif key == "switch_left":
-            return self._switch_left
-        elif key == "switch_right":
-            return self._switch_right
+        elif key == "_arm_switch_left":
+            return self._arm_switch_left
+        elif key == "arm_switch_right":
+            return self._arm_switch_right
         else:
             raise KeyError(f"Key: {key} is not a body location")
 

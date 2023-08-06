@@ -32,13 +32,13 @@ ymin = 234
 xmax = 1052
 ymax = 617
 
-[switch_left]
+[arm_switch_left]
 xmin = 112
 ymin = 235
 xmax = 296
 ymax = 618
 
-[switch_right]
+[arm_switch_right]
 xmin = 868
 ymin = 234
 xmax = 1052

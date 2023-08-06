@@ -292,6 +292,9 @@ ItemData._fields_ = [
     ("MagicSuffix", WORD * 3),  # 0x4E
     ("bBodyLoc", BYTE),  # 0x54
     ("bInvPage", BYTE),  # 0x55
+    ("_6", WORD * 4),  # 0x56
+    ("wSkinId", WORD),  # 0x5E
+
 ]
 
 # ItemTxt._fields_ = [
@@ -465,5 +468,5 @@ LastHoverUnit._fields_ = [
 ]
 
 if __name__ == "__main__":
-    for field in StatsList._fields_:
-        print(field[0], hex(getattr(StatsList, field[0]).offset))
+    for field in ItemData._fields_:
+        print(field[0], hex(getattr(ItemData, field[0]).offset))
