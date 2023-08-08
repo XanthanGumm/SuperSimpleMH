@@ -31,7 +31,7 @@ class Item(UnitAny):
                           "item_kickdamage", "item_staminadrainpct", "item_regenstamina_perlevel",
                           "item_kick_damage_perlevel", "coldlength", "attackrate", "item_mindamage_percent",
                           "item_maxdurability_percent", "item_levelreq", "quantity", "velocitypercent",
-                          "poisonlength", "poison_count"]
+                          "poisonlength", "poison_count", "item_throw_mindamage", "item_throw_maxdamage"]
 
     def __init__(self, address):
         super(Item, self).__init__(address, path_type="item")

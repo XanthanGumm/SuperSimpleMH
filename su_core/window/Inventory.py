@@ -211,7 +211,7 @@ class Inventory:
         elif self._is_loc_hovered("armor") and self._hover_player.inventory.armor is not None:
             x, y, w, h = self._inv_loc_position("armor")
             self._draw_item_tooltip("armor", x + w // 2, y + h + self._height_pad)
-        elif self._is_loc_hovered("arm_left") and self._hover_player.inventory.arm_left is not None:
+        elif self._is_loc_hovered("arm_left"):
             x, y, w, h = self._inv_loc_position("arm_left")
             if self._is_on_switch and self._hover_player.inventory.arm_switch_left is not None:
                 self._draw_item_tooltip("arm_switch_left", x + w // 2, y + h + self._height_pad)
