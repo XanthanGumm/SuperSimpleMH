@@ -193,8 +193,9 @@ class Inventory:
 
         for i in range(10):
             for j in range(4):
-                if f"charms_{(j, i)}" in self._tooltips:
-                    self._draw_inv_item(f"charms_{(j, i)}")
+                item_key = f"charms_{(j, i)}"
+                if item_key in self._tooltips:
+                    self._draw_inv_item(item_key)
 
     def draw_item_tooltip(self):
         if self._is_loc_hovered("helm") and self._hover_player.inventory.helm is not None:
@@ -277,7 +278,7 @@ class Inventory:
         text_box_width = max(e["x"] for e in tooltip_lens)
         text_box_height = sum(self._font_size for m in tooltip_lens if m["x"] > 0)
 
-        # toolip[0] = item_type --> tooltip[0]["x"] always greater than 0
+        # toolip[0] = item_name --> tooltip[0]["x"] always greater than 0
         tooltip_pads = [((text_box_width - tooltip_lens[0]["x"]) // 2, 0)]
         for i in range(1, len(tooltip_lens)):
             if tooltip_lens[i]["x"] > 0:
