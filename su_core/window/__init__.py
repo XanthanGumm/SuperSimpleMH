@@ -318,7 +318,7 @@ class Canvas:
                         self._inv_win.draw_inventory()
                         self._inv_win.draw_item_tooltip()
 
-                    if not menu.is_open and not pageup_key:
+                    if not menu.is_open and not pageup_key and not insert_key:
                         texture_pos = self._win.world2map(player.path.position, origin, origin)
                         texture_pos.x = texture_pos.x - map_data["size"][1] * self._map_scale
                         pm.draw_texture(level_texture, texture_pos.x, texture_pos.y, pm_colors["white"], 0,

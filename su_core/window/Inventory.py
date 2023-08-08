@@ -41,6 +41,10 @@ class Inventory:
         self._item_textures = {"amulet": dict(), "arm": dict(), "armor": dict(), "helm": dict(), "belt": dict(),
                                "boots": dict(), "gloves": dict(), "ring": dict(), "charms": dict()}
         self._switch_textures = []
+        self._switch1_x = self._scale_w * self._coords["switch1"]["xmin"]
+        self._switch1_y = self._scale_h * self._coords["switch1"]["ymin"] + self._height_pad
+        self._switch2_x = self._scale_w * self._coords["switch2"]["xmin"]
+        self._switch2_y = self._scale_h * self._coords["switch2"]["ymin"] + self._height_pad
         self._is_on_switch = False
         self._hover_player = None
 
@@ -163,8 +167,8 @@ class Inventory:
         pm.draw_texture(self._texture, 0, self._height_pad, pm_colors["white"], 0, 1)
 
         switch_texture = self._switch_textures[0] if not self._is_on_switch else self._switch_textures[1]
-        pm.draw_texture(switch_texture, self._scale_w * self._coords["switch1"]["xmin"], self._scale_h * self._coords["switch1"]["ymin"] + self._height_pad, pm_colors["white"], 0, 1)
-        pm.draw_texture(switch_texture, self._scale_w * self._coords["switch2"]["xmin"], self._scale_h * self._coords["switch2"]["ymin"] + self._height_pad, pm_colors["white"], 0, 1)
+        pm.draw_texture(switch_texture, self._switch1_x, self._switch1_y, pm_colors["white"], 0, 1)
+        pm.draw_texture(switch_texture, self._switch2_x, self._switch2_y, pm_colors["white"], 0, 1)
 
         if "helm" in self._tooltips:
             self._draw_inv_item("helm")

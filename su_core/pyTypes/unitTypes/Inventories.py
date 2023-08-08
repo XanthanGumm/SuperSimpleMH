@@ -148,7 +148,7 @@ class Inventories:
             return self._gloves
         elif key == "boots":
             return self._boots
-        elif key == "_arm_switch_left":
+        elif key == "arm_switch_left":
             return self._arm_switch_left
         elif key == "arm_switch_right":
             return self._arm_switch_right
@@ -156,7 +156,7 @@ class Inventories:
             i, j = ast.literal_eval(key.split("_")[1])
             return self._grid[i][j]
         else:
-            raise KeyError(f"Key: of type: {type(key)} is not supported")
+            raise KeyError(f"Key: {key} of type: {type(key)} is not supported")
 
 
 
