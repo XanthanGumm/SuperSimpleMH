@@ -25,7 +25,7 @@
 * drawing merc and player minions
 * drawing hostile players and their life
 * hover over players to check their stats - deprecated in this release
-* display other players inventory
+* display other players inventory - (press pageup button for view switch items)
 
 ## Credits
 * [mapview](https://github.com/joffreybesos/d2r-mapview) @joffreybesos for rustdecrypt and many more.

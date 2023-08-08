@@ -85,3 +85,9 @@ xmin = 853
 ymin = 181
 xmax = 1064
 ymax = 217
+
+[topleft_cell]
+xmin = 93
+ymin = 897
+xmax = 191
+ymax = 995

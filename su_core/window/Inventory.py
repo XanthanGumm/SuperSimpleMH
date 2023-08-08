@@ -1,6 +1,7 @@
 import os
 import io
 import tomllib
+import math
 import pyMeow as pm
 from PIL import Image
 from logger import manager, traceback
@@ -61,7 +62,8 @@ class Inventory:
                 item_name = os.path.splitext(file)[0]
                 item_img = Image.open(os.path.join(cur_root, file))
                 item_img = item_img.resize(
-                    (int(item_img.size[0] * self._scale_w), int(item_img.size[1] * self._scale_h)))
+                    (math.ceil(item_img.size[0] * self._scale_w), math.ceil(item_img.size[1] * self._scale_h))
+                )
                 img_byte_arr = io.BytesIO()
                 item_img.save(img_byte_arr, format="PNG")
                 item_img = img_byte_arr.getvalue()
@@ -135,7 +137,28 @@ class Inventory:
                     player_level
                 )
 
-    # TODO: finish drawing switch, inventory
+            x, y, x2, y2 = self._coords["topleft_cell"].values()
+            w, h = x2 - x, y2 - y
+            item_size = 1
+
+            for i in range(10):
+                for j in range(4):
+                    if item_size > 1:
+                        item_size -= 1
+                        continue
+
+                    item_key = f"charms_{(j, i)}"
+                    grid_item = self._hover_player.inventory[item_key]
+                    if grid_item is not None:
+                        self._tooltips[item_key] = grid_item.create_tooltip()
+                        item_type = grid_item.item_type.name
+                        item_size = 2 if item_type == "LargeCharm" else 3 if item_type != "SmallCharm" else 1
+                        xmin = x + i * w
+                        xmax = xmin + w
+                        ymin = y + j * h
+                        ymax = ymin + h * item_size
+                        self._coords[item_key] = {"xmin": xmin, "ymin": ymin, "xmax": xmax, "ymax": ymax}
+
     def draw_inventory(self):
         pm.draw_texture(self._texture, 0, self._height_pad, pm_colors["white"], 0, 1)
 
@@ -144,69 +167,82 @@ class Inventory:
         pm.draw_texture(switch_texture, self._scale_w * self._coords["switch2"]["xmin"], self._scale_h * self._coords["switch2"]["ymin"] + self._height_pad, pm_colors["white"], 0, 1)
 
         if "helm" in self._tooltips:
-            self._draw_inventory_item("helm")
+            self._draw_inv_item("helm")
         if "amulet" in self._tooltips:
-            self._draw_inventory_item("amulet")
+            self._draw_inv_item("amulet")
         if "armor" in self._tooltips:
-            self._draw_inventory_item("armor")
+            self._draw_inv_item("armor")
         if "arm_left" in self._tooltips and not self._is_on_switch:
-            self._draw_inventory_item("arm_left")
+            self._draw_inv_item("arm_left")
         if "arm_right" in self._tooltips and not self._is_on_switch:
-            self._draw_inventory_item("arm_right")
+            self._draw_inv_item("arm_right")
         if "ring_left" in self._tooltips:
-            self._draw_inventory_item("ring_left")
+            self._draw_inv_item("ring_left")
         if "ring_right" in self._tooltips:
-            self._draw_inventory_item("ring_right")
+            self._draw_inv_item("ring_right")
         if "belt" in self._tooltips:
-            self._draw_inventory_item("belt")
+            self._draw_inv_item("belt")
         if "boots" in self._tooltips:
-            self._draw_inventory_item("boots")
+            self._draw_inv_item("boots")
         if "gloves" in self._tooltips:
-            self._draw_inventory_item("gloves")
+            self._draw_inv_item("gloves")
         if "arm_switch_left" in self._tooltips and self._is_on_switch:
-            self._draw_inventory_item("arm_switch_left")
+            self._draw_inv_item("arm_switch_left")
         if "arm_switch_right" in self._tooltips and self._is_on_switch:
-            self._draw_inventory_item("arm_switch_right")
+            self._draw_inv_item("arm_switch_right")
+
+        for i in range(10):
+            for j in range(4):
+                if f"charms_{(j, i)}" in self._tooltips:
+                    self._draw_inv_item(f"charms_{(j, i)}")
 
     def draw_item_tooltip(self):
         if self._is_loc_hovered("helm") and self._hover_player.inventory.helm is not None:
-            x, y, w, h = self._body_loc_position("helm")
+            x, y, w, h = self._inv_loc_position("helm")
             self._draw_item_tooltip("helm", x + w // 2, y + h + self._height_pad)
         elif self._is_loc_hovered("amulet") and self._hover_player.inventory.amulet is not None:
-            x, y, w, h = self._body_loc_position("amulet")
+            x, y, w, h = self._inv_loc_position("amulet")
             self._draw_item_tooltip("amulet", x + w // 2, y + h + self._height_pad)
         elif self._is_loc_hovered("armor") and self._hover_player.inventory.armor is not None:
-            x, y, w, h = self._body_loc_position("armor")
+            x, y, w, h = self._inv_loc_position("armor")
             self._draw_item_tooltip("armor", x + w // 2, y + h + self._height_pad)
         elif self._is_loc_hovered("arm_left") and self._hover_player.inventory.arm_left is not None:
-            x, y, w, h = self._body_loc_position("arm_left")
+            x, y, w, h = self._inv_loc_position("arm_left")
             if self._is_on_switch and self._hover_player.inventory.arm_switch_left is not None:
                 self._draw_item_tooltip("arm_switch_left", x + w // 2, y + h + self._height_pad)
             if not self._is_on_switch and self._hover_player.inventory.arm_left is not None:
                 self._draw_item_tooltip("arm_left", x + w // 2, y + h + self._height_pad)
         elif self._is_loc_hovered("arm_right"):
-            x, y, w, h = self._body_loc_position("arm_right")
+            x, y, w, h = self._inv_loc_position("arm_right")
             if self._is_on_switch and self._hover_player.inventory.arm_switch_right is not None:
                 self._draw_item_tooltip("arm_switch_right", x + w // 2, y + h + self._height_pad)
             if not self._is_on_switch and self._hover_player.inventory.arm_right:
                 self._draw_item_tooltip("arm_right", x + w // 2, y + h + self._height_pad)
         elif self._is_loc_hovered("ring_left") and self._hover_player.inventory.ring_left is not None:
-            x, y, w, h = self._body_loc_position("ring_left")
+            x, y, w, h = self._inv_loc_position("ring_left")
             self._draw_item_tooltip("ring_left", x + w // 2, y + self._height_pad, direction="up")
         elif self._is_loc_hovered("ring_right") and self._hover_player.inventory.ring_right is not None:
-            x, y, w, h = self._body_loc_position("ring_right")
+            x, y, w, h = self._inv_loc_position("ring_right")
             self._draw_item_tooltip("ring_right", x + w // 2, y + self._height_pad, direction="up")
         elif self._is_loc_hovered("belt") and self._hover_player.inventory.belt is not None:
-            x, y, w, h = self._body_loc_position("belt")
+            x, y, w, h = self._inv_loc_position("belt")
             self._draw_item_tooltip("belt", x + w // 2, y + self._height_pad, direction="up")
         elif self._is_loc_hovered("boots") and self._hover_player.inventory.boots is not None:
-            x, y, w, h = self._body_loc_position("boots")
+            x, y, w, h = self._inv_loc_position("boots")
             self._draw_item_tooltip("boots", x + w // 2, y + self._height_pad, direction="up")
         elif self._is_loc_hovered("gloves") and self._hover_player.inventory.gloves is not None:
-            x, y, w, h = self._body_loc_position("gloves")
+            x, y, w, h = self._inv_loc_position("gloves")
             self._draw_item_tooltip("gloves", x + w // 2, y + self._height_pad, direction="up")
 
-    def _draw_inventory_item(self, loc: str):
+        for i in range(10):
+            for j in range(4):
+                item_key = f"charms_{(j, i)}"
+                if item_key in self._tooltips:
+                    x, y, w, h = self._inv_loc_position(item_key)
+                    if self._is_loc_hovered(item_key):
+                        self._draw_item_tooltip(item_key, x + w // 2, y + self._height_pad, direction="up")
+
+    def _draw_inv_item(self, loc: str):
         try:
             dir_name = loc.split("_")[0]
             unique_texture_name = self._hover_player.inventory[loc].unique_texture_name
@@ -216,7 +252,7 @@ class Inventory:
             else:
                 file_name = self._hover_player.inventory[loc].texture_name
 
-            x, y, w, h = self._body_loc_position(loc)
+            x, y, w, h = self._inv_loc_position(loc)
             t_w = self._item_textures[dir_name][file_name]["width"]
             t_h = self._item_textures[dir_name][file_name]["height"]
             x_start = x + (w - t_w) // 2
@@ -230,7 +266,7 @@ class Inventory:
             _logger.debug(traceback.format_exc())
 
     def _draw_item_tooltip(self, loc, start_x, start_y, direction="down"):
-        # tooltip[0] = item_type, tooltip[1] = item_name, tooltip[2] = item_runes,
+        # tooltip[0] = item_name, tooltip[1] = item_type, tooltip[2] = item_runes,
         # tooltip[3] = item_prolog, tooltip[4] = item_tooltip
         tooltip = self._tooltips[loc]
         item_quality = self._hover_player.inventory[loc].item_quality
@@ -266,7 +302,7 @@ class Inventory:
             background_w = text_box_width
             background_h = text_box_height
 
-        name_pad_x, name_pad_y = None, None
+        type_pad_x, type_pad_y = None, None
         runes_pad_x, runes_pad_y = None, None
 
         if item_quality == "UNIQUE" or item_quality == "RUNEWORD":
@@ -282,11 +318,10 @@ class Inventory:
         else:
             color = "tooltipgray"
 
-        type_pad_x, type_pad_y = tooltip_pads.pop(0)
+        name_pad_x, name_pad_y = tooltip_pads.pop(0)
 
-        if tooltip[1] != "":  # tooltip[1] = name
-            name_pad_x, name_pad_y = tooltip_pads.pop(0)
-            name_pad_y, type_pad_y = type_pad_y, name_pad_y
+        if tooltip[1] != "":  # tooltip[1] = type
+            type_pad_x, type_pad_y = tooltip_pads.pop(0)
 
         if tooltip[2] != "":  # tooltip[2] = runes
             runes_pad_x, runes_pad_y = tooltip_pads.pop(0)
@@ -296,22 +331,20 @@ class Inventory:
 
         pm.draw_rectangle(background_x, background_y, background_w, background_h, pm_colors["tooltipbackground"])
 
-        if name_pad_x is not None and name_pad_y is not None:
+        pm.draw_font(
+            2, tooltip[0], start_x + name_pad_x, start_y + name_pad_y, self._font_size, 0, pm_colors[color]
+        )
+
+        if type_pad_x is not None and type_pad_y is not None:
             pm.draw_font(
-                2, tooltip[1], start_x + name_pad_x, start_y + name_pad_y, self._font_size, 0, pm_colors[color]
+                2, tooltip[1], start_x + type_pad_x, start_y + type_pad_y, self._font_size, 0,
+                pm_colors["tooltipgray"] if item_quality == "RUNEWORD" else pm_colors[color]
             )
 
         if runes_pad_x is not None and runes_pad_y is not None:
             pm.draw_font(
-                2, tooltip[0], start_x + type_pad_x, start_y + type_pad_y, self._font_size, 0, pm_colors["tooltipgray"]
-            )
-            pm.draw_font(
                 2, tooltip[2], start_x + runes_pad_x, start_y + runes_pad_y, self._font_size, 0, pm_colors[color]
             )
-        else:
-            pm.draw_font(
-                2, tooltip[0], start_x + type_pad_x, start_y + type_pad_y, self._font_size, 0, pm_colors[color]
-                         )
 
         for pad, text in zip(prolog_pad, tooltip[3]):
             pm.draw_font(2, text, start_x + pad[0], start_y + pad[1], self._font_size, 0, pm_colors["white"])
@@ -319,7 +352,7 @@ class Inventory:
         for pad, text in zip(text_pad, tooltip[4]):
             pm.draw_font(2, text, start_x + pad[0], start_y + pad[1], self._font_size, 0, pm_colors["tooltipblue"])
 
-    def _body_loc_position(self, loc: str) -> tuple:
+    def _inv_loc_position(self, loc: str) -> tuple:
         xpos = int(self._scale_w * self._coords[loc]["xmin"])
         ypos = int(self._scale_h * self._coords[loc]["ymin"])
         w = int(self._scale_w * self._coords[loc]["xmax"]) - xpos
@@ -329,7 +362,7 @@ class Inventory:
     def _is_loc_hovered(self, loc: str) -> bool:
         absolute_mouse = pm.mouse_position()
         relative_mouse = {"x": absolute_mouse["x"] - self._win_start_x, "y": absolute_mouse["y"] - self._win_start_y}
-        x, y, w, h = self._body_loc_position(loc)
+        x, y, w, h = self._inv_loc_position(loc)
         y += self._height_pad
 
         if x < relative_mouse["x"] < x + w and y < relative_mouse["y"] < y + h:

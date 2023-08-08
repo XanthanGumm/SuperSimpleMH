@@ -1,3 +1,4 @@
+import ast
 import ctypes as ct
 from su_core.pm import mem
 from su_core.pyTypes.unitTypes.Item import Item
@@ -126,7 +127,7 @@ class Inventories:
     def inv_grid(self) -> list[list[Item | None]]:
         return self._grid
 
-    def __getitem__(self, key):
+    def __getitem__(self, key: int | str) -> Item:
         if key == "helm":
             return self._helm
         elif key == "amulet":
@@ -151,6 +152,11 @@ class Inventories:
             return self._arm_switch_left
         elif key == "arm_switch_right":
             return self._arm_switch_right
+        elif "charms" in key:
+            i, j = ast.literal_eval(key.split("_")[1])
+            return self._grid[i][j]
         else:
-            raise KeyError(f"Key: {key} is not a body location")
+            raise KeyError(f"Key: of type: {type(key)} is not supported")
+
+
 

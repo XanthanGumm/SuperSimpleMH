@@ -36,7 +36,7 @@ pm_colors = {
     "red": pm.get_color("red"),
     "mediumvioletred": pm.get_color("mediumvioletred"),
     "redbackground":  pm.new_color(139, 0, 0, 75),
-    "invbackground": pm.fade_color(pm.new_color(128, 64, 0, 255), 0.15),
+    "invbackground": pm.fade_color(pm.new_color(128, 64, 0, 255), 0.20),
 
     # yellowish colors
     "yellow": pm.get_color("yellow"),

@@ -243,10 +243,12 @@ class Item(UnitAny):
                 item_name += " " + name_suffix
 
             item_name += "\n"
+            item_type = ""
 
         elif self._item_quality in [ItemQuality.NORMAL, ItemQuality.SUPERIOR,
                                     ItemQuality.INFERIOR, ItemQuality.TEMPERED]:
-            pass
+            item_name = item_type
+            item_type = ""
 
         else:
             pass  # should not happen
@@ -428,7 +430,7 @@ class Item(UnitAny):
 
             item_tooltip.extend(stat_tooltip.splitlines())
 
-        return item_type, item_name, item_runes, item_prolog, item_tooltip
+        return item_name, item_type, item_runes, item_prolog, item_tooltip
 
     def _merge_stats_tooltip(self, stat_name, new_later, new_val, to_bin):
         self._stats[stat_name] = [{new_later: new_val}]
