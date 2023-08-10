@@ -1,5 +1,6 @@
 # SuperSimpleMH
 ### Diablo 2 Resurrected map directions. A tool which direct to key points in the game map.
+#### SuperSimpleMH is intended for informational and educational purposes only. By using this tool online you take the risk of being banned.
 
 ## Requirements
 * Diablo 2 lod version 1.13c
@@ -24,8 +25,12 @@
 * drawing super uniques, uniques and champions
 * drawing merc and player minions
 * drawing hostile players and their life
-* hover over players to check their stats - deprecated in this release
-* display other players inventory - (press pageup button for view switch items)
+* display other players stats
+* display other players inventory
+
+## Usage
+* display other players inventory - hover over a player and press insert. press pgup to view items on switch
+* display other players stats - hover over a player and press pgdn.
 
 ## Credits
 * [mapview](https://github.com/joffreybesos/d2r-mapview) @joffreybesos for rustdecrypt and many more.
@@ -36,3 +41,7 @@
 LowerKurast                |  Catacombs
 :-------------------------:|:-------------------------:
 ![plot](./LowerKurast.png)  |  ![plot](Catacombs.png)
+
+Show Inventory             |  Show Stats
+:-------------------------:|:-------------------------:
+![plot](./ShowInventory.png)  |  ![plot](./ShowStats.png)

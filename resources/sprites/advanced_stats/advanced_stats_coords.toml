@@ -1,0 +1,16 @@
+[size]
+width = 876
+height = 1507
+
+[container]
+x = 148
+y = 212
+width = 576
+height = 1231
+
+[value_box]
+x = 148
+y = 202
+width = 576
+height = 70
+

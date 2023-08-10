@@ -13,7 +13,7 @@ from su_core.utils.exceptions import FailedReadInventory
 _logger = manager.get_logger(__file__)
 
 
-class Inventory:
+class InventoryPanel:
 
     def __init__(self, win_width, win_height, win_start_x, win_start_y, font_size):
         self._font_size = font_size
@@ -23,7 +23,7 @@ class Inventory:
         root = get_root(__file__)
         sprites_path = os.path.join(root, "resources", "sprites", "inventory")
         # load inventory texture and its coordinates
-        with open(os.path.join(sprites_path, "inventory_big.toml"), "rb") as inv_file:
+        with open(os.path.join(sprites_path, "inventory_coords.toml"), "rb") as inv_file:
             self._coords = tomllib.load(inv_file)
 
         img = Image.open(os.path.join(sprites_path, "inventory_big.png"))

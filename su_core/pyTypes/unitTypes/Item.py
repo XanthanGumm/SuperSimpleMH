@@ -92,6 +92,7 @@ class Item(UnitAny):
 
         return added_basestats, added_stats
 
+    # TODO: restructure this func by creating separate function which returns single stat tooltip
     def create_tooltip(self, player_level=0):
         item_code = items_codes[self._item_type.value]
         self._stats = self.read_stats(self._stats_list_struct.Stats)

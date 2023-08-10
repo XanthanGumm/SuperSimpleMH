@@ -5,7 +5,8 @@ import pathlib
 import win32gui
 import win32con
 import win32process
-from su_core.window.Inventory import Inventory
+from su_core.window.InventoryPanel import InventoryPanel
+from su_core.window.AdvancedStatsPanel import AdvancedStatsPanel
 from su_core.utils import RPYClient
 from logger import traceback, manager
 from su_core.utils.exceptions import FailedReadInventory
@@ -211,14 +212,14 @@ class Canvas:
         self.su_label_posY = self._win.height * 0.05
         self.su_label_font_scale = self._win.width / (2 * 1280)
         self.hostile_labels_pos = CSharpVector2(self.su_label_posX, self.su_label_posY + 2 * self.su_label_font_scale)
-        self.textures = {"amulet": dict(), "arm": dict(), "armor": dict(), "helm": dict(), "belt": dict(), "boots": dict(), "gloves": dict(), "ring": dict()}
 
         self._hover_player = None
         self._player_inv_tooltip = dict()
 
         # init pymeow overlay
         pm.overlay_init()
-        self._inv_win = Inventory(self._win.width, self._win.height, self._win.start_pos_x, self._win.start_pos_y, int(self.su_label_font_scale * 30))
+        self._inv_win = InventoryPanel(self._win.width, self._win.height, self._win.start_pos_x, self._win.start_pos_y, int(self.su_label_font_scale * 30))
+        self._stats_win = AdvancedStatsPanel(self._win.width, self._win.height, self._win.start_pos_x, self._win.start_pos_y, int(self.su_label_font_scale * 20))
         fps = pm.get_monitor_refresh_rate()
         pm.set_fps(fps)
         pm.set_window_size(self._win.width, self._win.height)
@@ -228,7 +229,7 @@ class Canvas:
     # TODO: use r_ctype instead of my function.
     def event_loop(self):
         # flags
-        pageup_key = False
+        pagedn_key = False
         insert_key = False
 
         # player_tooltip
@@ -269,10 +270,23 @@ class Canvas:
                     pm.draw_fps(self.su_label_posX, self.su_label_posY)
 
                     # check for player hover
+                    if pm.key_pressed(0x22):
+                        self._wait_to_be_released(key=0x22)
+                        pagedn_key = True
+                        hovered = obtain_hovered_player()
+                        if hovered is not None:
+                            self._stats_win.hover_player = hovered
+                            self._stats_win.create_tooltip()
+                        else:
+                            pagedn_key = False
+
+                    if pagedn_key:
+                        self._stats_win.draw_advanced_stats()
+
                     # TODO: fix bug when display default values when player_tooltip is None
                     # if pm.key_pressed(33):
                     #     self._wait_to_be_released(key=33)
-                    #     pageup_key = True
+                    #     pagedn_key = True
                     #     hovered_player = obtain_hovered_player()
                     #     if hovered_player is not None:
                     #         player_tooltip = textwrap.dedent(f"""\
@@ -288,10 +302,10 @@ class Canvas:
                     #         MagicResist: {hovered_player.resists["magic"]}
                     #         PhysicalResist: {hovered_player.resists["physical"]}""")
                     #     else:
-                    #         pageup_key = False
+                    #         pagedn_key = False
                     #         player_tooltip = None
                     #
-                    # if pageup_key and player_tooltip is not None:
+                    # if pagedn_key and player_tooltip is not None:
                     #     self._win.draw_player_stats(
                     #         text=player_tooltip, font_size=int(self.su_label_font_scale * 30),
                     #         text_color="white", back_color="onyx"
@@ -318,7 +332,7 @@ class Canvas:
                         self._inv_win.draw_inventory()
                         self._inv_win.draw_item_tooltip()
 
-                    if not menu.is_open and not pageup_key and not insert_key:
+                    if not menu.is_open and not pagedn_key and not insert_key:
                         texture_pos = self._win.world2map(player.path.position, origin, origin)
                         texture_pos.x = texture_pos.x - map_data["size"][1] * self._map_scale
                         pm.draw_texture(level_texture, texture_pos.x, texture_pos.y, pm_colors["white"], 0,
