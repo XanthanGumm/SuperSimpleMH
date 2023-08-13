@@ -147,33 +147,6 @@ class Window:
         background_length = (background_length - (1 / 6) * background_length) * hostiled_life_percent // 100
         HostileLabel(end, text, background_length, font_size, text_color, back_color)
 
-    def draw_player_stats(self, text, font_size, text_color, back_color):
-        overlay_pos = pm.get_window_position()
-        mouse_pos = pm.mouse_position()
-        relative_pos = mouse_pos["x"] - overlay_pos["x"], mouse_pos["y"] - overlay_pos["y"]
-        pad_height = self._scaleH * 25
-        pad_width = self._scaleH * 25
-        text_length = pm.measure_text(text, font_size)
-        text_length = text_length - 1 / 4 * text_length + self._scaleW
-        text_height = font_size * text.count("\n") * 1.6 + self._scaleH
-
-        if relative_pos[1] + pad_height + text_height >= self._height - self._win_pad.y - pad_height:
-            start_posY = self._height - self._win_pad.y - pad_height - text_height
-        elif relative_pos[1] <= self._win_pad.y:
-            start_posY = self._win_pad.y + pad_height
-        else:
-            start_posY = relative_pos[1] + pad_height
-
-        if relative_pos[0] + pad_width + text_length >= self._width - self._win_pad.x // 2 - pad_width:
-            start_posX = self._width - self._win_pad.x // 2 - text_length - pad_width
-        elif relative_pos[0] <= self._win_pad.x // 2:
-            start_posX = self._win_pad.x // 2 + pad_width
-        else:
-            start_posX = relative_pos[0] + pad_width
-
-        start_pos = CSharpVector2(start_posX - self._scaleW, start_posY - self._scaleH)
-        TextBox(start_pos, text, text_length, text_height, font_size, text_color, back_color)
-
     @property
     def width(self):
         return self._width
@@ -232,9 +205,6 @@ class Canvas:
         pagedn_key = False
         insert_key = False
 
-        # player_tooltip
-        player_tooltip = None
-
         while pm.overlay_loop():
             menu = Menu()
 
@@ -282,34 +252,6 @@ class Canvas:
 
                     if pagedn_key:
                         self._stats_win.draw_advanced_stats()
-
-                    # TODO: fix bug when display default values when player_tooltip is None
-                    # if pm.key_pressed(33):
-                    #     self._wait_to_be_released(key=33)
-                    #     pagedn_key = True
-                    #     hovered_player = obtain_hovered_player()
-                    #     if hovered_player is not None:
-                    #         player_tooltip = textwrap.dedent(f"""\
-                    #         {str(hovered_player.name, 'utf8')} Stats:
-                    #         FasterCastRate: {hovered_player.fcr}
-                    #         IncreaseAttackSpeed: {hovered_player.ias}
-                    #         FasterHitRecovery: {hovered_player.fhr}
-                    #         FasterRunWalk: {hovered_player.frw}
-                    #         ColdResist: {hovered_player.resists['cold']}
-                    #         FireResist: {hovered_player.resists["fire"]}
-                    #         LightResist: {hovered_player.resists["light"]}
-                    #         PoisonResist: {hovered_player.resists["poison"]}
-                    #         MagicResist: {hovered_player.resists["magic"]}
-                    #         PhysicalResist: {hovered_player.resists["physical"]}""")
-                    #     else:
-                    #         pagedn_key = False
-                    #         player_tooltip = None
-                    #
-                    # if pagedn_key and player_tooltip is not None:
-                    #     self._win.draw_player_stats(
-                    #         text=player_tooltip, font_size=int(self.su_label_font_scale * 30),
-                    #         text_color="white", back_color="onyx"
-                    #     )
 
                     if pm.key_pressed(0x2d):
                         self._wait_to_be_released(0x2d)
