@@ -12,8 +12,9 @@
 * install python 3.11 32-bit version
 * install python 3.11 64-bit version
 * download diablo 2 lod version 1.13c, you can download from here https://www.mediafire.com/file/3x7g0nuph242mu1/game.zip/file
+* download SuperSimpleMH.zip from the releases
 * download pyMeow module (from releases) to the project folder
-* open settings.toml and write the absolute path of diablo 2 lod folder that you've just downloaded
+* open settings.toml (in rpyc-d2-map-api folder), write the absolute path of diablo 2 lod folder that you've just downloaded
 * from the project directory open a command shell prompt and run "python tools\build.py"
 * run "\venv\Scripts\activate"
 * run "super_simple_mh"
