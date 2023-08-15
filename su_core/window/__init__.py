@@ -8,7 +8,7 @@ import win32process
 from su_core.window.InventoryPanel import InventoryPanel
 from su_core.window.AdvancedStatsPanel import AdvancedStatsPanel
 from su_core.utils import RPYClient
-from logger import traceback, manager
+from su_core.logger import manager
 from su_core.utils.exceptions import FailedReadInventory
 from su_core.window.drawings import pm_colors
 from su_core.math import CSharpVector2, CSharpMatrix3X2

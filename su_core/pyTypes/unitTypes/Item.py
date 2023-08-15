@@ -5,7 +5,7 @@ from su_core.data import GameItem, ItemQuality, ItemFlag, items_codes, item_text
 from su_core.data import Skill, SkillTab
 from su_core.utils.helpers import get_last_val, get_last_key
 from su_core.utils.exceptions import ItemTypeNotFound
-from logger import manager, traceback
+from su_core.logger import manager, traceback
 from su_core.data import (
     strings,
     statscost,

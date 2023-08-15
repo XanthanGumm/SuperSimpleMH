@@ -3,7 +3,6 @@ import io
 import tomllib
 import pyMeow as pm
 from PIL import Image
-from logger import manager, traceback
 from su_core.utils.helpers import get_root, get_last_val
 from su_core.window.drawings import pm_colors
 

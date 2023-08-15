@@ -6,7 +6,7 @@ from cachetools.keys import hashkey
 class RPYClient:
 
     def __init__(self, port=18861):
-        self._conn = rpyc.connect("localhost", port=port)
+        self._conn = rpyc.connect("localhost", port=port, config={"sync_request": True, "sync_request_timeout": 60})
 
         self._prev_seed = None
         self._prev_area = None

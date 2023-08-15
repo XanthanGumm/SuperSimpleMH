@@ -1,16 +1,13 @@
 import os
 import logging
-import pathlib
+from su_core.utils.helpers import get_root
 
 
 class Logger:
 
     def __init__(self):
-        root = pathlib.Path(__file__)
-        while root.name != "SuperSimpleMH":
-            root = root.parent
-
-        self._log_fle = os.path.join(root, "logger", "logs.log")
+        root = get_root(__file__)
+        self._log_fle = os.path.join(root, "su_core", "logger", "logs.log")
         self._log_level = logging.DEBUG
 
         if os.path.exists(self._log_fle):

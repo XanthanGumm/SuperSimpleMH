@@ -4,7 +4,7 @@ import tomllib
 import math
 import pyMeow as pm
 from PIL import Image
-from logger import manager, traceback
+from su_core.logger import manager, traceback
 from su_core.pyTypes.unitTypes import obtain_roster_members
 from su_core.window.drawings import pm_colors
 from su_core.utils.helpers import get_root

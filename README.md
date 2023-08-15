@@ -12,11 +12,24 @@
 * install python 3.11 32-bit version
 * install python 3.11 64-bit version
 * download diablo 2 lod version 1.13c, you can download from here https://www.mediafire.com/file/3x7g0nuph242mu1/game.zip/file
+* download SuperSimpleMH.zip from the releases
 * download pyMeow module (from releases) to the project folder
-* open settings.toml and write the absolute path of diablo 2 lod folder that you've just downloaded
-* from the project directory open a command shell prompt and run "python tools\build.py"
-* run "\venv\Scripts\activate"
-* run "super_simple_mh"
+* open settings.toml (in rpyc-d2-map-api folder), write the absolute path of diablo 2 lod folder that you've just downloaded
+* from rpyc-d2-map-api directory open command shell prompt and run the commands:
+  * py -3.11-32 -m venv venv
+  * .\venv\Scripts\activate"
+  * pip install .
+* from the project directory (SuperSimpleMH folder) open a command shell prompt and run the commands:
+  * py -3.11-64 -m venv venv
+  * .\venv\Scripts\activate
+  * pip install .
+
+## Usage
+* to use SuperSimpleMH take the following steps:
+  * start D2R
+  * from the project directory (SuperSimpleMH folder) open a command shell prompt and run the commands:
+    * .\venv\Scripts\activate
+    * super_simple_mh
 
 ## Features
 * map directions to adjacent levels and mazes.
@@ -28,7 +41,7 @@
 * display other players stats
 * display other players inventory
 
-## Usage
+## SuperSimpleMH Features Usage
 * display other players inventory - hover over a player and press insert. press pgup to view items on switch
 * display other players stats - hover over a player and press pgdn.
 

@@ -2,7 +2,7 @@ import sys
 import ctypes as ct
 import pyMeow as pm
 from typing import Type
-from logger import manager
+from su_core.logger import manager
 
 
 class Mem:
