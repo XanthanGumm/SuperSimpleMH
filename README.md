@@ -15,7 +15,6 @@
 * download SuperSimpleMH.zip from the releases
 * download pyMeow module (from releases) to the project folder
 * open settings.toml (in rpyc-d2-map-api folder), write the absolute path of diablo 2 lod folder that you've just downloaded
-<<<<<<< HEAD
 * from rpyc-d2-map-api directory open command shell prompt and run the commands:
   * py -3.11-32 -m venv venv
   * .\venv\Scripts\activate"
@@ -31,11 +30,6 @@
   * from the project directory (SuperSimpleMH folder) open a command shell prompt and run the commands:
     * .\venv\Scripts\activate
     * super_simple_mh
-=======
-* from the project directory open a command shell prompt and run "python tools\build.py"
-* run "\venv\Scripts\activate"
-* run "super_simple_mh"
->>>>>>> e7cff1c89a5c16b4e3742397a620d157b0a78821
 
 ## Features
 * map directions to adjacent levels and mazes.
