@@ -1,0 +1,8 @@
+cachetools
+rpyc
+pywin32
+numpy
+psutil
+pandas
+pillow
+./pyMeow-1.43.25.zip
