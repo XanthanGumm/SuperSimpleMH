@@ -5,4 +5,4 @@ numpy
 psutil
 pandas
 pillow
-./pyMeow-1.43.25.zip
+../pyMeow-1.43.25.zip
