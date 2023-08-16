@@ -17,7 +17,7 @@ class Menu:
 
     def __init__(self):
         self._ui = None
-        self._isGameActive = None
+        self.inGame = None
         self._invMenu = None
         self._charMenu = None
         self._skillMenu = None
@@ -33,7 +33,7 @@ class Menu:
         self._loading = None
 
         self._ui = mem.read_struct(mem.ui, UI)
-        self._isGameActive = self._ui.isGameActive
+        self._inGame = self._ui.inGame
         self._invMenu = self._ui.invMenu
         self._charMenu = self._ui.charMenu
         self._skillMenu = self._ui.skillMenu
@@ -77,9 +77,17 @@ class Menu:
             self.last_open = Menus.loading
 
     @property
+    def is_loading_game(self):
+        return self._loading == 2
+
+    @property
+    def is_game_active(self) -> bool:
+        return self._inGame and self._ui.pUnkUI and not self.is_loading_game
+
+    @property
     def is_open(self) -> bool:
         return (
-            not self._isGameActive or
+            not self.is_game_active or
             self._invMenu or
             self._charMenu or
             self._skillMenu or
@@ -94,15 +102,11 @@ class Menu:
         )
 
     @property
-    def is_loading(self):
+    def is_loading(self) -> bool:
         return self._loading
 
     @property
-    def is_game_active(self):
-        return self._isGameActive
-
-    @property
-    def waypoint_menu(self):
+    def waypoint_menu(self) -> bool:
         return self._waypointMenu
 
 

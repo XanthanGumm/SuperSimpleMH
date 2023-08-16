@@ -187,11 +187,9 @@ class AdvancedStatsPanel:
 
                     pm.draw_font(2, self._stats_tooltips[i], text_x, text_y, self._font_size, 0, pm_colors["white"])
 
-                if self._value_box_y > self._advanced_stats_texture["height"] + self._height_pad \
-                        - self._value_box_h * self._scale_h:
-                    break
-
                 self._value_box_y += self._value_box_h + self._scale_h * 18
+                if self._value_box_y + 2 * self._value_box_h > self._advanced_stats_texture["height"] + self._height_pad:
+                    break
 
     @property
     def hover_player(self):

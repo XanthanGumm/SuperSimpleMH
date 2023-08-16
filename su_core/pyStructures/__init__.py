@@ -424,7 +424,7 @@ RosterMember._fields_ = [
 ]
 
 UI._fields_ = [
-    ("_1", c_bool),
+    ("inGame", c_bool),
     ("invMenu", c_bool),
     ("charMenu", c_bool),
     ("skillSelect", c_bool),
@@ -437,7 +437,7 @@ UI._fields_ = [
     ("_4", BYTE * 2),
     ("questsMenu", c_bool),
     ("_5", BYTE * 3),
-    ("isGameActive", c_bool),  # when the player in game and quitMenu is not on
+    ("isNotPlayerAlone", c_bool),  # when the player is the only player in the game and no merc
     ("waypointMenu", c_bool),
     ("_6", BYTE),
     ("partyMenu", c_bool),
@@ -447,8 +447,10 @@ UI._fields_ = [
     ("mercMenu", c_bool),
     ("_9", BYTE * 0x101),
     ("bAct", BYTE),
-    ("_10", BYTE * 0x4B),
-    ("loading", c_bool)
+    ("_10", BYTE * 0x37),
+    ("pUnkUI", c_void_p),
+    ("_11", BYTE * 0xC),
+    ("loading", BYTE)
 ]
 
 Minions._fields_ = [
@@ -468,5 +470,5 @@ LastHoverUnit._fields_ = [
 ]
 
 if __name__ == "__main__":
-    for field in ItemData._fields_:
-        print(field[0], hex(getattr(ItemData, field[0]).offset))
+    for field in UI._fields_:
+        print(field[0], hex(getattr(UI, field[0]).offset))

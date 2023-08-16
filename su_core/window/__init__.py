@@ -9,7 +9,7 @@ from su_core.window.InventoryPanel import InventoryPanel
 from su_core.window.AdvancedStatsPanel import AdvancedStatsPanel
 from su_core.utils import RPYClient
 from su_core.logger import manager
-from su_core.utils.exceptions import FailedReadInventory
+from su_core.utils.exceptions import FailedReadInventory, InvalidPlayerUnit
 from su_core.window.drawings import pm_colors
 from su_core.math import CSharpVector2, CSharpMatrix3X2
 from su_core.window.drawings.shapes import Arrow, Cross, PlayerLabel, HostileLabel, TextBox, pm, math
@@ -209,7 +209,11 @@ class Canvas:
             menu = Menu()
 
             if menu.is_game_active:
-                player = obtain_player()
+                try:
+                    player = obtain_player()
+
+                except InvalidPlayerUnit:
+                    continue
 
                 if player is not None:
                     origin = player.path.room1.room2.level.origin
