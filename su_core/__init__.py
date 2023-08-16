@@ -6,4 +6,4 @@ except ModuleNotFoundError:
     import sys
     import os
     root = get_root(__file__)
-    sys.path.insert(os.path.join(root, "dep"))
+    sys.path.insert(0, os.path.join(root, "dep"))
