@@ -14,7 +14,7 @@
 3) download SuperSimpleMH.zip from the releases
 4) download diablo 2 lod version 1.13c, you can download from here https://www.mediafire.com/file/3x7g0nuph242mu1/game.zip/file
 5) open settings.toml (in rpyc-d2-map-api folder), write the absolute path of diablo 2 lod folder that you've just downloaded 
-6) from the project directory (SuperSimpleMH folder) execute "run.bat" as admin file, PRESS 1 and then ENTER
+6) from the project directory (SuperSimpleMH folder) execute "run.bat" as admin, PRESS 1 and then ENTER
 7) make sure there are no ERRORS
 
 ## SELF Setup
@@ -23,7 +23,8 @@
 3) from rpyc-d2-map-api directory open command shell prompt and run the commands:
    1) py -3.11-32 -m venv venv
    2) .\venv\Scripts\activate"
-   3) pip install . 
+   3) pip install wheel
+   4) pip install . 
 4) from the project directory (SuperSimpleMH folder) open a command shell prompt and run the commands:
    1) py -3.11-64 -m venv venv
    2) .\venv\Scripts\activate
@@ -33,7 +34,7 @@
 ## Usage
 * to use SuperSimpleMH take the following steps:
   * start D2R
-  * from the project directory (SuperSimpleMH folder) execute "run.bat" as admin file PRESS 2 and then ENTER
+  * from the project directory (SuperSimpleMH folder) execute "run.bat" as admin PRESS 2 and then ENTER
 
 ## Features
 * map directions to adjacent levels and mazes.
