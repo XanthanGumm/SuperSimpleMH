@@ -136,7 +136,7 @@ class AdvancedStatsPanel:
             if "magicresist" in stats:
                 self._stats_tooltips.append(f"Magic Resistance {get_last_val(stats['magicresist'])}%")
 
-            # item_slow - slow target by?
+            # item_slow - slow target by
             if "item_slow" in stats:
                 self._stats_tooltips.append(f"Slow Target By {get_last_val(stats['item_slow'])}%")
 

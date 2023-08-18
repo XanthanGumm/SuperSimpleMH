@@ -52,7 +52,7 @@
 
 ## Credits
 * [mapview](https://github.com/joffreybesos/d2r-mapview) @joffreybesos for rustdecrypt and many more.
-* MapAssit @OneXDeveloper @ItzRabbs
+* MapAssist @OneXDeveloper @ItzRabbs
 * [d2mapapi](https://github.com/jcageman/d2mapapi)
 
 
