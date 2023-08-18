@@ -4,7 +4,6 @@ from su_core.utils.helpers import get_root
 
 
 class Logger:
-
     def __init__(self):
         root = get_root(__file__)
         self._log_fle = os.path.join(root, "su_core", "logger", "logs.log")

@@ -6,6 +6,7 @@ from su_core.pyTypes.unitTypes.Roster import Roster
 from su_core.pyTypes.unitTypes.Menu import Menu, Menus
 from su_core.data import TownNpc, MercNpc, PlayerMinionNpc
 from su_core.logger import manager, traceback
+
 _logger = manager.get_logger(__name__)
 
 
@@ -24,7 +25,9 @@ def obtain_units(unit_type: int) -> list:
                 while valid_units[-1].next:
                     valid_units.append(obtain_type(valid_units[-1].next))
             except Exception as e:
-                _logger.debug(f"Exception occurred during a search in the unit table for a unit of type {unit_type}")
+                _logger.debug(
+                    f"Exception occurred during a search in the unit table for a unit of type {unit_type}"
+                )
                 _logger.debug(traceback.format_exc())
 
     return valid_units
@@ -42,8 +45,7 @@ def obtain_player() -> Player | None:
                     Player.my_player_id = c.unit_id
                     return c
                 except Exception as e:
-                    if menu.last_open in [Menus.waypointMenu,
-                                          Menus.loading]:
+                    if menu.last_open in [Menus.waypointMenu, Menus.loading]:
                         return None
                     raise e
     return None
@@ -127,7 +129,9 @@ def obtain_hostiled_players(player_unit_id):
             if player_roster.is_hostiled(r.unit_id):
                 hostiled_rosters[r.unit_id] = r
         except Exception as e:
-            _logger.debug("Exception occurred during searching for hostiled rosters structures")
+            _logger.debug(
+                "Exception occurred during searching for hostiled rosters structures"
+            )
             _logger.debug(traceback.format_exc())
 
     for p in players:
@@ -139,7 +143,9 @@ def obtain_hostiled_players(player_unit_id):
                 p.life_percent = hostiled_rosters[p.unit_id].life_percent
                 hostiled_players.append(p)
             except Exception as e:
-                _logger.debug("Exception occurred during searching for hostiled players units")
+                _logger.debug(
+                    "Exception occurred during searching for hostiled players units"
+                )
                 _logger.debug(traceback.format_exc())
 
     return hostiled_players, hostiled_rosters
@@ -161,7 +167,3 @@ def obtain_hovered_player() -> Player | None:
                 return p
 
     return None
-
-
-
-

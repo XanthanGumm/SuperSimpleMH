@@ -858,7 +858,7 @@ class MercNpc(Enum, metaclass=MyEnumMeta):
     act3hire = 359
     act5hire1 = 560
     act5hire2 = 561
-    
+
 
 class TownNpc(Enum, metaclass=MyEnumMeta):
     DeckardCain = 146

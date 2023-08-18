@@ -1,24 +1,16 @@
 import numpy as np
 from typing import Self
+
 np.set_printoptions(suppress=True)
 
 
 class CSharpMatrix3X2:
-
     def __init__(self, zero_fill):
         if zero_fill:
-            self._m = np.array(
-                [[0., 0.],
-                 [0., 0.],
-                 [0., 0.]]
-            )
+            self._m = np.array([[0.0, 0.0], [0.0, 0.0], [0.0, 0.0]])
 
         else:
-            self._m = np.array(
-                [[1., 0.],
-                 [0., 1.],
-                 [0., 0.]]
-            )
+            self._m = np.array([[1.0, 0.0], [0.0, 1.0], [0.0, 0.0]])
 
     @classmethod
     def make_translation(cls, tx, ty):
@@ -31,7 +23,7 @@ class CSharpMatrix3X2:
     def make_rotation(cls, degrees: float | int):
         mat = cls(zero_fill=True)
         radians = np.deg2rad(degrees)
-        if -1.74532943 * 10 ** -5 < radians < 1.74532943 * 10 ** -5:
+        if -1.74532943 * 10**-5 < radians < 1.74532943 * 10**-5:
             num1 = 1.0
             num2 = 0.0
         elif 1.57077887350062 < radians < 1.5708137800891731:
@@ -49,7 +41,7 @@ class CSharpMatrix3X2:
 
         mat[0, 0] = num1
         mat[0, 1] = num2
-        mat[1, 0] = 0. - num2
+        mat[1, 0] = 0.0 - num2
         mat[1, 1] = num1
 
         return mat
@@ -96,7 +88,6 @@ class CSharpMatrix3X2:
 
 
 class CSharpVector2:
-
     def __init__(self, x: float, y: float):
         self._x = None
         self._y = None
@@ -112,7 +103,7 @@ class CSharpVector2:
     def transform(cls, vec2: Self, mat: CSharpMatrix3X2):
         return cls(
             x=vec2.x * mat[0, 0] + vec2.y * mat[1, 0] + mat[2, 0],
-            y=vec2.x * mat[0, 1] + vec2.y * mat[1, 1] + mat[2, 1]
+            y=vec2.x * mat[0, 1] + vec2.y * mat[1, 1] + mat[2, 1],
         )
 
     @property

@@ -18,6 +18,7 @@ dependencies = [
     "pandas",
     "numpy",
     "psutil",
+    "black"
 ]
 
 [tool.setuptools.packages.find]
@@ -25,3 +26,8 @@ include = ["su_core*"]
 
 [project.scripts]
 super_simple_mh = "su_core.__main__:main"
+
+[tool.black]
+line-length = 88
+target-version = ['py311']
+exclude = "rpyc-d2-map-api"

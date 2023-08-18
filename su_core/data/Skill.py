@@ -384,6 +384,3 @@ class SkillTab(Enum):
     StrSklTabItem21 = 50
     StrSklTabItem20 = 49
     StrSklTabItem19 = 48
-
-
-

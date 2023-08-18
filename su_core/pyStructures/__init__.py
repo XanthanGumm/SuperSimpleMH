@@ -113,9 +113,7 @@ class LastHoverUnit(Structure):
     pass
 
 
-UnitHashTable._fields_ = [
-    ("table", c_void_p * 128)
-]
+UnitHashTable._fields_ = [("table", c_void_p * 128)]
 
 UnitAny._fields_ = [
     ("dwType", DWORD),  # 0x00
@@ -143,7 +141,7 @@ UnitAny._fields_ = [
     ("pRoomNext", c_void_p),  # 0x158
     ("_8", DWORD * 5),  # 0x160
     ("playerClass", DWORD),  # 0x174
-    ("_9", DWORD * 0x0F)  # 0x178
+    ("_9", DWORD * 0x0F),  # 0x178
 ]
 
 Room2._fields_ = [
@@ -162,7 +160,7 @@ Room2._fields_ = [
     ("_6", DWORD * 6),  # 0x70
     ("_7", c_void_p),  # 0x88
     ("pLevel", c_void_p),  # 0x90
-    ("pPreset", c_void_p)  # 0x98
+    ("pPreset", c_void_p),  # 0x98
 ]
 
 Level._fields_ = [
@@ -182,7 +180,7 @@ Level._fields_ = [
     ("_6", DWORD * 3),  # 0x1FC
     ("RoomCenterWrapX", DWORD * 9),  # 0x208
     ("RoomCenterWrapY", DWORD * 9),  # 0x22C
-    ("dwRoomEntries", DWORD)  # 250
+    ("dwRoomEntries", DWORD),  # 250
 ]
 
 ActMisc._fields_ = [
@@ -198,7 +196,7 @@ ActMisc._fields_ = [
     ("pAct", c_void_p),  # 0x860
     ("dwEndSeedHash", DWORD),  # 0x868
     ("_6", DWORD),  # 0x86C
-    ("pLevelFirst", c_void_p)  # 0x870
+    ("pLevelFirst", c_void_p),  # 0x870
 ]
 
 Room1._fields_ = [
@@ -227,7 +225,7 @@ Act._fields_ = [
     ("pRoom1", c_void_p),  # 0x20
     ("dwAct", DWORD),  # 0x28
     ("_2", DWORD * 0x12),  # 0x2C
-    ("pActMisc", c_void_p)  # 0x78
+    ("pActMisc", c_void_p),  # 0x78
 ]
 
 DynamicPath._fields_ = [
@@ -256,7 +254,7 @@ ItemPath._fields_ = [
     ("_1", DWORD * 4),  # 0x00
     ("xPos", WORD),  # 0x10
     ("_2", WORD),  # 0x12
-    ("yPos", WORD)  # 0x14
+    ("yPos", WORD),  # 0x14
 ]
 
 ObjectPath._fields_ = [
@@ -264,16 +262,12 @@ ObjectPath._fields_ = [
     ("_1", DWORD * 2),  # 0x08
     ("xPos", WORD),  # 0x10
     ("_2", WORD),  # 0x12
-    ("yPos", WORD)  # 0x14
+    ("yPos", WORD),  # 0x14
 ]
 
-PlayerInfo._fields_ = [
-    ("pPlayerInfoStrc", c_void_p)
-]
+PlayerInfo._fields_ = [("pPlayerInfoStrc", c_void_p)]
 
-PlayerInfoStrc._fields_ = [
-    ("expansion", c_bool)
-]
+PlayerInfoStrc._fields_ = [("expansion", c_bool)]
 
 ItemData._fields_ = [
     ("ItemQuality", DWORD),  # 0x0
@@ -294,7 +288,6 @@ ItemData._fields_ = [
     ("bInvPage", BYTE),  # 0x55
     ("_6", WORD * 4),  # 0x56
     ("wSkinId", WORD),  # 0x5E
-
 ]
 
 # ItemTxt._fields_ = [
@@ -314,13 +307,10 @@ MonsterData._fields_ = [
     ("_3", BYTE * 3),  # 0x1B
     ("_4", DWORD * 2),  # 0x20
     ("_5", WORD),  # 0x28
-    ("wBossLineId", WORD)  # 0x2A
+    ("wBossLineId", WORD),  # 0x2A
 ]
 
-MonsterTxt._fields_ = [
-    ("TxtFileNo", WORD),
-    ("name", CHAR * 16)
-]
+MonsterTxt._fields_ = [("TxtFileNo", WORD), ("name", CHAR * 16)]
 
 InventoryGrid._fields_ = [
     ("pFirstEquipItem", c_void_p),  # 0x00
@@ -364,7 +354,7 @@ Inventory._fields_ = [
     ("_4", DWORD),  # 0x3C
     ("pCursorItem", c_void_p),  # 0x40
     ("dwOwnerId", DWORD),  # 0x48
-    ("dwFilledSockets", DWORD)  # 0x4C
+    ("dwFilledSockets", DWORD),  # 0x4C
 ]
 
 Stat._fields_ = [
@@ -376,7 +366,7 @@ Stat._fields_ = [
 StatVector._fields_ = [
     ("pStats", c_void_p),  # 0x0
     ("dwlSize", c_uint64),  # 0x8
-    ("dwlCapacity", c_uint64)  # 0x10
+    ("dwlCapacity", c_uint64),  # 0x10
 ]
 
 StatsList._fields_ = [
@@ -395,7 +385,7 @@ StatsList._fields_ = [
     ("_6", DWORD * 3),  # 0x78
     ("Stats", StatVector),  # 0x88
     ("_7", DWORD * 0x28A),  # 0x100
-    ("StateFlags", DWORD * 6)  # 0xAC8
+    ("StateFlags", DWORD * 6),  # 0xAC8
 ]
 
 HostileInfo._fields_ = [
@@ -420,7 +410,7 @@ RosterMember._fields_ = [
     ("_3", DWORD),  # 0x6C
     ("pHostileInfo", c_void_p),  # 0x70
     ("_4", DWORD * 0x34),  # 0x78
-    ("pNext", c_void_p)  # 0x148
+    ("pNext", c_void_p),  # 0x148
 ]
 
 UI._fields_ = [
@@ -437,7 +427,10 @@ UI._fields_ = [
     ("_4", BYTE * 2),
     ("questsMenu", c_bool),
     ("_5", BYTE * 3),
-    ("isNotPlayerAlone", c_bool),  # when the player is the only player in the game and no merc
+    (
+        "isNotPlayerAlone",
+        c_bool,
+    ),  # when the player is the only player in the game and no merc
     ("waypointMenu", c_bool),
     ("_6", BYTE),
     ("partyMenu", c_bool),
@@ -450,7 +443,7 @@ UI._fields_ = [
     ("_10", BYTE * 0x37),
     ("pUnkUI", c_void_p),
     ("_11", BYTE * 0xC),
-    ("loading", BYTE)
+    ("loading", BYTE),
 ]
 
 Minions._fields_ = [
@@ -459,14 +452,14 @@ Minions._fields_ = [
     ("dwUnitId", DWORD),
     ("dwOwnerId", DWORD),
     ("_2", DWORD * 7),
-    ("pNext", c_void_p)
+    ("pNext", c_void_p),
 ]
 
 LastHoverUnit._fields_ = [
     ("bIsHovered", c_bool),
     ("_1", BYTE * 3),
     ("dwType", DWORD),
-    ("dwUnitId", DWORD)
+    ("dwUnitId", DWORD),
 ]
 
 if __name__ == "__main__":

@@ -16,7 +16,6 @@ from su_core.data import *
 
 
 class UnitAny:
-
     def __init__(self, address, path_type="dynamic"):
         self._address = address
         self._path_type = path_type
@@ -29,7 +28,9 @@ class UnitAny:
         self._stats_list_struct = None
 
     def update(self):
-        self._stats_list_struct = mem.read_struct(self._struct.pStatList, StructStatList)
+        self._stats_list_struct = mem.read_struct(
+            self._struct.pStatList, StructStatList
+        )
 
         if self._path_type == "dynamic":
             self._path = Path(self._struct.pPath)
@@ -44,7 +45,9 @@ class UnitAny:
     @staticmethod
     def read_stats(stat_vector):
         num_of_stats = stat_vector.dwlSize
-        raw_stats = mem.read_bytes(stat_vector.pStats, num_of_stats * ct.sizeof(StructStat))
+        raw_stats = mem.read_bytes(
+            stat_vector.pStats, num_of_stats * ct.sizeof(StructStat)
+        )
         stats_array = StructStat * num_of_stats
         stats_array = stats_array.from_buffer_copy(raw_stats)
 
@@ -122,7 +125,6 @@ class ActMisc:
 
 
 class Act:
-
     def __init__(self, address):
         self._address = address
         self._struct = None
@@ -145,7 +147,6 @@ class Act:
 
 
 class Path:
-
     def __init__(self, address):
         self._struct = None
         self._room1 = None
@@ -161,7 +162,10 @@ class Path:
 
     @property
     def position(self):
-        return self._struct.xPos + self._struct.xOffset / 65536, self._struct.yPos + self._struct.yOffset / 65536
+        return (
+            self._struct.xPos + self._struct.xOffset / 65536,
+            self._struct.yPos + self._struct.yOffset / 65536,
+        )
 
     @property
     def room1(self):
@@ -173,7 +177,6 @@ class Path:
 
 
 class ItemPath:
-
     def __init__(self, address):
         self._address = address
         self._struct = None
@@ -188,7 +191,6 @@ class ItemPath:
 
 
 class Room1:
-
     def __init__(self, address):
         self._address = address
         self._struct = None
@@ -206,7 +208,6 @@ class Room1:
 
 
 class Room2:
-
     def __init__(self, address):
         self._address = address
         self._struct = None
@@ -223,7 +224,6 @@ class Room2:
 
 
 class Level:
-
     def __init__(self, address):
         self._address = address
         self._struct = None

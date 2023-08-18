@@ -6,7 +6,6 @@ from su_core.pyStructures import Inventory, InventoryGrid
 
 
 class Inventories:
-
     def __init__(self, address):
         self._address = address
         self._struct = None
@@ -31,7 +30,9 @@ class Inventories:
 
     def update(self):
         self._struct = mem.read_struct(self._address, Inventory)
-        self._struct_inventories = mem.read_struct(self._struct.pInventoryGrid, InventoryGrid)
+        self._struct_inventories = mem.read_struct(
+            self._struct.pInventoryGrid, InventoryGrid
+        )
         self._owner_id = self._struct.dwOwnerId
         self._weapon_id = self._struct.dwWeaponId
         self._sig = self._struct.dwSignature
@@ -157,6 +158,3 @@ class Inventories:
             return self._grid[i][j]
         else:
             raise KeyError(f"Key: {key} of type: {type(key)} is not supported")
-
-
-

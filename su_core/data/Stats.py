@@ -579,8 +579,7 @@ descpriority = {
     "item_replenish_quantity": 2,
     "item_charged_skill": 1,
     "item_replenish_durability": 1,
-    "item_req_percent": 0
-
+    "item_req_percent": 0,
 }
 
 

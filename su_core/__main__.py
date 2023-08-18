@@ -24,5 +24,5 @@ def main():
         server_proc.terminate()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

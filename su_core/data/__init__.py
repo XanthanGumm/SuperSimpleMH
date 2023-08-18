@@ -9,4 +9,3 @@ from su_core.data.Stats import *
 from su_core.data.Npcs import *
 from su_core.data.GameItem import *
 from su_core.data.tables import *
-

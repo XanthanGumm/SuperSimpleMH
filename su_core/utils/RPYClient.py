@@ -4,9 +4,12 @@ from cachetools.keys import hashkey
 
 
 class RPYClient:
-
     def __init__(self, port=18861):
-        self._conn = rpyc.connect("localhost", port=port, config={"sync_request": True, "sync_request_timeout": 60})
+        self._conn = rpyc.connect(
+            "localhost",
+            port=port,
+            config={"sync_request": True, "sync_request_timeout": 60},
+        )
 
         self._prev_seed = None
         self._prev_area = None
@@ -15,12 +18,12 @@ class RPYClient:
     def read_map(self, area: int, player_position: tuple) -> dict:
         data = self._conn.root.read_map_data(area, player_position)
         return {
-            "area":            data["area"],
-            "size":            data["size"],
-            "origin":          data["origin"],
-            "exits":           data["exits"],
-            "waypoint":        data["waypoint"],
-            "adjacent_levels": data["adjacent_levels"]
+            "area": data["area"],
+            "size": data["size"],
+            "origin": data["origin"],
+            "exits": data["exits"],
+            "waypoint": data["waypoint"],
+            "adjacent_levels": data["adjacent_levels"],
         }
 
     @cached(cache={}, key=lambda self, area: hashkey(area))

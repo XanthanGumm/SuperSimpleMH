@@ -4,7 +4,6 @@ from su_core.data import Menus
 
 
 class Menu:
-
     __instance = None
     # last menu that was open which is != from the current menu that is open
     last_open = None
@@ -87,18 +86,18 @@ class Menu:
     @property
     def is_open(self) -> bool:
         return (
-            not self.is_game_active or
-            self._invMenu or
-            self._charMenu or
-            self._skillMenu or
-            self._npcInteract or
-            self._quitMenu or
-            self._npcShop or
-            self._questsMenu or
-            self._waypointMenu or
-            self._partyMenu or
-            self._stash or
-            self._mercMenu
+            not self.is_game_active
+            or self._invMenu
+            or self._charMenu
+            or self._skillMenu
+            or self._npcInteract
+            or self._quitMenu
+            or self._npcShop
+            or self._questsMenu
+            or self._waypointMenu
+            or self._partyMenu
+            or self._stash
+            or self._mercMenu
         )
 
     @property
@@ -108,5 +107,3 @@ class Menu:
     @property
     def waypoint_menu(self) -> bool:
         return self._waypointMenu
-
-

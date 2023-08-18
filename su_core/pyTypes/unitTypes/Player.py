@@ -8,7 +8,6 @@ from su_core.utils.exceptions import InvalidPlayerUnit
 
 
 class Player(UnitAny):
-
     my_player_id = None
 
     def __init__(self, address):
@@ -33,7 +32,7 @@ class Player(UnitAny):
             raise InvalidPlayerUnit("Act is not loaded")
 
         self._act = Act(self._struct.pAct)
-        self._name = mem.read_bytes(self._struct.pUnitData, 16).rstrip(b'\x00')
+        self._name = mem.read_bytes(self._struct.pUnitData, 16).rstrip(b"\x00")
 
         return True
 
@@ -46,9 +45,13 @@ class Player(UnitAny):
             basestats = self.read_stats(self._stats_list_struct.BaseStats)
             self._life = next(iter(basestats[StatOriginal.Life.name][-1].values())) >> 8
             if StatOriginal.MaxLife.name in stats:
-                self._maxlife = next(iter(stats[StatOriginal.MaxLife.name][-1].values()))
+                self._maxlife = next(
+                    iter(stats[StatOriginal.MaxLife.name][-1].values())
+                )
             else:
-                self._maxlife = next(iter(basestats[StatOriginal.MaxLife.name][-1].values()))
+                self._maxlife = next(
+                    iter(basestats[StatOriginal.MaxLife.name][-1].values())
+                )
 
             self._life_percent = self._life // self._maxlife
 
@@ -74,11 +77,17 @@ class Player(UnitAny):
         if StatOriginal.item_fastercastrate.name in stats:
             fcr = next(iter(stats[StatOriginal.item_fastercastrate.name][-1].values()))
         if StatOriginal.item_fasterattackrate.name in stats:
-            ias = next(iter(stats[StatOriginal.item_fasterattackrate.name][-1].values()))
+            ias = next(
+                iter(stats[StatOriginal.item_fasterattackrate.name][-1].values())
+            )
         if StatOriginal.item_fastermovevelocity.name in stats:
-            frw = next(iter(stats[StatOriginal.item_fastermovevelocity.name][-1].values()))
+            frw = next(
+                iter(stats[StatOriginal.item_fastermovevelocity.name][-1].values())
+            )
         if StatOriginal.item_fastergethitrate.name in stats:
-            fhr = next(iter(stats[StatOriginal.item_fastergethitrate.name][-1].values()))
+            fhr = next(
+                iter(stats[StatOriginal.item_fastergethitrate.name][-1].values())
+            )
 
         self._resists["cold"] = cold - penalty
         self._resists["fire"] = fire - penalty
@@ -107,11 +116,13 @@ class Player(UnitAny):
 
     @property
     def is_in_town(self):
-        return self.path.room1.room2.level.area in [Area.RogueEncampment,
-                                                    Area.LutGholein,
-                                                    Area.KurastDocks,
-                                                    Area.ThePandemoniumFortress,
-                                                    Area.Harrogath]
+        return self.path.room1.room2.level.area in [
+            Area.RogueEncampment,
+            Area.LutGholein,
+            Area.KurastDocks,
+            Area.ThePandemoniumFortress,
+            Area.Harrogath,
+        ]
 
     @property
     def inventory(self) -> Inventories:
@@ -152,5 +163,3 @@ class Player(UnitAny):
     @property
     def ias(self):
         return self._ias
-
-

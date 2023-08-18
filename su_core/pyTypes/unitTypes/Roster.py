@@ -3,7 +3,6 @@ from su_core.pyStructures import RosterMember, HostileInfo
 
 
 class Roster:
-
     def __init__(self, address):
         self._address = address
         self._struct = mem.read_struct(self._address, RosterMember)
@@ -21,7 +20,6 @@ class Roster:
         p_hostile_info = mem.read_pointer(self._struct.pHostileInfo)
 
         while True:
-
             if not p_hostile_info:
                 break
 
@@ -55,7 +53,3 @@ class Roster:
     @property
     def next(self):
         return self._next
-
-
-
-
