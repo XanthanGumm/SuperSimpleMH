@@ -42,94 +42,60 @@ class Mem:
         retrieve absolute address of the unit table
         :return: unit hash table address
         """
-        pattern_address = pm.aob_scan_module(
-            self.proc, "D2R.exe", self.unit_table_offset
-        )
+        pattern_address = pm.aob_scan_module(self.proc, "D2R.exe", self.unit_table_offset)
         if len(pattern_address) == 0:
-            self._logger.warning(
-                f"Could not find unit table offset with pattern: {self.unit_table_offset}"
-            )
+            self._logger.warning(f"Could not find unit table offset with pattern: {self.unit_table_offset}")
         elif len(pattern_address) == 1:
-            self._logger.info(
-                f"Unit table has been found at offset: {hex(pattern_address[0] - self.base)} + (7)"
-            )
+            self._logger.info(f"Unit table has been found at offset: {hex(pattern_address[0] - self.base)} + (7)")
         else:
-            self._logger.warning(
-                f"Found more then one unit table offset with pattern: {self.unit_table_offset}"
-            )
+            self._logger.warning(f"Found more then one unit table offset with pattern: {self.unit_table_offset}")
 
         unit_table_offset = pm.r_int(self.proc, pattern_address[0] + 7)
 
         address = self.base + unit_table_offset
-        self._logger.debug(
-            f"Found unit table address: {hex(address)} at r_int(pattern + 7)\n"
-        )
+        self._logger.debug(f"Found unit table address: {hex(address)} at r_int(pattern + 7)\n")
         return address
 
     def get_expansion_address(self):
-        pattern_address = pm.aob_scan_module(
-            self.proc, "D2R.exe", self.expansion_offset
-        )
+        pattern_address = pm.aob_scan_module(self.proc, "D2R.exe", self.expansion_offset)
         if len(pattern_address) == 0:
-            self._logger.warning(
-                f"Could not find expansion offset with pattern: {self.expansion_offset}"
-            )
+            self._logger.warning(f"Could not find expansion offset with pattern: {self.expansion_offset}")
         elif len(pattern_address) == 1:
-            self._logger.info(
-                f"Expansion has been found at offset: {hex(pattern_address[0] - self.base)} + (3)"
-            )
+            self._logger.info(f"Expansion has been found at offset: {hex(pattern_address[0] - self.base)} + (3)")
         else:
-            self._logger.warning(
-                f"Found more then one Expansion offset with pattern: {self.expansion_offset}"
-            )
+            self._logger.warning(f"Found more then one Expansion offset with pattern: {self.expansion_offset}")
 
         relative_address = pm.r_int(self.proc, pattern_address[0] + 3)
         delta = pattern_address[0] - self.base
 
         address = self.base + delta + 7 + relative_address
-        self._logger.debug(
-            f"Found Expansion address: {hex(address)} at r_int(pattern + 3) + pattern - base + 7\n"
-        )
+        self._logger.debug(f"Found Expansion address: {hex(address)} at r_int(pattern + 3) + pattern - base + 7\n")
         return address
 
     def get_ui_address(self):
         pattern_address = pm.aob_scan_module(self.proc, "D2R.exe", self.ui_offset)
         if len(pattern_address) == 0:
-            self._logger.warning(
-                f"Could not find UI offset with pattern: {self.ui_offset}"
-            )
+            self._logger.warning(f"Could not find UI offset with pattern: {self.ui_offset}")
         elif len(pattern_address) == 1:
-            self._logger.info(
-                f"UI has been found at offset: {hex(pattern_address[0] - self.base)} + (6)"
-            )
+            self._logger.info(f"UI has been found at offset: {hex(pattern_address[0] - self.base)} + (6)")
         else:
-            self._logger.warning(
-                f"Found more then one UI offset with pattern: {self.ui_offset}"
-            )
+            self._logger.warning(f"Found more then one UI offset with pattern: {self.ui_offset}")
 
         relative_address = pm.r_int(self.proc, pattern_address[0] + 6)
         delta = pattern_address[0] - self.base
 
         address = self.base + delta + relative_address  # + 10
-        self._logger.debug(
-            f"Found UI address: {hex(address)} at r_int(pattern + 6) + pattern - base\n"
-        )
+        self._logger.debug(f"Found UI address: {hex(address)} at r_int(pattern + 6) + pattern - base\n")
         return address
 
     def get_minions_address(self):
         pattern_address = pm.aob_scan_module(self.proc, "D2R.exe", self.minions_offset)
         if len(pattern_address) == 0:
-            self._logger.warning(
-                f"Could not find players minions offset with pattern: {self.minions_offset}"
-            )
+            self._logger.warning(f"Could not find players minions offset with pattern: {self.minions_offset}")
         elif len(pattern_address) == 1:
-            self._logger.info(
-                f"Players minions has been found at offset: {hex(pattern_address[0]  - self.base)} + (3)"
-            )
+            self._logger.info(f"Players minions has been found at offset: {hex(pattern_address[0]  - self.base)} + (3)")
         else:
-            self._logger.warning(
-                f"Found more then one players minions offset with pattern: {self.minions_offset}"
-            )
+            self._logger.warning(f"Found more then one players minions offset with pattern: {self.minions_offset}")
 
         relative_address = pm.r_int(self.proc, pattern_address[0] + 3)
         delta = pattern_address[0] - self.base
@@ -143,48 +109,32 @@ class Mem:
     def get_roster_address(self):
         pattern_address = pm.aob_scan_module(self.proc, "D2R.exe", self.roster_offset)
         if len(pattern_address) == 0:
-            self._logger.warning(
-                f"Could not find roster offset with pattern: {self.roster_offset}"
-            )
+            self._logger.warning(f"Could not find roster offset with pattern: {self.roster_offset}")
         elif len(pattern_address) == 1:
-            self._logger.info(
-                f"Roster has been found at offset: {hex(pattern_address[0] - self.base)} - (3)"
-            )
+            self._logger.info(f"Roster has been found at offset: {hex(pattern_address[0] - self.base)} - (3)")
         else:
-            self._logger.warning(
-                f"Found more then one roster offset with pattern: {self.roster_offset}"
-            )
+            self._logger.warning(f"Found more then one roster offset with pattern: {self.roster_offset}")
 
         relative_address = pm.r_int(self.proc, pattern_address[0] - 3)
         delta = pattern_address[0] - self.base
 
         address = self.base + delta + relative_address + 1
-        self._logger.debug(
-            f"Found roster address: {hex(address)} at r_int(pattern - 3) + pattern - base + 1\n"
-        )
+        self._logger.debug(f"Found roster address: {hex(address)} at r_int(pattern - 3) + pattern - base + 1\n")
         return address
 
     def get_last_hover_address(self):
         pattern_address = pm.aob_scan_module(self.proc, "D2R.exe", self.hover_offset)
         if len(pattern_address) == 0:
-            self._logger.warning(
-                f"Could not find last hover offset with pattern: {self.hover_offset}"
-            )
+            self._logger.warning(f"Could not find last hover offset with pattern: {self.hover_offset}")
         elif len(pattern_address) == 1:
-            self._logger.info(
-                f"Last hover has been found at offset: {hex(pattern_address[0] - self.base)} + (3)"
-            )
+            self._logger.info(f"Last hover has been found at offset: {hex(pattern_address[0] - self.base)} + (3)")
         else:
-            self._logger.warning(
-                f"Found more then one last hover offset with pattern: {self.hover_offset}"
-            )
+            self._logger.warning(f"Found more then one last hover offset with pattern: {self.hover_offset}")
 
         relative_address = pm.r_int(self.proc, pattern_address[0] + 3) - 1
 
         address = self.base + relative_address
-        self._logger.debug(
-            f"Found last hover address: {hex(address)} at r_int(pattern + 3) - 1\n"
-        )
+        self._logger.debug(f"Found last hover address: {hex(address)} at r_int(pattern + 3) - 1\n")
         return address
 
     def read_struct(self, address, Ts: Type[ct.Structure]) -> ct.Structure:

@@ -30,9 +30,7 @@ class Inventories:
 
     def update(self):
         self._struct = mem.read_struct(self._address, Inventory)
-        self._struct_inventories = mem.read_struct(
-            self._struct.pInventoryGrid, InventoryGrid
-        )
+        self._struct_inventories = mem.read_struct(self._struct.pInventoryGrid, InventoryGrid)
         self._owner_id = self._struct.dwOwnerId
         self._weapon_id = self._struct.dwWeaponId
         self._sig = self._struct.dwSignature

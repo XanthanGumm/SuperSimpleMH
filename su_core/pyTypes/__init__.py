@@ -28,9 +28,7 @@ class UnitAny:
         self._stats_list_struct = None
 
     def update(self):
-        self._stats_list_struct = mem.read_struct(
-            self._struct.pStatList, StructStatList
-        )
+        self._stats_list_struct = mem.read_struct(self._struct.pStatList, StructStatList)
 
         if self._path_type == "dynamic":
             self._path = Path(self._struct.pPath)
@@ -45,9 +43,7 @@ class UnitAny:
     @staticmethod
     def read_stats(stat_vector):
         num_of_stats = stat_vector.dwlSize
-        raw_stats = mem.read_bytes(
-            stat_vector.pStats, num_of_stats * ct.sizeof(StructStat)
-        )
+        raw_stats = mem.read_bytes(stat_vector.pStats, num_of_stats * ct.sizeof(StructStat))
         stats_array = StructStat * num_of_stats
         stats_array = stats_array.from_buffer_copy(raw_stats)
 

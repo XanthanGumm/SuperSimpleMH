@@ -1342,43 +1342,19 @@ items_codes = {
 
 item_texture_name = dict()
 # helm
+item_texture_name.update(item_texture_name.fromkeys([GameItem.Cap, GameItem.WarHat, GameItem.Shako], "cap_hat"))
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.Cap, GameItem.WarHat, GameItem.Shako], "cap_hat"
-    )
+    item_texture_name.fromkeys([GameItem.SkullCap, GameItem.Sallet, GameItem.Hydraskull], "skull_cap")
 )
+item_texture_name.update(item_texture_name.fromkeys([GameItem.Helm, GameItem.Casque, GameItem.Armet], "helm"))
+item_texture_name.update(item_texture_name.fromkeys([GameItem.FullHelm, GameItem.Casque, GameItem.Armet], "full_helm"))
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.SkullCap, GameItem.Sallet, GameItem.Hydraskull], "skull_cap"
-    )
+    item_texture_name.fromkeys([GameItem.GreatHelm, GameItem.WingedHelm, GameItem.SpiredHelm], "great_helm")
 )
+item_texture_name.update(item_texture_name.fromkeys([GameItem.Mask, GameItem.DeathMask, GameItem.DemonHead], "mask"))
+item_texture_name.update(item_texture_name.fromkeys([GameItem.Crown, GameItem.GrandCrown, GameItem.Corona], "crown"))
 item_texture_name.update(
-    item_texture_name.fromkeys([GameItem.Helm, GameItem.Casque, GameItem.Armet], "helm")
-)
-item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.FullHelm, GameItem.Casque, GameItem.Armet], "full_helm"
-    )
-)
-item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.GreatHelm, GameItem.WingedHelm, GameItem.SpiredHelm], "great_helm"
-    )
-)
-item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.Mask, GameItem.DeathMask, GameItem.DemonHead], "mask"
-    )
-)
-item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.Crown, GameItem.GrandCrown, GameItem.Corona], "crown"
-    )
-)
-item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.BoneHelm, GameItem.GrimHelm, GameItem.BoneVisage], "bone_helm"
-    )
+    item_texture_name.fromkeys([GameItem.BoneHelm, GameItem.GrimHelm, GameItem.BoneVisage], "bone_helm")
 )
 item_texture_name.update(
     item_texture_name.fromkeys(
@@ -1387,14 +1363,10 @@ item_texture_name.update(
     )
 )
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.FangedHelm, GameItem.LionHelm, GameItem.FuryVisor], "fanged_helm"
-    )
+    item_texture_name.fromkeys([GameItem.FangedHelm, GameItem.LionHelm, GameItem.FuryVisor], "fanged_helm")
 )
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.HornedHelm, GameItem.RageMask, GameItem.DestroyerHelm], "horned_helm"
-    )
+    item_texture_name.fromkeys([GameItem.HornedHelm, GameItem.RageMask, GameItem.DestroyerHelm], "horned_helm")
 )
 item_texture_name.update(
     item_texture_name.fromkeys(
@@ -1409,19 +1381,13 @@ item_texture_name.update(
     )
 )
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.WolfHead, GameItem.AlphaHelm, GameItem.BloodSpirit], "wolf_head"
-    )
+    item_texture_name.fromkeys([GameItem.WolfHead, GameItem.AlphaHelm, GameItem.BloodSpirit], "wolf_head")
 )
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.HawkHelm, GameItem.GriffonHeaddress, GameItem.SunSpirit], "hawk_helm"
-    )
+    item_texture_name.fromkeys([GameItem.HawkHelm, GameItem.GriffonHeaddress, GameItem.SunSpirit], "hawk_helm")
 )
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.Antlers, GameItem.HuntersGuise, GameItem.EarthSpirit], "antlers"
-    )
+    item_texture_name.fromkeys([GameItem.Antlers, GameItem.HuntersGuise, GameItem.EarthSpirit], "antlers")
 )
 item_texture_name.update(
     item_texture_name.fromkeys(
@@ -1430,9 +1396,7 @@ item_texture_name.update(
     )
 )
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.SpiritMask, GameItem.TotemicMask, GameItem.DreamSpirit], "spirit_mask"
-    )
+    item_texture_name.fromkeys([GameItem.SpiritMask, GameItem.TotemicMask, GameItem.DreamSpirit], "spirit_mask")
 )
 # armor
 item_texture_name.update(
@@ -1460,9 +1424,7 @@ item_texture_name.update(
     )
 )
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.RingMail, GameItem.LinkedMail, GameItem.DiamondMail], "ring_mail"
-    )
+    item_texture_name.fromkeys([GameItem.RingMail, GameItem.LinkedMail, GameItem.DiamondMail], "ring_mail")
 )
 item_texture_name.update(
     item_texture_name.fromkeys(
@@ -1471,24 +1433,16 @@ item_texture_name.update(
     )
 )
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.BreastPlate, GameItem.Cuirass, GameItem.GreatHauberk], "breast_plate"
-    )
+    item_texture_name.fromkeys([GameItem.BreastPlate, GameItem.Cuirass, GameItem.GreatHauberk], "breast_plate")
 )
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.ChainMail, GameItem.MeshArmor, GameItem.Boneweave], "chain_mail"
-    )
+    item_texture_name.fromkeys([GameItem.ChainMail, GameItem.MeshArmor, GameItem.Boneweave], "chain_mail")
 )
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.SplintMail, GameItem.RussetArmor, GameItem.BalrogSkin], "splint_mail"
-    )
+    item_texture_name.fromkeys([GameItem.SplintMail, GameItem.RussetArmor, GameItem.BalrogSkin], "splint_mail")
 )
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.LightPlate, GameItem.MagePlate, GameItem.ArchonPlate], "light_plate"
-    )
+    item_texture_name.fromkeys([GameItem.LightPlate, GameItem.MagePlate, GameItem.ArchonPlate], "light_plate")
 )
 item_texture_name.update(
     item_texture_name.fromkeys(
@@ -1521,50 +1475,30 @@ item_texture_name.update(
     )
 )
 # shield
+item_texture_name.update(item_texture_name.fromkeys([GameItem.Buckler, GameItem.Defender, GameItem.Heater], "buckler"))
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.Buckler, GameItem.Defender, GameItem.Heater], "buckler"
-    )
+    item_texture_name.fromkeys([GameItem.SmallShield, GameItem.RoundShield, GameItem.Luna], "small_shield")
 )
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.SmallShield, GameItem.RoundShield, GameItem.Luna], "small_shield"
-    )
+    item_texture_name.fromkeys([GameItem.LargeShield, GameItem.Scutum, GameItem.Hyperion], "large_shield")
 )
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.LargeShield, GameItem.Scutum, GameItem.Hyperion], "large_shield"
-    )
+    item_texture_name.fromkeys([GameItem.KiteShield, GameItem.DragonShield, GameItem.Monarch], "kite_shield")
 )
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.KiteShield, GameItem.DragonShield, GameItem.Monarch], "kite_shield"
-    )
+    item_texture_name.fromkeys([GameItem.SpikedShield, GameItem.BarbedShield, GameItem.Blade], "spiked_shield")
 )
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.SpikedShield, GameItem.BarbedShield, GameItem.Blade], "spiked_shield"
-    )
+    item_texture_name.fromkeys([GameItem.TowerShield, GameItem.Pavise, GameItem.Aegis], "tower_shield")
 )
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.TowerShield, GameItem.Pavise, GameItem.Aegis], "tower_shield"
-    )
+    item_texture_name.fromkeys([GameItem.BoneShield, GameItem.GrimShield, GameItem.TrollNest], "bone_shield")
 )
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.BoneShield, GameItem.GrimShield, GameItem.TrollNest], "bone_shield"
-    )
+    item_texture_name.fromkeys([GameItem.GothicShield, GameItem.AncientShield, GameItem.Ward], "gothic_shield")
 )
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.GothicShield, GameItem.AncientShield, GameItem.Ward], "gothic_shield"
-    )
-)
-item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.Targe, GameItem.AkaranTarge, GameItem.SacredTarge], "targe"
-    )
+    item_texture_name.fromkeys([GameItem.Targe, GameItem.AkaranTarge, GameItem.SacredTarge], "targe")
 )
 item_texture_name.update(
     item_texture_name.fromkeys(
@@ -1615,9 +1549,7 @@ item_texture_name.update(
     )
 )
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.DemonHead, GameItem.HierophantTrophy, GameItem.BloodlordSkull], "mask"
-    )
+    item_texture_name.fromkeys([GameItem.DemonHead, GameItem.HierophantTrophy, GameItem.BloodlordSkull], "mask")
 )
 # gloves
 item_texture_name.update(
@@ -1645,15 +1577,11 @@ item_texture_name.update(
     )
 )
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.Gauntlets, GameItem.WarGauntlets, GameItem.OgreGauntlets], "gauntlets"
-    )
+    item_texture_name.fromkeys([GameItem.Gauntlets, GameItem.WarGauntlets, GameItem.OgreGauntlets], "gauntlets")
 )
 # boots
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.Boots, GameItem.DemonhideBoots, GameItem.WyrmhideBoots], "boots"
-    )
+    item_texture_name.fromkeys([GameItem.Boots, GameItem.DemonhideBoots, GameItem.WyrmhideBoots], "boots")
 )
 item_texture_name.update(
     item_texture_name.fromkeys(
@@ -1674,15 +1602,11 @@ item_texture_name.update(
     )
 )
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.Greaves, GameItem.WarBoots, GameItem.MyrmidonGreaves], "plate_boots"
-    )
+    item_texture_name.fromkeys([GameItem.Greaves, GameItem.WarBoots, GameItem.MyrmidonGreaves], "plate_boots")
 )
 # belts
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.Sash, GameItem.DemonhideSash, GameItem.SpiderwebSash], "sash"
-    )
+    item_texture_name.fromkeys([GameItem.Sash, GameItem.DemonhideSash, GameItem.SpiderwebSash], "sash")
 )
 item_texture_name.update(
     item_texture_name.fromkeys(
@@ -1690,92 +1614,52 @@ item_texture_name.update(
         "light_belt",
     )
 )
+item_texture_name.update(item_texture_name.fromkeys([GameItem.Belt, GameItem.MeshBelt, GameItem.MithrilCoil], "belt"))
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.Belt, GameItem.MeshBelt, GameItem.MithrilCoil], "belt"
-    )
+    item_texture_name.fromkeys([GameItem.HeavyBelt, GameItem.BattleBelt, GameItem.TrollBelt], "heavy_belt")
 )
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.HeavyBelt, GameItem.BattleBelt, GameItem.TrollBelt], "heavy_belt"
-    )
-)
-item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.PlatedBelt, GameItem.WarBelt, GameItem.ColossusGirdle], "plated_belt"
-    )
+    item_texture_name.fromkeys([GameItem.PlatedBelt, GameItem.WarBelt, GameItem.ColossusGirdle], "plated_belt")
 )
 # axes
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.HandAxe, GameItem.Hatchet, GameItem.Tomahawk], "hand_axe"
-    )
+    item_texture_name.fromkeys([GameItem.HandAxe, GameItem.Hatchet, GameItem.Tomahawk], "hand_axe")
+)
+item_texture_name.update(item_texture_name.fromkeys([GameItem.Axe, GameItem.Cleaver, GameItem.SmallCrescent], "axe"))
+item_texture_name.update(
+    item_texture_name.fromkeys([GameItem.DoubleAxe, GameItem.TwinAxe, GameItem.EttinAxe], "double_axe")
 )
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.Axe, GameItem.Cleaver, GameItem.SmallCrescent], "axe"
-    )
+    item_texture_name.fromkeys([GameItem.MilitaryPick, GameItem.Crowbill, GameItem.WarSpike], "military_pick")
+)
+item_texture_name.update(item_texture_name.fromkeys([GameItem.WarAxe, GameItem.Naga, GameItem.BerserkerAxe], "war_axe"))
+item_texture_name.update(
+    item_texture_name.fromkeys([GameItem.LargeAxe, GameItem.MilitaryAxe, GameItem.FeralAxe], "large_axe")
 )
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.DoubleAxe, GameItem.TwinAxe, GameItem.EttinAxe], "double_axe"
-    )
+    item_texture_name.fromkeys([GameItem.BroadAxe, GameItem.BeardedAxe, GameItem.SilverEdgedAxe], "broad_axe")
 )
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.MilitaryPick, GameItem.Crowbill, GameItem.WarSpike], "military_pick"
-    )
+    item_texture_name.fromkeys([GameItem.BattleAxe, GameItem.Tabar, GameItem.Decapitator], "battle_axe")
 )
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.WarAxe, GameItem.Naga, GameItem.BerserkerAxe], "war_axe"
-    )
+    item_texture_name.fromkeys([GameItem.GreatAxe, GameItem.GothicAxe, GameItem.ChampionAxe], "great_axe")
 )
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.LargeAxe, GameItem.MilitaryAxe, GameItem.FeralAxe], "large_axe"
-    )
-)
-item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.BroadAxe, GameItem.BeardedAxe, GameItem.SilverEdgedAxe], "broad_axe"
-    )
-)
-item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.BattleAxe, GameItem.Tabar, GameItem.Decapitator], "battle_axe"
-    )
-)
-item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.GreatAxe, GameItem.GothicAxe, GameItem.ChampionAxe], "great_axe"
-    )
-)
-item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.GiantAxe, GameItem.AncientAxe, GameItem.GloriousAxe], "giant_axe"
-    )
+    item_texture_name.fromkeys([GameItem.GiantAxe, GameItem.AncientAxe, GameItem.GloriousAxe], "giant_axe")
 )
 # bows
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.ShortBow, GameItem.EdgeBow, GameItem.SpiderBow], "short_bow"
-    )
+    item_texture_name.fromkeys([GameItem.ShortBow, GameItem.EdgeBow, GameItem.SpiderBow], "short_bow")
 )
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.HuntersBow, GameItem.RazorBow, GameItem.BladeBow], "hunters_bow"
-    )
+    item_texture_name.fromkeys([GameItem.HuntersBow, GameItem.RazorBow, GameItem.BladeBow], "hunters_bow")
 )
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.LongBow, GameItem.CedarBow, GameItem.ShadowBow], "long_bow"
-    )
+    item_texture_name.fromkeys([GameItem.LongBow, GameItem.CedarBow, GameItem.ShadowBow], "long_bow")
 )
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.CompositeBow, GameItem.DoubleBow, GameItem.GreatBow], "composite_bow"
-    )
+    item_texture_name.fromkeys([GameItem.CompositeBow, GameItem.DoubleBow, GameItem.GreatBow], "composite_bow")
 )
 item_texture_name.update(
     item_texture_name.fromkeys(
@@ -1790,19 +1674,13 @@ item_texture_name.update(
     )
 )
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.ShortWarBow, GameItem.RuneBow, GameItem.WardBow], "short_war_bow"
-    )
+    item_texture_name.fromkeys([GameItem.ShortWarBow, GameItem.RuneBow, GameItem.WardBow], "short_war_bow")
 )
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.LongWarBow, GameItem.GothicBow, GameItem.HydraBow], "long_war_bow"
-    )
+    item_texture_name.fromkeys([GameItem.LongWarBow, GameItem.GothicBow, GameItem.HydraBow], "long_war_bow")
 )
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.StagBow, GameItem.AshwoodBow, GameItem.MatriarchalBow], "stag_bow"
-    )
+    item_texture_name.fromkeys([GameItem.StagBow, GameItem.AshwoodBow, GameItem.MatriarchalBow], "stag_bow")
 )
 # crossbows
 item_texture_name.update(
@@ -1812,9 +1690,7 @@ item_texture_name.update(
     )
 )
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.Crossbow, GameItem.SiegeCrossbow, GameItem.GorgonCrossbow], "crossbow"
-    )
+    item_texture_name.fromkeys([GameItem.Crossbow, GameItem.SiegeCrossbow, GameItem.GorgonCrossbow], "crossbow")
 )
 item_texture_name.update(
     item_texture_name.fromkeys(
@@ -1835,46 +1711,22 @@ item_texture_name.update(
     )
 )
 # daggers
-item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.Dagger, GameItem.Poignard, GameItem.BoneKnife], "dagger"
-    )
-)
-item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.Dirk, GameItem.Rondel, GameItem.MithrilPoint], "dirk"
-    )
-)
-item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.Kris, GameItem.Cinquedeas, GameItem.FangedKnife], "kris"
-    )
-)
-item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.Blade, GameItem.Stiletto, GameItem.LegendSpike], "blade"
-    )
-)
+item_texture_name.update(item_texture_name.fromkeys([GameItem.Dagger, GameItem.Poignard, GameItem.BoneKnife], "dagger"))
+item_texture_name.update(item_texture_name.fromkeys([GameItem.Dirk, GameItem.Rondel, GameItem.MithrilPoint], "dirk"))
+item_texture_name.update(item_texture_name.fromkeys([GameItem.Kris, GameItem.Cinquedeas, GameItem.FangedKnife], "kris"))
+item_texture_name.update(item_texture_name.fromkeys([GameItem.Blade, GameItem.Stiletto, GameItem.LegendSpike], "blade"))
 # javelins
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.Javelin, GameItem.WarJavelin, GameItem.HyperionJavelin], "javelin"
-    )
+    item_texture_name.fromkeys([GameItem.Javelin, GameItem.WarJavelin, GameItem.HyperionJavelin], "javelin")
 )
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.Pilum, GameItem.GreatPilum, GameItem.StygianPilum], "pilum"
-    )
+    item_texture_name.fromkeys([GameItem.Pilum, GameItem.GreatPilum, GameItem.StygianPilum], "pilum")
 )
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.ShortSpear, GameItem.Simbilan, GameItem.BalrogSpear], "short_spear"
-    )
+    item_texture_name.fromkeys([GameItem.ShortSpear, GameItem.Simbilan, GameItem.BalrogSpear], "short_spear")
 )
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.Glaive, GameItem.Spiculum, GameItem.GhostGlaive], "glaive"
-    )
+    item_texture_name.fromkeys([GameItem.Glaive, GameItem.Spiculum, GameItem.GhostGlaive], "glaive")
 )
 item_texture_name.update(
     item_texture_name.fromkeys(
@@ -1893,83 +1745,49 @@ item_texture_name.update(
     )
 )
 # maces
+item_texture_name.update(item_texture_name.fromkeys([GameItem.Club, GameItem.Cudgel, GameItem.Truncheon], "club"))
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.Club, GameItem.Cudgel, GameItem.Truncheon], "club"
-    )
+    item_texture_name.fromkeys([GameItem.SpikedClub, GameItem.BarbedClub, GameItem.TyrantClub], "spiked_club")
 )
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.SpikedClub, GameItem.BarbedClub, GameItem.TyrantClub], "spiked_club"
-    )
+    item_texture_name.fromkeys([GameItem.Mace, GameItem.FlangedMace, GameItem.ReinforcedMace], "mace")
 )
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.Mace, GameItem.FlangedMace, GameItem.ReinforcedMace], "mace"
-    )
+    item_texture_name.fromkeys([GameItem.MorningStar, GameItem.JaggedStar, GameItem.DevilStar], "morning_star")
 )
-item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.MorningStar, GameItem.JaggedStar, GameItem.DevilStar], "morning_star"
-    )
-)
-item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.Flail, GameItem.Knout, GameItem.Scourge], "flail"
-    )
-)
+item_texture_name.update(item_texture_name.fromkeys([GameItem.Flail, GameItem.Knout, GameItem.Scourge], "flail"))
 item_texture_name.update(
     item_texture_name.fromkeys(
         [GameItem.WarHammer, GameItem.BattleHammer, GameItem.LegendaryMallet],
         "war_hammer",
     )
 )
+item_texture_name.update(item_texture_name.fromkeys([GameItem.Maul, GameItem.WarClub, GameItem.OgreMaul], "maul"))
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.Maul, GameItem.WarClub, GameItem.OgreMaul], "maul"
-    )
-)
-item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.GreatMaul, GameItem.MartelDeFer, GameItem.ThunderMaul], "great_maul"
-    )
+    item_texture_name.fromkeys([GameItem.GreatMaul, GameItem.MartelDeFer, GameItem.ThunderMaul], "great_maul")
 )
 # polearms
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.Bardiche, GameItem.LochaberAxe, GameItem.OgreAxe], "bardiche"
-    )
+    item_texture_name.fromkeys([GameItem.Bardiche, GameItem.LochaberAxe, GameItem.OgreAxe], "bardiche")
 )
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.Voulge, GameItem.Bill, GameItem.ColossusVoulge], "voulge"
-    )
+    item_texture_name.fromkeys([GameItem.Voulge, GameItem.Bill, GameItem.ColossusVoulge], "voulge")
 )
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.Scythe, GameItem.BattleScythe, GameItem.Thresher], "scythe"
-    )
+    item_texture_name.fromkeys([GameItem.Scythe, GameItem.BattleScythe, GameItem.Thresher], "scythe")
 )
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.Poleaxe, GameItem.Partizan, GameItem.CrypticAxe], "poleaxe"
-    )
+    item_texture_name.fromkeys([GameItem.Poleaxe, GameItem.Partizan, GameItem.CrypticAxe], "poleaxe")
 )
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.Halberd, GameItem.BecDeCorbin, GameItem.GreatPoleaxe], "halberd"
-    )
+    item_texture_name.fromkeys([GameItem.Halberd, GameItem.BecDeCorbin, GameItem.GreatPoleaxe], "halberd")
 )
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.WarScythe, GameItem.GrimScythe, GameItem.GiantThresher], "war_scythe"
-    )
+    item_texture_name.fromkeys([GameItem.WarScythe, GameItem.GrimScythe, GameItem.GiantThresher], "war_scythe")
 )
 # specters
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.Scepter, GameItem.RuneScepter, GameItem.MightyScepter], "scepter"
-    )
+    item_texture_name.fromkeys([GameItem.Scepter, GameItem.RuneScepter, GameItem.MightyScepter], "scepter")
 )
 item_texture_name.update(
     item_texture_name.fromkeys(
@@ -1978,36 +1796,20 @@ item_texture_name.update(
     )
 )
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.WarScepter, GameItem.DivineScepter, GameItem.Caduceus], "war_scepter"
-    )
+    item_texture_name.fromkeys([GameItem.WarScepter, GameItem.DivineScepter, GameItem.Caduceus], "war_scepter")
 )
 # spears
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.Spear, GameItem.WarSpear, GameItem.HyperionSpear], "spear"
-    )
+    item_texture_name.fromkeys([GameItem.Spear, GameItem.WarSpear, GameItem.HyperionSpear], "spear")
 )
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.Trident, GameItem.Fuscina, GameItem.StygianPike], "trident"
-    )
+    item_texture_name.fromkeys([GameItem.Trident, GameItem.Fuscina, GameItem.StygianPike], "trident")
 )
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.Brandistock, GameItem.WarFork, GameItem.Mancatcher], "brandistock"
-    )
+    item_texture_name.fromkeys([GameItem.Brandistock, GameItem.WarFork, GameItem.Mancatcher], "brandistock")
 )
-item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.Spetum, GameItem.Yari, GameItem.GhostSpear], "spetum"
-    )
-)
-item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.Pike, GameItem.Lance, GameItem.WarPike], "pike"
-    )
-)
+item_texture_name.update(item_texture_name.fromkeys([GameItem.Spetum, GameItem.Yari, GameItem.GhostSpear], "spetum"))
+item_texture_name.update(item_texture_name.fromkeys([GameItem.Pike, GameItem.Lance, GameItem.WarPike], "pike"))
 item_texture_name.update(
     item_texture_name.fromkeys(
         [GameItem.MaidenSpear, GameItem.CeremonialSpear, GameItem.MatriarchalSpear],
@@ -2022,14 +1824,10 @@ item_texture_name.update(
 )
 # staves
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.ShortStaff, GameItem.JoStaff, GameItem.WalkingStick], "short_staff"
-    )
+    item_texture_name.fromkeys([GameItem.ShortStaff, GameItem.JoStaff, GameItem.WalkingStick], "short_staff")
 )
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.LongStaff, GameItem.QuarterStaff, GameItem.Stalagmite], "long_staff"
-    )
+    item_texture_name.fromkeys([GameItem.LongStaff, GameItem.QuarterStaff, GameItem.Stalagmite], "long_staff")
 )
 item_texture_name.update(
     item_texture_name.fromkeys(
@@ -2044,30 +1842,20 @@ item_texture_name.update(
     )
 )
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.WarStaff, GameItem.RuneStaff, GameItem.ArchonStaff], "war_staff"
-    )
+    item_texture_name.fromkeys([GameItem.WarStaff, GameItem.RuneStaff, GameItem.ArchonStaff], "war_staff")
 )
 # swords
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.ShortSword, GameItem.Gladius, GameItem.Falcata], "short_sword"
-    )
+    item_texture_name.fromkeys([GameItem.ShortSword, GameItem.Gladius, GameItem.Falcata], "short_sword")
 )
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.Scimitar, GameItem.Cutlass, GameItem.Ataghan], "scimitar"
-    )
+    item_texture_name.fromkeys([GameItem.Scimitar, GameItem.Cutlass, GameItem.Ataghan], "scimitar")
 )
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.Sabre, GameItem.Shamshir, GameItem.ElegantBlade], "sabre"
-    )
+    item_texture_name.fromkeys([GameItem.Sabre, GameItem.Shamshir, GameItem.ElegantBlade], "sabre")
 )
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.Falchion, GameItem.Tulwar, GameItem.HydraEdge], "falchion"
-    )
+    item_texture_name.fromkeys([GameItem.Falchion, GameItem.Tulwar, GameItem.HydraEdge], "falchion")
 )
 item_texture_name.update(
     item_texture_name.fromkeys(
@@ -2082,14 +1870,10 @@ item_texture_name.update(
     )
 )
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.LongSword, GameItem.RuneSword, GameItem.CrypticSword], "long_sword"
-    )
+    item_texture_name.fromkeys([GameItem.LongSword, GameItem.RuneSword, GameItem.CrypticSword], "long_sword")
 )
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.WarSword, GameItem.AncientSword, GameItem.MythicalSword], "war_sword"
-    )
+    item_texture_name.fromkeys([GameItem.WarSword, GameItem.AncientSword, GameItem.MythicalSword], "war_sword")
 )
 item_texture_name.update(
     item_texture_name.fromkeys(
@@ -2098,14 +1882,10 @@ item_texture_name.update(
     )
 )
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.Claymore, GameItem.DacianFalx, GameItem.HighlandBlade], "claymore"
-    )
+    item_texture_name.fromkeys([GameItem.Claymore, GameItem.DacianFalx, GameItem.HighlandBlade], "claymore")
 )
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.GiantSword, GameItem.TuskSword, GameItem.BalrogBlade], "giant_sword"
-    )
+    item_texture_name.fromkeys([GameItem.GiantSword, GameItem.TuskSword, GameItem.BalrogBlade], "giant_sword")
 )
 item_texture_name.update(
     item_texture_name.fromkeys(
@@ -2114,9 +1894,7 @@ item_texture_name.update(
     )
 )
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.Flamberge, GameItem.Zweihander, GameItem.ColossusSword], "flamberge"
-    )
+    item_texture_name.fromkeys([GameItem.Flamberge, GameItem.Zweihander, GameItem.ColossusSword], "flamberge")
 )
 item_texture_name.update(
     item_texture_name.fromkeys(
@@ -2138,69 +1916,41 @@ item_texture_name.update(
     )
 )
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.ThrowingAxe, GameItem.Francisca, GameItem.FlyingAxe], "throwing_axe"
-    )
+    item_texture_name.fromkeys([GameItem.ThrowingAxe, GameItem.Francisca, GameItem.FlyingAxe], "throwing_axe")
 )
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.BalancedAxe, GameItem.Hurlbat, GameItem.WingedAxe], "balanced_axe"
-    )
+    item_texture_name.fromkeys([GameItem.BalancedAxe, GameItem.Hurlbat, GameItem.WingedAxe], "balanced_axe")
 )
 # wands
+item_texture_name.update(item_texture_name.fromkeys([GameItem.Wand, GameItem.BurntWand, GameItem.PolishedWand], "wand"))
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.Wand, GameItem.BurntWand, GameItem.PolishedWand], "wand"
-    )
+    item_texture_name.fromkeys([GameItem.YewWand, GameItem.PetrifiedWand, GameItem.GhostWand], "yew_wand")
 )
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.YewWand, GameItem.PetrifiedWand, GameItem.GhostWand], "yew_wand"
-    )
+    item_texture_name.fromkeys([GameItem.BoneWand, GameItem.TombWand, GameItem.LichWand], "bone_wand")
 )
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.BoneWand, GameItem.TombWand, GameItem.LichWand], "bone_wand"
-    )
-)
-item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.GrimWand, GameItem.GraveWand, GameItem.UnearthedWand], "grim_wand"
-    )
+    item_texture_name.fromkeys([GameItem.GrimWand, GameItem.GraveWand, GameItem.UnearthedWand], "grim_wand")
 )
 # katars
+item_texture_name.update(item_texture_name.fromkeys([GameItem.Katar, GameItem.Quhab, GameItem.Suwayyah], "katar"))
+# this one is incorrect. used only to find the correct texture
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.Katar, GameItem.Quhab, GameItem.Suwayyah], "katar"
-    )
+    item_texture_name.fromkeys([GameItem.WristBlade, GameItem.WristSpike, GameItem.WristSword], "katar")
+)
+item_texture_name.update(
+    item_texture_name.fromkeys([GameItem.HatchetHands, GameItem.Fascia, GameItem.WarFist], "hatchet_hands")
 )
 # this one is incorrect. used only to find the correct texture
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.WristBlade, GameItem.WristSpike, GameItem.WristSword], "katar"
-    )
+    item_texture_name.fromkeys([GameItem.Cestus, GameItem.HandScythe, GameItem.BattleCestus], "hatchet_hands")
 )
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.HatchetHands, GameItem.Fascia, GameItem.WarFist], "hatchet_hands"
-    )
+    item_texture_name.fromkeys([GameItem.Claws, GameItem.GreaterClaws, GameItem.FeralClaws], "claws")
 )
 # this one is incorrect. used only to find the correct texture
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.Cestus, GameItem.HandScythe, GameItem.BattleCestus], "hatchet_hands"
-    )
-)
-item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.Claws, GameItem.GreaterClaws, GameItem.FeralClaws], "claws"
-    )
-)
-# this one is incorrect. used only to find the correct texture
-item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.BladeTalons, GameItem.GreaterTalons, GameItem.RunicTalons], "claws"
-    )
+    item_texture_name.fromkeys([GameItem.BladeTalons, GameItem.GreaterTalons, GameItem.RunicTalons], "claws")
 )
 item_texture_name.update(
     item_texture_name.fromkeys(
@@ -2210,9 +1960,7 @@ item_texture_name.update(
 )
 # orbs
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.EagleOrb, GameItem.GlowingOrb, GameItem.HeavenlyStone], "eagle_orb"
-    )
+    item_texture_name.fromkeys([GameItem.EagleOrb, GameItem.GlowingOrb, GameItem.HeavenlyStone], "eagle_orb")
 )
 item_texture_name.update(
     item_texture_name.fromkeys(
@@ -2227,9 +1975,7 @@ item_texture_name.update(
     )
 )
 item_texture_name.update(
-    item_texture_name.fromkeys(
-        [GameItem.ClaspedOrb, GameItem.SparklingBall, GameItem.VortexOrb], "clasped_orb"
-    )
+    item_texture_name.fromkeys([GameItem.ClaspedOrb, GameItem.SparklingBall, GameItem.VortexOrb], "clasped_orb")
 )
 # this one is incorrect. used only to find the correct texture
 item_texture_name.update(
@@ -2245,12 +1991,6 @@ item_texture_name.update(item_texture_name.fromkeys([GameItem.Circlet], "circlet
 item_texture_name.update(item_texture_name.fromkeys([GameItem.Coronet], "coronet"))
 item_texture_name.update(item_texture_name.fromkeys([GameItem.Diadem], "diadem"))
 item_texture_name.update(item_texture_name.fromkeys([GameItem.Tiara], "tiara"))
-item_texture_name.update(
-    item_texture_name.fromkeys([GameItem.GrandCharm], "grand_charm")
-)
-item_texture_name.update(
-    item_texture_name.fromkeys([GameItem.LargeCharm], "large_charm")
-)
-item_texture_name.update(
-    item_texture_name.fromkeys([GameItem.SmallCharm], "small_charm")
-)
+item_texture_name.update(item_texture_name.fromkeys([GameItem.GrandCharm], "grand_charm"))
+item_texture_name.update(item_texture_name.fromkeys([GameItem.LargeCharm], "large_charm"))
+item_texture_name.update(item_texture_name.fromkeys([GameItem.SmallCharm], "small_charm"))

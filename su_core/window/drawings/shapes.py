@@ -38,9 +38,7 @@ class Arrow:
         end = end.rotate(-rot_angle)
 
         if not short_render:
-            pm.draw_line(
-                start.x, start.y, end.x, end.y, color=pm_colors[color], thick=2.0
-            )
+            pm.draw_line(start.x, start.y, end.x, end.y, color=pm_colors[color], thick=2.0)
 
         pm.draw_text(
             text=text,
@@ -81,12 +79,11 @@ class Cross:
     def __init__(self, position, size, scale_x, scale_y, cross_color):
         for p in range(1, 13):
             start_point = position + (
-                self.points[p - 1].multiply(size, size)
-                - CSharpVector2(size / 2, size / 2)
+                self.points[p - 1].multiply(size, size) - CSharpVector2(size / 2, size / 2)
             ).multiply(scale_x, scale_y)
-            end_point = position + (
-                self.points[p].multiply(size, size) - CSharpVector2(size / 2, size / 2)
-            ).multiply(scale_x, scale_y)
+            end_point = position + (self.points[p].multiply(size, size) - CSharpVector2(size / 2, size / 2)).multiply(
+                scale_x, scale_y
+            )
 
             if len(cross_color) == 0:
                 pm.draw_line(
@@ -112,23 +109,17 @@ class Cross:
                     start_point.y,
                     end_point.x,
                     end_point.y,
-                    color=pm_colors[cross_color[0]]
-                    if p < 6
-                    else pm_colors[cross_color[1]],
+                    color=pm_colors[cross_color[0]] if p < 6 else pm_colors[cross_color[1]],
                     thick=1,
                 )
 
 
 class PlayerLabel:
-    def __init__(
-        self, position, text, size, scale_y, font_size, text_color, back_color
-    ):
+    def __init__(self, position, text, size, scale_y, font_size, text_color, back_color):
         text_length = pm.measure_text(text, font_size) - 4
         text_height = font_size + scale_y
         pad_height = (Cross.d * size - size / 2) * scale_y
-        start_point_text = position - CSharpVector2(
-            text_length / 2, text_height + pad_height
-        )
+        start_point_text = position - CSharpVector2(text_length / 2, text_height + pad_height)
         pm.draw_font(
             1,
             text,
@@ -150,12 +141,8 @@ class PlayerLabel:
 
 
 class HostileLabel:
-    def __init__(
-        self, position, text, background_length, font_size, text_color, back_color
-    ):
-        pm.draw_font(
-            1, text, position.x, position.y, font_size, 0, pm_colors[text_color]
-        )
+    def __init__(self, position, text, background_length, font_size, text_color, back_color):
+        pm.draw_font(1, text, position.x, position.y, font_size, 0, pm_colors[text_color])
         pm.draw_rectangle_rounded(
             position.x,
             position.y,
@@ -168,10 +155,6 @@ class HostileLabel:
 
 
 class TextBox:
-    def __init__(
-        self, position, text, width, height, font_size, text_color, back_color
-    ):
-        pm.draw_font(
-            1, text, position.x, position.y, font_size, 0, pm_colors[text_color]
-        )
+    def __init__(self, position, text, width, height, font_size, text_color, back_color):
+        pm.draw_font(1, text, position.x, position.y, font_size, 0, pm_colors[text_color])
         pm.draw_rectangle(position.x, position.y, width, height, pm_colors[back_color])

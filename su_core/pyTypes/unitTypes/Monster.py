@@ -8,9 +8,7 @@ class Monster(UnitAny):
     def __init__(self, address):
         super(Monster, self).__init__(address)
         if self._struct.pStatList:
-            self._is_revived = (
-                mem.read_uint(self._struct.pStatList + 0xAC8 + 0xC) & 31 == 1
-            )
+            self._is_revived = mem.read_uint(self._struct.pStatList + 0xAC8 + 0xC) & 31 == 1
         else:
             self._is_revived = False
 
@@ -56,9 +54,7 @@ class Monster(UnitAny):
             if magic_res >= 100:
                 self._immunities_colors.append("gold")
         if StatOriginal.damageresist.name in stats:
-            physical_res = next(
-                iter(stats[StatOriginal.damageresist.name][-1].values())
-            )
+            physical_res = next(iter(stats[StatOriginal.damageresist.name][-1].values()))
             if physical_res >= 100:
                 self._immunities_colors.append("saddlebrown")
 
@@ -74,11 +70,7 @@ class Monster(UnitAny):
 
     @property
     def is_dead(self):  # why the hell the mode is kick when the monster is dead
-        return (
-            self._mode == PlrMode.Dead
-            or self._mode == PlrMode.Death
-            or self._mode == PlrMode.Kick
-        )
+        return self._mode == PlrMode.Dead or self._mode == PlrMode.Death or self._mode == PlrMode.Kick
 
     @property
     def is_revived(self):
@@ -88,12 +80,8 @@ class Monster(UnitAny):
     def is_strong_monster(self):
         return (
             (self._monster_data.bMonsterTypeFlags & MonsterTypeFlag.Champion.value) != 0
-            or (self._monster_data.bMonsterTypeFlags & MonsterTypeFlag.Unique.value)
-            != 0
-            or (
-                self._monster_data.bMonsterTypeFlags & MonsterTypeFlag.SuperUnique.value
-            )
-            != 0
+            or (self._monster_data.bMonsterTypeFlags & MonsterTypeFlag.Unique.value) != 0
+            or (self._monster_data.bMonsterTypeFlags & MonsterTypeFlag.SuperUnique.value) != 0
         )
 
     @property

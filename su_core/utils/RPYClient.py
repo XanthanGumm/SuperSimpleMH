@@ -1,4 +1,5 @@
 import rpyc
+import pyMeow as pm
 from cachetools import cached
 from cachetools.keys import hashkey
 
@@ -30,6 +31,10 @@ class RPYClient:
     def get_level_image(self, area: int) -> bytes:
         return self._conn.root.generate_map_image(area)
 
+    @cached(cache={}, key=lambda self, area: hashkey(area))
+    def get_level_texture(self, area: int):
+        return pm.load_texture_bytes(".png", self.get_level_image(area))
+
     def set_requirements(self, seed: int, difficulty: int) -> None:
         self._prev_seed = seed
         self._conn.root.set_map_seed(seed)
@@ -37,6 +42,7 @@ class RPYClient:
 
     def clear_cache(self) -> None:
         self.get_level_image.cache.clear()
+        self.get_level_texture.cache.clear()
         self.read_map.cache.clear()
         self._prev_area = None
 

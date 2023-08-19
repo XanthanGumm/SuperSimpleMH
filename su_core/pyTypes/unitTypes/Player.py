@@ -45,13 +45,9 @@ class Player(UnitAny):
             basestats = self.read_stats(self._stats_list_struct.BaseStats)
             self._life = next(iter(basestats[StatOriginal.Life.name][-1].values())) >> 8
             if StatOriginal.MaxLife.name in stats:
-                self._maxlife = next(
-                    iter(stats[StatOriginal.MaxLife.name][-1].values())
-                )
+                self._maxlife = next(iter(stats[StatOriginal.MaxLife.name][-1].values()))
             else:
-                self._maxlife = next(
-                    iter(basestats[StatOriginal.MaxLife.name][-1].values())
-                )
+                self._maxlife = next(iter(basestats[StatOriginal.MaxLife.name][-1].values()))
 
             self._life_percent = self._life // self._maxlife
 
@@ -77,17 +73,11 @@ class Player(UnitAny):
         if StatOriginal.item_fastercastrate.name in stats:
             fcr = next(iter(stats[StatOriginal.item_fastercastrate.name][-1].values()))
         if StatOriginal.item_fasterattackrate.name in stats:
-            ias = next(
-                iter(stats[StatOriginal.item_fasterattackrate.name][-1].values())
-            )
+            ias = next(iter(stats[StatOriginal.item_fasterattackrate.name][-1].values()))
         if StatOriginal.item_fastermovevelocity.name in stats:
-            frw = next(
-                iter(stats[StatOriginal.item_fastermovevelocity.name][-1].values())
-            )
+            frw = next(iter(stats[StatOriginal.item_fastermovevelocity.name][-1].values()))
         if StatOriginal.item_fastergethitrate.name in stats:
-            fhr = next(
-                iter(stats[StatOriginal.item_fastergethitrate.name][-1].values())
-            )
+            fhr = next(iter(stats[StatOriginal.item_fastergethitrate.name][-1].values()))
 
         self._resists["cold"] = cold - penalty
         self._resists["fire"] = fire - penalty

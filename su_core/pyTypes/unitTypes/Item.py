@@ -67,15 +67,9 @@ class Item(UnitAny):
         self._item_data = mem.read_struct(self._struct.pUnitData, ItemData)
         self._item_type = GameItem(self._txt_file_no)
 
-        self._is_runeword = (
-            self._item_data.ItemFlags & ItemFlag.IFLAG_RUNEWORD.value
-            == ItemFlag.IFLAG_RUNEWORD.value
-        )
+        self._is_runeword = self._item_data.ItemFlags & ItemFlag.IFLAG_RUNEWORD.value == ItemFlag.IFLAG_RUNEWORD.value
 
-        self._is_ethereal = (
-            self._item_data.ItemFlags & ItemFlag.IFLAG_ETHEREAL.value
-            == ItemFlag.IFLAG_ETHEREAL.value
-        )
+        self._is_ethereal = self._item_data.ItemFlags & ItemFlag.IFLAG_ETHEREAL.value == ItemFlag.IFLAG_ETHEREAL.value
 
         self._item_quality = ItemQuality(self._item_data.ItemQuality)
         self._texture_name = item_texture_name[self._item_type]
@@ -91,15 +85,11 @@ class Item(UnitAny):
 
         if self._item_quality == ItemQuality.UNIQUE:
             item_name = uniques.loc[self._item_data.dwUniqueOrSetId, "index"]
-            self._unique_texture_name = (
-                item_name.replace(" ", "_").replace("'", "").lower()
-            )
+            self._unique_texture_name = item_name.replace(" ", "_").replace("'", "").lower()
 
         if self._item_quality == ItemQuality.SET:
             item_name = sets.loc[self._item_data.dwUniqueOrSetId, "index"]
-            self._unique_texture_name = (
-                item_name.replace(" ", "_").replace("'", "").lower()
-            )
+            self._unique_texture_name = item_name.replace(" ", "_").replace("'", "").lower()
 
     def read_added_stats(self):
         if self._stats_list_struct.dwFlags & 0x80000000 == 0:
@@ -136,22 +126,12 @@ class Item(UnitAny):
         added_basestats, added_stats = self.read_added_stats()
 
         # merge ed stat from added basestats/stats
-        if (
-            "item_armor_percent" in added_stats
-            and "item_armor_percent" in added_basestats
-        ):
+        if "item_armor_percent" in added_stats and "item_armor_percent" in added_basestats:
             layer = get_last_key(added_stats["item_armor_percent"])
-            added_stats["item_armor_percent"][-1][layer] += added_basestats[
-                "item_armor_percent"
-            ][-1][layer]
-        if (
-            "item_maxdamage_percent" in added_stats
-            and "item_maxdamage_percent" in added_basestats
-        ):
+            added_stats["item_armor_percent"][-1][layer] += added_basestats["item_armor_percent"][-1][layer]
+        if "item_maxdamage_percent" in added_stats and "item_maxdamage_percent" in added_basestats:
             layer = get_last_key(added_stats["item_maxdamage_percent"])
-            added_stats["item_maxdamage_percent"][-1][layer] += added_basestats[
-                "item_maxdamage_percent"
-            ][-1][layer]
+            added_stats["item_maxdamage_percent"][-1][layer] += added_basestats["item_maxdamage_percent"][-1][layer]
 
         # add additional stats
         for k, v in added_stats.items():
@@ -191,50 +171,26 @@ class Item(UnitAny):
             dex = get_last_val(self._stats["dexterity"])
             vit = get_last_val(self._stats["vitality"])
             if stren == ene == dex == vit:
-                self._merge_stats_tooltip(
-                    "allatt", 0, vit, ["strength", "energy", "dexterity", "vitality"]
-                )
+                self._merge_stats_tooltip("allatt", 0, vit, ["strength", "energy", "dexterity", "vitality"])
 
         # merge elemental damage
         if "firemindam" in self._stats and "firemaxdam" in self._stats:
-            new_layer, new_stat = get_last_val(self._stats["firemindam"]), get_last_val(
-                self._stats["firemaxdam"]
-            )
-            self._merge_stats_tooltip(
-                "firedam", new_layer, new_stat, ["firemindam", "firemaxdam"]
-            )
+            new_layer, new_stat = get_last_val(self._stats["firemindam"]), get_last_val(self._stats["firemaxdam"])
+            self._merge_stats_tooltip("firedam", new_layer, new_stat, ["firemindam", "firemaxdam"])
         if "coldmindam" in self._stats and "coldmaxdam" in self._stats:
-            new_layer, new_stat = get_last_val(self._stats["coldmindam"]), get_last_val(
-                self._stats["coldmaxdam"]
-            )
-            self._merge_stats_tooltip(
-                "colddam", new_layer, new_stat, ["coldmindam", "coldmaxdam"]
-            )
+            new_layer, new_stat = get_last_val(self._stats["coldmindam"]), get_last_val(self._stats["coldmaxdam"])
+            self._merge_stats_tooltip("colddam", new_layer, new_stat, ["coldmindam", "coldmaxdam"])
         if "lightmindam" in self._stats and "lightmaxdam" in self._stats:
-            new_layer, new_stat = get_last_val(
-                self._stats["lightmindam"]
-            ), get_last_val(self._stats["lightmaxdam"])
-            self._merge_stats_tooltip(
-                "lightdam", new_layer, new_stat, ["lightmindam", "lightmaxdam"]
-            )
+            new_layer, new_stat = get_last_val(self._stats["lightmindam"]), get_last_val(self._stats["lightmaxdam"])
+            self._merge_stats_tooltip("lightdam", new_layer, new_stat, ["lightmindam", "lightmaxdam"])
         if "magicmindam" in self._stats and "magicmaxdam" in self._stats:
-            new_layer, new_stat = get_last_val(
-                self._stats["magicmindam"]
-            ), get_last_val(self._stats["magicmaxdam"])
-            self._merge_stats_tooltip(
-                "magicdam", new_layer, new_stat, ["magicmindam", "magicmaxdam"]
-            )
+            new_layer, new_stat = get_last_val(self._stats["magicmindam"]), get_last_val(self._stats["magicmaxdam"])
+            self._merge_stats_tooltip("magicdam", new_layer, new_stat, ["magicmindam", "magicmaxdam"])
         if "poisonmindam" in self._stats and "poisonmaxdam" in self._stats:
-            new_layer, new_stat = get_last_val(
-                self._stats["poisonmindam"]
-            ), get_last_val(self._stats["poisonmaxdam"])
-            self._merge_stats_tooltip(
-                "poisondam", new_layer, new_stat, ["poisonmindam", "poisonmaxdam"]
-            )
+            new_layer, new_stat = get_last_val(self._stats["poisonmindam"]), get_last_val(self._stats["poisonmaxdam"])
+            self._merge_stats_tooltip("poisondam", new_layer, new_stat, ["poisonmindam", "poisonmaxdam"])
 
-        stats_filtered = {
-            k: v for k, v in self._stats.items() if k not in self._stats_ignore_list
-        }
+        stats_filtered = {k: v for k, v in self._stats.items() if k not in self._stats_ignore_list}
         stats_sorted = dict(
             sorted(
                 stats_filtered.items(),
@@ -268,19 +224,13 @@ class Item(UnitAny):
                 item_prolog.append(f"One-Hand Damage: {mindmg} to {maxdmg}")
                 del stats_sorted["mindamage"]
                 del stats_sorted["maxdamage"]
-            if (
-                "secondary_mindamage" in stats_sorted
-                and "secondary_maxdamage" in stats_sorted
-            ):
+            if "secondary_mindamage" in stats_sorted and "secondary_maxdamage" in stats_sorted:
                 mindmg = get_last_val(stats_sorted["secondary_mindamage"])
                 maxdmg = get_last_val(stats_sorted["secondary_maxdamage"])
                 item_prolog.append(f"Two-Hand Damage: {mindmg} to {maxdmg}")
                 del stats_sorted["secondary_mindamage"]
                 del stats_sorted["secondary_maxdamage"]
-            if (
-                "item_throw_mindamage" in stats_sorted
-                and "item_throw_maxdamage" in stats_sorted
-            ):
+            if "item_throw_mindamage" in stats_sorted and "item_throw_maxdamage" in stats_sorted:
                 mindmg = get_last_val(stats_sorted["item_throw_mindamage"])
                 maxdmg = get_last_val(stats_sorted["item_throw_maxdamage"])
                 item_prolog.append(f"Throw Damage: {mindmg} to {maxdmg}")
@@ -303,10 +253,7 @@ class Item(UnitAny):
             item_name = runewords.loc[self._item_data.MagicPrefix[0], "*Rune Name"]
             item_runes = runewords.loc[self._item_data.MagicPrefix[0], "*RunesUsed"]
 
-        elif (
-            self._item_quality == ItemQuality.RARE
-            or self._item_quality == ItemQuality.CRAFTED
-        ):
+        elif self._item_quality == ItemQuality.RARE or self._item_quality == ItemQuality.CRAFTED:
             name_prefix, name_suffix = None, None
             if self._item_data.RarePrefix:
                 name_prefix = rareprefix.loc[self._item_data.RarePrefix, "name"]
@@ -368,9 +315,7 @@ class Item(UnitAny):
                     value = value / div_val
 
             except Exception:
-                _logger.debug(
-                    f"Exception occurred during drawing create item tooltip at stat: {name}"
-                )
+                _logger.debug(f"Exception occurred during drawing create item tooltip at stat: {name}")
                 _logger.debug(traceback.format_exc())
                 break
 
@@ -457,10 +402,7 @@ class Item(UnitAny):
                         | (charstats["StrSkillTab3"] == sk_tab_key)
                     ].index[0]
 
-                    stat_tooltip = (
-                        stat_tooltip
-                        + f"{sk_tab_val.replace('%d', str(val))} ({char} Only)\n"
-                    )
+                    stat_tooltip = stat_tooltip + f"{sk_tab_val.replace('%d', str(val))} ({char} Only)\n"
 
             elif descfunc == 15:  # skill on struck/strike/level/death
                 stat_str = stat_tooltip
@@ -483,11 +425,7 @@ class Item(UnitAny):
                 for stat_layer in stat:
                     (sk, sk_lvl), *_ = stat_layer.items()
                     sk = Skill(sk).name
-                    stat_tooltip = (
-                        stat_tooltip
-                        + stat_str.replace("%d", str(sk_lvl)).replace("%s", sk)
-                        + "\n"
-                    )
+                    stat_tooltip = stat_tooltip + stat_str.replace("%d", str(sk_lvl)).replace("%s", sk) + "\n"
 
             elif descfunc == 20:  # minus percent
                 if descval == 2:
@@ -503,10 +441,7 @@ class Item(UnitAny):
                     skill_lvl = sk_layer % (1 << 6)
                     max_charges = sk_val >> 8
                     charges = sk_val % (1 << 8)
-                    stat_tooltip = (
-                        stat_tooltip
-                        + f"Level {skill_lvl} {skill.name} ({charges}/{max_charges} Charges)\n"
-                    )
+                    stat_tooltip = stat_tooltip + f"Level {skill_lvl} {skill.name} ({charges}/{max_charges} Charges)\n"
 
             elif descfunc == 27:  # single skill
                 stat_tooltip = ""
@@ -514,8 +449,7 @@ class Item(UnitAny):
                     (sk, sk_val), *_ = stat_layer.items()
                     sk = Skill(sk)
                     char = charstats.loc[
-                        (charstats["skRangeMin"] <= sk.value)
-                        & (sk.value <= charstats["skRangeMax"])
+                        (charstats["skRangeMin"] <= sk.value) & (sk.value <= charstats["skRangeMax"])
                     ].index[0]
                     stat_tooltip = stat_tooltip + f"+{sk_val} {sk.name} ({char} Only)\n"
 
@@ -538,9 +472,7 @@ class Item(UnitAny):
                     psn_len = get_last_val(self._stats["poisonlength"]) // 25
                     stat_tooltip = f"+{int(value / (10.2 / psn_len))} poison damage over {psn_len} seconds"
                 else:
-                    stat_tooltip = (
-                        stat_tooltip.replace("%d-%d", f"{layer}-{value}") + "\n"
-                    )
+                    stat_tooltip = stat_tooltip.replace("%d-%d", f"{layer}-{value}") + "\n"
 
             item_tooltip.extend(stat_tooltip.splitlines())
 

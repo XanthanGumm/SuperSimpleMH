@@ -25,9 +25,7 @@ def obtain_units(unit_type: int) -> list:
                 while valid_units[-1].next:
                     valid_units.append(obtain_type(valid_units[-1].next))
             except Exception as e:
-                _logger.debug(
-                    f"Exception occurred during a search in the unit table for a unit of type {unit_type}"
-                )
+                _logger.debug(f"Exception occurred during a search in the unit table for a unit of type {unit_type}")
                 _logger.debug(traceback.format_exc())
 
     return valid_units
@@ -129,9 +127,7 @@ def obtain_hostiled_players(player_unit_id):
             if player_roster.is_hostiled(r.unit_id):
                 hostiled_rosters[r.unit_id] = r
         except Exception as e:
-            _logger.debug(
-                "Exception occurred during searching for hostiled rosters structures"
-            )
+            _logger.debug("Exception occurred during searching for hostiled rosters structures")
             _logger.debug(traceback.format_exc())
 
     for p in players:
@@ -143,9 +139,7 @@ def obtain_hostiled_players(player_unit_id):
                 p.life_percent = hostiled_rosters[p.unit_id].life_percent
                 hostiled_players.append(p)
             except Exception as e:
-                _logger.debug(
-                    "Exception occurred during searching for hostiled players units"
-                )
+                _logger.debug("Exception occurred during searching for hostiled players units")
                 _logger.debug(traceback.format_exc())
 
     return hostiled_players, hostiled_rosters
