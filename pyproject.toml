@@ -28,6 +28,6 @@ include = ["su_core*"]
 super_simple_mh = "su_core.__main__:main"
 
 [tool.black]
-line-length = 88
+line-length = 120
 target-version = ['py311']
 exclude = "rpyc-d2-map-api"

@@ -12,6 +12,7 @@ from su_core.logger import manager
 from su_core.utils.exceptions import FailedReadInventory, InvalidPlayerUnit
 from su_core.window.drawings import pm_colors
 from su_core.math import CSharpVector2, CSharpMatrix3X2
+from su_core.data import Area
 from su_core.window.drawings.shapes import (
     Arrow,
     Cross,
@@ -283,14 +284,17 @@ class Canvas:
                     # new area
                     if self._map_cli.prev_area != current_area:
                         _logger.info(f"Request map data for area: {current_area}")
-                        # clean the buffer when area is changed
-                        pm.end_drawing()
                         self._map_cli.prev_area = current_area
                         map_data = self._map_cli.read_map(
                             current_area, player.path.position
                         )
                         level_image = self._map_cli.get_level_image(current_area)
                         level_texture = pm.load_texture_bytes(".png", level_image)
+
+                        for name, data in map_data["adjacent_levels"].items():
+                            area = Area.FromName(name)
+                            adj_level_texture = self._map_cli.get_level_image(area.value)
+                            map_data["adjacent_levels"][name]["texture"] = pm.load_texture_bytes(".png", adj_level_texture)
 
                     player_minions = obtain_player_minions(player.unit_id)
                     npcs = obtain_npcs()
@@ -333,7 +337,7 @@ class Canvas:
                         self._inv_win.draw_inventory()
                         self._inv_win.draw_item_tooltip()
 
-                    if not menu.is_open and not pagedn_key and not insert_key:
+                    if not menu.is_open and not pagedn_key and not insert_key and not menu.is_loading:
                         texture_pos = self._win.world2map(
                             player.path.position, origin, origin
                         )
@@ -348,6 +352,22 @@ class Canvas:
                             0,
                             self._map_scale,
                         )
+
+                        for name, data in map_data["adjacent_levels"].items():
+                            texture_pos = self._win.world2map(
+                                player.path.position, data["origin"], data["origin"]
+                            )
+                            texture_pos.x = (
+                                texture_pos.x - data["size"][0] * self._map_scale
+                            )
+                            pm.draw_texture(
+                                data["texture"],
+                                texture_pos.x,
+                                texture_pos.y,
+                                pm_colors["white"],
+                                0,
+                                self._map_scale
+                            )
 
                         player_icon_pos = self._win.world2map(
                             player.path.position, player.path.position, origin

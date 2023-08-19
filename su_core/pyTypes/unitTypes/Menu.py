@@ -81,7 +81,7 @@ class Menu:
 
     @property
     def is_game_active(self) -> bool:
-        return self._inGame and self._ui.pUnkUI and not self.is_loading_game
+        return self._inGame and self._ui.pUnkUI
 
     @property
     def is_open(self) -> bool:

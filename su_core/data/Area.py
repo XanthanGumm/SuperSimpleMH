@@ -106,7 +106,7 @@ class Area(Enum):
     SpiderCave = 84
     SpiderCavern = 85
     SpiderForest = 76
-    StonyField = 4
+    StonyFields = 4
     StonyTombLevel1 = 55
     StonyTombLevel2 = 59
     SwampyPitLevel1 = 86
@@ -144,6 +144,10 @@ class Area(Enum):
     MapsFrigidPlateau = 139
     MapsInfernalTrial = 140
     MapsRuinedCitadel = 141
+
+    @classmethod
+    def FromName(cls, name):
+        return cls._member_map_[name]
 
 
 class ActNo(Enum):
