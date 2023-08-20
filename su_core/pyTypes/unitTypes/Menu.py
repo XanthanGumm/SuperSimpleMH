@@ -76,7 +76,7 @@ class Menu:
             self.last_open = Menus.loading
 
     @property
-    def is_loading_game(self):
+    def is_loading_area(self):
         return self._loading == 2
 
     @property

@@ -1,7 +1,6 @@
 import os
 import time
 import psutil
-import pathlib
 import win32gui
 import win32con
 import win32process
@@ -14,12 +13,9 @@ from su_core.utils.exceptions import FailedReadInventory, InvalidPlayerUnit
 from su_core.window.drawings import pm_colors
 from su_core.math import CSharpVector2, CSharpMatrix3X2
 from su_core.data import Area
+from su_core.window.drawings import shapes
 from su_core.window.drawings.shapes import (
-    Arrow,
     Cross,
-    PlayerLabel,
-    HostileLabel,
-    TextBox,
     pm,
     math,
 )
@@ -117,10 +113,12 @@ class Window:
 
     def draw_arrow(self, end, text, color):
         start = CSharpVector2(*self.center)
-        short_render = math.dist((start.x, start.y - self._center_pad), (end.x, end.y)) <= self._start_line_pad
-        if not short_render:
-            start.y -= self._center_pad
 
+        # player is too close to destination
+        if math.dist((start.x, start.y - self._center_pad), (end.x, end.y)) <= self._start_line_pad:
+            return
+
+        start.y -= self._center_pad
         if not (
             self._win_pad.x <= end.x <= self._width - self._win_pad.x
             and self._win_pad.y <= end.y <= self._height - self._win_pad.y
@@ -144,29 +142,31 @@ class Window:
                 end.y = self._height - self._win_pad.y
                 end.x = start.x + (end.y - start.y) / M
 
-        Arrow(start, end, short_render, text, color, self._start_line_pad)
+        shapes.draw_arrow_shape(start, end, self._start_line_pad, 15, color, text, 9)
 
     def draw_cross(self, end, size, colors=[]):
         Cross(end, size, self._scaleW, self._scaleH, colors)
 
-    def draw_player_label(self, end, text, size, font_size, text_color, back_color):
-        PlayerLabel(end, text, size, self._scaleH, font_size, text_color, back_color)
+    def draw_npc_label(self, text, position, cross_size, font_size, text_color, background_color):
+        text_measurement = pm.measure_font(1, text, font_size, 0)
+        position.x -= text_measurement["x"] // 2
+        position.y -= text_measurement["y"] + cross_size // 2 * self._scaleH
+        shapes.draw_label_shape(text, position, text_measurement["x"], font_size, text_color, background_color)
 
     def draw_hostile_label(
         self,
-        end,
+        position,
         hostiled_life_percent,
         hostiled_index,
         text,
         font_size,
         text_color,
-        back_color,
+        background_color,
     ):
-        end = CSharpVector2(end.x, end.y + hostiled_index * (font_size + font_size // 2))
+        position = CSharpVector2(position.x, position.y + hostiled_index * (font_size + font_size // 2))
         text += f" - {hostiled_life_percent}%".encode()
-        background_length = pm.measure_text(text, font_size)
-        background_length = (background_length - (1 / 6) * background_length) * hostiled_life_percent // 100
-        HostileLabel(end, text, background_length, font_size, text_color, back_color)
+        text_measurement = pm.measure_font(1, text, font_size, 0)
+        shapes.draw_label_shape(text, position, text_measurement["x"], font_size, text_color, background_color)
 
     @property
     def width(self):
@@ -315,7 +315,7 @@ class Canvas:
                         self._inv_win.draw_inventory()
                         self._inv_win.draw_item_tooltip()
 
-                    if not menu.is_open and not pagedn_key and not insert_key and not menu.is_loading:
+                    if not menu.is_open and not pagedn_key and not insert_key and not menu.is_loading_area:
                         texture_pos = self._win.world2map(player.path.position, origin, origin)
                         texture_pos.x = texture_pos.x - map_data["size"][1] * self._map_scale
                         pm.draw_texture(
@@ -360,13 +360,13 @@ class Canvas:
                             # minions = obtain_player_minions(hostile.unit_id)
                             icon_pos = self._win.world2map(player.path.position, hostile.path.position, origin)
                             self._win.draw_cross(icon_pos, size=6, colors=["red"])
-                            self._win.draw_player_label(
-                                icon_pos,
+                            self._win.draw_npc_label(
                                 text=hostile.name,
-                                size=6,
+                                position=icon_pos,
+                                cross_size=6,
                                 font_size=22,
                                 text_color="white",
-                                back_color="redbackground",
+                                background_color="redbackground",
                             )
 
                         # draw hostiled life percentage
@@ -378,7 +378,7 @@ class Canvas:
                                 text=roster.name,
                                 font_size=int(self._su_label_font_scale * 30),
                                 text_color="white",
-                                back_color="redbackground",
+                                background_color="redbackground",
                             )
 
                         if not player.is_in_town:
@@ -425,6 +425,7 @@ class Canvas:
             if not pm.key_pressed(key):
                 break
             time.sleep(0.01)
+
 
 if __name__ == "__main__":
     win = Window()
