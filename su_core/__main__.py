@@ -1,7 +1,7 @@
 import pathlib
 import os
 import subprocess
-from su_core.window import Canvas
+from su_core.canvas import Canvas
 
 
 def main():

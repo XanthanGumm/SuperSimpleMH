@@ -33,30 +33,30 @@ class Monster(UnitAny):
             cold_res = next(iter(stats[StatOriginal.coldresist.name][-1].values()))
             self._resists["cold"] = cold_res
             if cold_res >= 100:
-                self._immunities_colors.append("blue")
+                self._immunities_colors.append("Blue")
         if StatOriginal.fireresist.name in stats:
             fire_res = next(iter(stats[StatOriginal.fireresist.name][-1].values()))
             self._resists["fire"] = fire_res
             if fire_res >= 100:
-                self._immunities_colors.append("red")
+                self._immunities_colors.append("Red")
         if StatOriginal.lightresist.name in stats:
             light_res = next(iter(stats[StatOriginal.lightresist.name][-1].values()))
             self._resists["light"] = light_res
             if light_res >= 100:
-                self._immunities_colors.append("yellow")
+                self._immunities_colors.append("Yellow")
         if StatOriginal.poisonresist.name in stats:
             poison_res = next(iter(stats[StatOriginal.poisonresist.name][-1].values()))
             self._resists["poison"] = poison_res
             if poison_res >= 100:
-                self._immunities_colors.append("green")
+                self._immunities_colors.append("Green")
         if StatOriginal.magicresist.name in stats:
             magic_res = next(iter(stats[StatOriginal.magicresist.name][-1].values()))
             if magic_res >= 100:
-                self._immunities_colors.append("gold")
+                self._immunities_colors.append("Gold")
         if StatOriginal.damageresist.name in stats:
             physical_res = next(iter(stats[StatOriginal.damageresist.name][-1].values()))
             if physical_res >= 100:
-                self._immunities_colors.append("saddlebrown")
+                self._immunities_colors.append("SaddleBrown")
 
         return True
 

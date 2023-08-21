@@ -4,7 +4,7 @@ import tomllib
 import pyMeow as pm
 from PIL import Image
 from su_core.utils.helpers import get_root, get_last_val
-from su_core.window.drawings import pm_colors
+from su_core.canvas.drawings import pm_colors
 
 
 class AdvancedStatsPanel:
@@ -159,7 +159,7 @@ class AdvancedStatsPanel:
                 self._advanced_stats_texture,
                 0,
                 self._height_pad,
-                pm_colors["white"],
+                pm_colors["White"],
                 0,
                 1,
             )
@@ -169,15 +169,18 @@ class AdvancedStatsPanel:
                     self._value_box_texture,
                     self._value_box_x,
                     self._value_box_y,
-                    pm_colors["white"],
+                    pm_colors["White"],
                     0,
                     1,
                 )
+
                 text_len = pm.measure_font(2, self._stats_tooltips[i], self._font_size, 0)
                 if text_len["x"] >= line_limit - 1:
+
                     split_text = self._stats_tooltips[i].split(" ")
                     text_1 = split_text.pop(0)
                     text_2 = split_text.pop(-2) + " " + split_text.pop(-1)
+
                     while split_text:
                         s = split_text.pop(0)
                         t1_len = pm.measure_font(2, text_1, self._font_size, 0)
@@ -202,8 +205,9 @@ class AdvancedStatsPanel:
                         text_1_y,
                         self._font_size,
                         0,
-                        pm_colors["white"],
+                        pm_colors["White"],
                     )
+
                     pm.draw_font(
                         2,
                         text_2,
@@ -211,7 +215,7 @@ class AdvancedStatsPanel:
                         text_2_y,
                         self._font_size,
                         0,
-                        pm_colors["white"],
+                        pm_colors["White"],
                     )
 
                 else:
@@ -225,10 +229,11 @@ class AdvancedStatsPanel:
                         text_y,
                         self._font_size,
                         0,
-                        pm_colors["white"],
+                        pm_colors["White"],
                     )
 
                 self._value_box_y += self._value_box_h + self._scale_h * 18
+
                 if (
                     self._value_box_y + 2 * self._value_box_h
                     > self._advanced_stats_texture["height"] + self._height_pad

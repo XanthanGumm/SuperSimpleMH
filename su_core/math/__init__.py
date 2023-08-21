@@ -143,13 +143,23 @@ class CSharpVector2:
         return CSharpVector2(x, y)
 
     def __add__(self, other):
-        return CSharpVector2(self._x + other.x, self._y + other.y)
+        if isinstance(other, int) or isinstance(other, float):
+            return CSharpVector2(self._x + other, self._y + other)
+        elif isinstance(other, CSharpVector2):
+            return CSharpVector2(self._x + other.x, self._y + other.y)
+        else:
+            raise TypeError(f"Cannot add type of {type(other)}")
 
     def __radd__(self, other):
         return self.__add__(other)
 
     def __sub__(self, other):
-        return CSharpVector2(self._x - other.x, self._y - other.y)
+        if isinstance(other, int) or isinstance(other, float):
+            return CSharpVector2(self._x - other, self._y - other)
+        elif isinstance(other, CSharpVector2):
+            return CSharpVector2(self._x - other.x, self._y - other.y)
+        else:
+            raise TypeError(f"Cannot subtract type of {type(other)}")
 
     def __rsub__(self, other):
         return self.__sub__(other)

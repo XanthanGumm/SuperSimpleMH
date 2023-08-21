@@ -6,7 +6,7 @@ import pyMeow as pm
 from PIL import Image
 from su_core.logger import manager, traceback
 from su_core.pyTypes.unitTypes import obtain_roster_members
-from su_core.window.drawings import pm_colors
+from su_core.canvas.drawings import pm_colors
 from su_core.utils.helpers import get_root
 from su_core.utils.exceptions import FailedReadInventory
 
@@ -65,6 +65,7 @@ class InventoryPanel:
                     int(self._scale_h * img_switch.size[1]),
                 )
             )
+
             img_byte_arr = io.BytesIO()
             img_switch.save(img_byte_arr, format="PNG")
             img_bytes = img_byte_arr.getvalue()
@@ -183,11 +184,11 @@ class InventoryPanel:
                         }
 
     def draw_inventory(self):
-        pm.draw_texture(self._texture, 0, self._height_pad, pm_colors["white"], 0, 1)
+        pm.draw_texture(self._texture, 0, self._height_pad, pm_colors["White"], 0, 1)
 
         switch_texture = self._switch_textures[0] if not self._is_on_switch else self._switch_textures[1]
-        pm.draw_texture(switch_texture, self._switch1_x, self._switch1_y, pm_colors["white"], 0, 1)
-        pm.draw_texture(switch_texture, self._switch2_x, self._switch2_y, pm_colors["white"], 0, 1)
+        pm.draw_texture(switch_texture, self._switch1_x, self._switch1_y, pm_colors["White"], 0, 1)
+        pm.draw_texture(switch_texture, self._switch2_x, self._switch2_y, pm_colors["White"], 0, 1)
 
         if "helm" in self._tooltips:
             self._draw_inv_item("helm")
@@ -224,36 +225,45 @@ class InventoryPanel:
         if self._is_loc_hovered("helm") and self._hover_player.inventory.helm is not None:
             x, y, w, h = self._inv_loc_position("helm")
             self._draw_item_tooltip("helm", x + w // 2, y + h + self._height_pad)
+
         elif self._is_loc_hovered("amulet") and self._hover_player.inventory.amulet is not None:
             x, y, w, h = self._inv_loc_position("amulet")
             self._draw_item_tooltip("amulet", x + w // 2, y + h + self._height_pad)
+
         elif self._is_loc_hovered("armor") and self._hover_player.inventory.armor is not None:
             x, y, w, h = self._inv_loc_position("armor")
             self._draw_item_tooltip("armor", x + w // 2, y + h + self._height_pad)
+
         elif self._is_loc_hovered("arm_left"):
             x, y, w, h = self._inv_loc_position("arm_left")
             if self._is_on_switch and self._hover_player.inventory.arm_switch_left is not None:
                 self._draw_item_tooltip("arm_switch_left", x + w // 2, y + h + self._height_pad)
             if not self._is_on_switch and self._hover_player.inventory.arm_left is not None:
                 self._draw_item_tooltip("arm_left", x + w // 2, y + h + self._height_pad)
+
         elif self._is_loc_hovered("arm_right"):
             x, y, w, h = self._inv_loc_position("arm_right")
             if self._is_on_switch and self._hover_player.inventory.arm_switch_right is not None:
                 self._draw_item_tooltip("arm_switch_right", x + w // 2, y + h + self._height_pad)
             if not self._is_on_switch and self._hover_player.inventory.arm_right:
                 self._draw_item_tooltip("arm_right", x + w // 2, y + h + self._height_pad)
+
         elif self._is_loc_hovered("ring_left") and self._hover_player.inventory.ring_left is not None:
             x, y, w, h = self._inv_loc_position("ring_left")
             self._draw_item_tooltip("ring_left", x + w // 2, y + self._height_pad, direction="up")
+
         elif self._is_loc_hovered("ring_right") and self._hover_player.inventory.ring_right is not None:
             x, y, w, h = self._inv_loc_position("ring_right")
             self._draw_item_tooltip("ring_right", x + w // 2, y + self._height_pad, direction="up")
+
         elif self._is_loc_hovered("belt") and self._hover_player.inventory.belt is not None:
             x, y, w, h = self._inv_loc_position("belt")
             self._draw_item_tooltip("belt", x + w // 2, y + self._height_pad, direction="up")
+
         elif self._is_loc_hovered("boots") and self._hover_player.inventory.boots is not None:
             x, y, w, h = self._inv_loc_position("boots")
             self._draw_item_tooltip("boots", x + w // 2, y + self._height_pad, direction="up")
+
         elif self._is_loc_hovered("gloves") and self._hover_player.inventory.gloves is not None:
             x, y, w, h = self._inv_loc_position("gloves")
             self._draw_item_tooltip("gloves", x + w // 2, y + self._height_pad, direction="up")
@@ -281,13 +291,15 @@ class InventoryPanel:
             t_h = self._item_textures[dir_name][file_name]["height"]
             x_start = x + (w - t_w) // 2
             y_start = y + (h - t_h) // 2 + self._height_pad
+
             if self._is_loc_hovered(loc):
-                pm.draw_rectangle(x, y + self._height_pad, w, h, pm_colors["invbackground"])
+                pm.draw_rectangle(x, y + self._height_pad, w, h, pm_colors["InvBackground"])
+
             pm.draw_texture(
                 self._item_textures[dir_name][file_name],
                 x_start,
                 y_start,
-                pm_colors["white"],
+                pm_colors["White"],
                 0,
                 1,
             )
@@ -339,17 +351,17 @@ class InventoryPanel:
         runes_pad_x, runes_pad_y = None, None
 
         if item_quality == "UNIQUE" or item_quality == "RUNEWORD":
-            color = "d2rbrown"
+            color = "D2RBrown"
         elif item_quality == "SET":
-            color = "tooltipgreen"
+            color = "TooltipGreen"
         elif item_quality == "RARE":
-            color = "tooltipyellow"
+            color = "TooltipYellow"
         elif item_quality == "CRAFTED":
-            color = "tooltiporange"
+            color = "TooltipOrange"
         elif item_quality == "MAGIC":
-            color = "tooltipblue"
+            color = "TooltipBlue"
         else:
-            color = "tooltipgray"
+            color = "TooltipGray"
 
         name_pad_x, name_pad_y = tooltip_pads.pop(0)
 
@@ -367,7 +379,7 @@ class InventoryPanel:
             background_y,
             background_w,
             background_h,
-            pm_colors["tooltipbackground"],
+            pm_colors["TooltipBackground"],
         )
 
         pm.draw_font(
@@ -388,7 +400,7 @@ class InventoryPanel:
                 start_y + type_pad_y,
                 self._font_size,
                 0,
-                pm_colors["tooltipgray"] if item_quality == "RUNEWORD" else pm_colors[color],
+                pm_colors["TooltipGray"] if item_quality == "RUNEWORD" else pm_colors[color],
             )
 
         if runes_pad_x is not None and runes_pad_y is not None:
@@ -410,7 +422,7 @@ class InventoryPanel:
                 start_y + pad[1],
                 self._font_size,
                 0,
-                pm_colors["white"],
+                pm_colors["White"],
             )
 
         for pad, text in zip(text_pad, tooltip[4]):
@@ -421,7 +433,7 @@ class InventoryPanel:
                 start_y + pad[1],
                 self._font_size,
                 0,
-                pm_colors["tooltipblue"],
+                pm_colors["TooltipBlue"],
             )
 
     def _inv_loc_position(self, loc: str) -> tuple:
