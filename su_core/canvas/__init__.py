@@ -356,7 +356,6 @@ class Canvas(Window):
                                     background_color="TooltipBackground",
                                 )
 
-
                         if not player.is_in_town:
                             # draw waypoint
                             if map_data["waypoint"] is not None:
@@ -463,7 +462,7 @@ class Canvas(Window):
     def draw_npc_label(self, pos, name, cross_multiplayer, font_size, text_color, background_color):
         text_measurement = pm.measure_font(1, name, font_size, 0)
         pos.x -= text_measurement["x"] // 2
-        pos.y -= text_measurement["y"] + cross_multiplayer // 2 * self._height_scalar
+        pos.y -= text_measurement["y"] + cross_multiplayer * self._height_scalar
         shapes.draw_label_shape(
             name,
             pos,
