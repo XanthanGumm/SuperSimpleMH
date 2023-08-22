@@ -12,6 +12,7 @@ class Roster:
         self._player_level = self._struct.wPlayerLevel
         self._position = self._struct.dwPosX, self._struct.dwPosY
         self._next = self._struct.pNext
+        self._party_id = self._struct.wPartyId
 
     def is_hostiled(self, unit_id):
         if unit_id == self._unit_id:
@@ -39,12 +40,20 @@ class Roster:
         return self._unit_id
 
     @property
+    def position(self):
+        return self._struct.dwPosX, self._struct.dwPosY
+
+    @property
     def life_percent(self):
         return self._life_percent
 
     @property
     def player_level(self):
         return self._player_level
+
+    @property
+    def party_id(self):
+        return self._party_id
 
     @property
     def name(self):

@@ -49,6 +49,21 @@ def obtain_player() -> Player | None:
     return None
 
 
+# def obtain_players() -> list[Player]:
+#     players = []
+#     players_units = obtain_units(0)
+#     for p in players_units:
+#         if p.unit_id != Player.my_player_id:
+#             try:
+#                 p.update()
+#                 players.append(p)
+#             except Exception as e:
+#                 _logger.debug(f"Exception occurred during searching for players")
+#                 _logger.debug(traceback.format_exc())
+#
+#     return players
+
+
 def obtain_npcs() -> dict:
     npcs = {"unique": [], "player_minions": [], "merc": [], "town": [], "other": []}
     for npc in obtain_units(unit_type=1):
@@ -109,10 +124,13 @@ def obtain_roster_members():
     return rosters
 
 
-def obtain_hostiled_players(player_unit_id):
+def obtain_members(player_unit_id):
     player_roster = None
+    in_party_rosters = dict()
     hostiled_rosters = dict()
-    hostiled_players = []
+    hostiled_members = []
+    in_party_members = []
+    members = []
     rosters = obtain_roster_members()
     players = obtain_units(unit_type=0)
 
@@ -122,27 +140,35 @@ def obtain_hostiled_players(player_unit_id):
             break
 
     for r in rosters:
-        # just ignore any invalid unit that changes in the middle
-        try:
-            if player_roster.is_hostiled(r.unit_id):
-                hostiled_rosters[r.unit_id] = r
-        except Exception as e:
-            _logger.debug("Exception occurred during searching for hostiled rosters structures")
-            _logger.debug(traceback.format_exc())
-
-    for p in players:
-        if p.unit_id in hostiled_rosters:
+        if r.unit_id != player_roster.unit_id:
             # just ignore any invalid unit that changes in the middle
             try:
+                if player_roster.is_hostiled(r.unit_id):
+                    hostiled_rosters[r.unit_id] = r
+                if player_roster.party_id == r.party_id and r.party_id < 2 ** 16 - 1:
+                    in_party_rosters[r.unit_id] = r
+            except Exception as e:
+                _logger.debug("Exception occurred during searching for hostiled rosters structures")
+                _logger.debug(traceback.format_exc())
+
+    for p in players:
+        # just ignore any invalid unit that changes in the middle
+        if p.unit_id != Player.my_player_id:
+            try:
                 p.update()
-                # let's add here others players life - later I might change it.
-                p.life_percent = hostiled_rosters[p.unit_id].life_percent
-                hostiled_players.append(p)
+                if p.unit_id in hostiled_rosters:
+                    # let's add here others players life - later I might change it.
+                    p.life_percent = hostiled_rosters[p.unit_id].life_percent
+                    hostiled_members.append(p)
+                elif p.unit_id in in_party_rosters:
+                    in_party_members.append(p)
+                else:
+                    members.append(p)
             except Exception as e:
                 _logger.debug("Exception occurred during searching for hostiled players units")
                 _logger.debug(traceback.format_exc())
 
-    return hostiled_players, hostiled_rosters
+    return hostiled_members, in_party_members, members, hostiled_rosters, in_party_rosters
 
 
 def obtain_unit_hover():

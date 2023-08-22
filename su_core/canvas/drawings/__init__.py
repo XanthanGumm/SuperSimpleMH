@@ -20,6 +20,7 @@ pm_colors = {
     "Green": pm.get_color("green"),
     "SeaGreen": pm.get_color("seagreen"),
     "TooltipGreen": pm.new_color(0, 252, 0, 255),
+    "GreenBackground": pm.fade_color(pm.new_color(0, 252, 0, 255), 0.20),
     # blueish colors
     "Navy": pm.get_color("navy"),
     "RoyalGreen": pm.get_color("royalblue"),

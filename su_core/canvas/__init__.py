@@ -16,7 +16,7 @@ from su_core.canvas.AdvancedStatsPanel import AdvancedStatsPanel
 from su_core.pyTypes.unitTypes import (
     obtain_player,
     obtain_npcs,
-    obtain_hostiled_players,
+    obtain_members,
     obtain_hovered_player,
     obtain_player_minions,
     Menu,
@@ -197,45 +197,44 @@ class Canvas(Window):
                         self._inv_win.draw_item_tooltip()
 
                     if not menu.is_open and not pagedn_key and not insert_key and not menu.is_loading_area:
-
-                        # draw current level overlay
-                        texture_pos = self.world2map(
-                            player.path.position,
-                            origin,
-                            origin,
-                            self._width_scalar,
-                            self._height_scalar,
-                        )
-                        texture_pos.x = texture_pos.x - map_data["size"][1] * self._map_scalar
-
-                        pm.draw_texture(
-                            level_texture,
-                            texture_pos.x,
-                            texture_pos.y,
-                            pm_colors["White"],
-                            0,
-                            self._map_scalar,
-                        )
-
-                        # draw adjacent levels overlay
-                        for name, data in map_data["adjacent_levels"].items():
-                            texture_pos = self.world2map(
-                                player.path.position,
-                                data["origin"],
-                                origin,
-                                self._width_scalar,
-                                self._height_scalar,
-                            )
-                            texture_pos.x = texture_pos.x - data["size"][0] * self._map_scalar
-
-                            pm.draw_texture(
-                                adj_level_textures[name],
-                                texture_pos.x,
-                                texture_pos.y,
-                                pm_colors["White"],
-                                0,
-                                self._map_scalar,
-                            )
+                        # # draw current level overlay
+                        # texture_pos = self.world2map(
+                        #     player.path.position,
+                        #     origin,
+                        #     origin,
+                        #     self._width_scalar,
+                        #     self._height_scalar,
+                        # )
+                        # texture_pos.x = texture_pos.x - map_data["size"][1] * self._map_scalar
+                        #
+                        # pm.draw_texture(
+                        #     level_texture,
+                        #     texture_pos.x,
+                        #     texture_pos.y,
+                        #     pm_colors["White"],
+                        #     0,
+                        #     self._map_scalar,
+                        # )
+                        #
+                        # # draw adjacent levels overlay
+                        # for name, data in map_data["adjacent_levels"].items():
+                        #     texture_pos = self.world2map(
+                        #         player.path.position,
+                        #         data["origin"],
+                        #         origin,
+                        #         self._width_scalar,
+                        #         self._height_scalar,
+                        #     )
+                        #     texture_pos.x = texture_pos.x - data["size"][0] * self._map_scalar
+                        #
+                        #     pm.draw_texture(
+                        #         adj_level_textures[name],
+                        #         texture_pos.x,
+                        #         texture_pos.y,
+                        #         pm_colors["White"],
+                        #         0,
+                        #         self._map_scalar,
+                        #     )
 
                         # draw player
                         player_icon_pos = self.world2map(
@@ -272,13 +271,42 @@ class Canvas(Window):
                                     self.draw_npc(icon_pos, color="SeaGreen")
                                     break
 
+                        (
+                            hostiles_members,
+                            in_party_members,
+                            members,
+                            hostiles_rosters,
+                            in_party_rosters,
+                        ) = obtain_members(player.unit_id)
+
+                        # draw in party players
+                        for unit_id, member in in_party_rosters.items():
+                            m = next((m for m in in_party_members if m.unit_id == unit_id),None)
+
+                            icon_pos = self.world2map(
+                                player.path.position,
+                                m.path.position if m else member.position,
+                                origin,
+                                self._width_scalar,
+                                self._height_scalar,
+                            )
+                            self.draw_npc(icon_pos, color="TooltipGreen")
+
+                            self.draw_npc_label(
+                                pos=icon_pos,
+                                name=member.name,
+                                cross_multiplayer=6,
+                                font_size=int(self._font_scalar * 26),
+                                text_color="White",
+                                background_color="GreenBackground",
+                            )
+
                         # draw hostiled players
-                        hostiles, rosters = obtain_hostiled_players(player.unit_id)
-                        for hostile in hostiles:
+                        for index, member in enumerate(hostiles_members):
                             # minions = obtain_player_minions(hostile.unit_id)
                             icon_pos = self.world2map(
                                 player.path.position,
-                                hostile.path.position,
+                                member.path.position,
                                 origin,
                                 self._width_scalar,
                                 self._height_scalar,
@@ -287,7 +315,7 @@ class Canvas(Window):
 
                             self.draw_npc_label(
                                 pos=icon_pos,
-                                name=hostile.name,
+                                name=member.name,
                                 cross_multiplayer=6,
                                 font_size=int(self._font_scalar * 26),
                                 text_color="White",
@@ -295,7 +323,7 @@ class Canvas(Window):
                             )
 
                         # draw hostiled life percentage
-                        for index, (roster_id, roster) in enumerate(rosters.items(), 1):
+                        for index, (roster_id, roster) in enumerate(hostiles_rosters.items(), 1):
                             self.draw_hostile_life_percent(
                                 self._hostile_labels_pos,
                                 name=roster.name,
@@ -305,6 +333,29 @@ class Canvas(Window):
                                 text_color="White",
                                 background_color="RedBackground",
                             )
+
+                        # draw players that either not hostile and not in our party
+                        for member in members:
+                            if member.unit_id not in in_party_rosters and member.unit_id not in hostiles_rosters:
+
+                                icon_pos = self.world2map(
+                                    player.path.position,
+                                    member.path.position,
+                                    origin,
+                                    self._width_scalar,
+                                    self._height_scalar,
+                                )
+                                self.draw_npc(icon_pos, color="White")
+                                
+                                self.draw_npc_label(
+                                    pos=icon_pos,
+                                    name=member.name,
+                                    cross_multiplayer=6,
+                                    font_size=int(self._font_scalar * 26),
+                                    text_color="D2RBrown",
+                                    background_color="TooltipBackground",
+                                )
+
 
                         if not player.is_in_town:
                             # draw waypoint
@@ -317,7 +368,7 @@ class Canvas(Window):
                                     self._width_scalar,
                                     self._height_scalar,
                                 )
-                                self.draw_destination_to(dst_pos, name="Waypoint", color="Green")
+                                self.draw_destination_to(dst_pos, name="Waypoint", color="Navy")
 
                             # draw destination to mazes
                             if map_data["exits"] is not None:
@@ -359,7 +410,7 @@ class Canvas(Window):
                                     color=npc.resists_colors[0] if len(npc.resists_colors) else "White",
                                     color2=npc.resists_colors[1] if len(npc.resists_colors) > 1 else "",
                                     multiplayer=9,
-                                    thickness=2
+                                    thickness=2,
                                 )
 
                             # draw normal monsters
@@ -407,15 +458,7 @@ class Canvas(Window):
         )
 
     def draw_npc(self, pos, color, color2="", multiplayer=6, thickness=1):
-        shapes.draw_cross_shape(
-            pos,
-            self._width_scalar,
-            self._height_scalar,
-            color,
-            color2,
-            multiplayer,
-            thickness
-        )
+        shapes.draw_cross_shape(pos, self._width_scalar, self._height_scalar, color, color2, multiplayer, thickness)
 
     def draw_npc_label(self, pos, name, cross_multiplayer, font_size, text_color, background_color):
         text_measurement = pm.measure_font(1, name, font_size, 0)

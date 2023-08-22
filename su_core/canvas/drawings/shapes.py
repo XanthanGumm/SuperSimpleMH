@@ -91,6 +91,16 @@ def draw_label_shape(
     text_color: str,
     background_color: str,
 ):
+    pm.draw_rectangle_rounded(
+        position.x - font_size // 2,
+        position.y,
+        text_width + font_size,
+        font_size,
+        0.8,
+        0,
+        pm_colors[background_color],
+    )
+
     pm.draw_font(
         1,
         text,
@@ -101,15 +111,15 @@ def draw_label_shape(
         pm_colors[text_color],
     )
 
-    pm.draw_rectangle_rounded(
-        position.x - font_size // 2,
-        position.y,
-        text_width + font_size,
-        font_size,
-        0.8,
-        0,
-        pm_colors[background_color],
-    )
+    # pm.draw_rectangle_rounded(
+    #     position.x - font_size // 2,
+    #     position.y,
+    #     text_width + font_size,
+    #     font_size,
+    #     0.8,
+    #     0,
+    #     pm_colors[background_color],
+    # )
 
 
 def draw_cross_shape(position, beta, gamma, color, color2="", multiplayer=6, thickness=1):
