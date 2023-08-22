@@ -197,44 +197,44 @@ class Canvas(Window):
                         self._inv_win.draw_item_tooltip()
 
                     if not menu.is_open and not pagedn_key and not insert_key and not menu.is_loading_area:
-                        # # draw current level overlay
-                        # texture_pos = self.world2map(
-                        #     player.path.position,
-                        #     origin,
-                        #     origin,
-                        #     self._width_scalar,
-                        #     self._height_scalar,
-                        # )
-                        # texture_pos.x = texture_pos.x - map_data["size"][1] * self._map_scalar
-                        #
-                        # pm.draw_texture(
-                        #     level_texture,
-                        #     texture_pos.x,
-                        #     texture_pos.y,
-                        #     pm_colors["White"],
-                        #     0,
-                        #     self._map_scalar,
-                        # )
-                        #
-                        # # draw adjacent levels overlay
-                        # for name, data in map_data["adjacent_levels"].items():
-                        #     texture_pos = self.world2map(
-                        #         player.path.position,
-                        #         data["origin"],
-                        #         origin,
-                        #         self._width_scalar,
-                        #         self._height_scalar,
-                        #     )
-                        #     texture_pos.x = texture_pos.x - data["size"][0] * self._map_scalar
-                        #
-                        #     pm.draw_texture(
-                        #         adj_level_textures[name],
-                        #         texture_pos.x,
-                        #         texture_pos.y,
-                        #         pm_colors["White"],
-                        #         0,
-                        #         self._map_scalar,
-                        #     )
+                        # draw current level overlay
+                        texture_pos = self.world2map(
+                            player.path.position,
+                            origin,
+                            origin,
+                            self._width_scalar,
+                            self._height_scalar,
+                        )
+                        texture_pos.x = texture_pos.x - map_data["size"][1] * self._map_scalar
+
+                        pm.draw_texture(
+                            level_texture,
+                            texture_pos.x,
+                            texture_pos.y,
+                            pm_colors["White"],
+                            0,
+                            self._map_scalar,
+                        )
+
+                        # draw adjacent levels overlay
+                        for name, data in map_data["adjacent_levels"].items():
+                            texture_pos = self.world2map(
+                                player.path.position,
+                                data["origin"],
+                                origin,
+                                self._width_scalar,
+                                self._height_scalar,
+                            )
+                            texture_pos.x = texture_pos.x - data["size"][0] * self._map_scalar
+
+                            pm.draw_texture(
+                                adj_level_textures[name],
+                                texture_pos.x,
+                                texture_pos.y,
+                                pm_colors["White"],
+                                0,
+                                self._map_scalar,
+                            )
 
                         # draw player
                         player_icon_pos = self.world2map(
