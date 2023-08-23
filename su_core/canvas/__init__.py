@@ -146,10 +146,10 @@ class Canvas(Window):
                         _logger.info(f"Request map data for area: {current_area}")
                         self._map_cli.prev_area = current_area
                         map_data = self._map_cli.read_map(current_area, player.path.position)
-                        level_texture = self._map_cli.get_level_texture(current_area)
+                        level_texture = self._map_cli.get_level_texture(current_area, self._map_scalar)
 
                         adj_level_textures = {
-                            name: self._map_cli.get_level_texture(Area.FromName(name).value)
+                            name: self._map_cli.get_level_texture(Area.FromName(name).value, self._map_scalar)
                             for name in map_data["adjacent_levels"].keys()
                         }
 
