@@ -27,13 +27,13 @@ class RPYClient:
             "adjacent_levels": data["adjacent_levels"],
         }
 
-    @cached(cache={}, key=lambda self, area, scale: hashkey(area))
-    def get_level_image(self, area: int, scale: float) -> bytes:
-        return self._conn.root.generate_map_image(area, scale=scale)
+    @cached(cache={}, key=lambda self, area, scale=0.0, upscale=False: hashkey(area))
+    def get_level_image(self, area: int, scale: float = 0.0, upscale=False) -> bytes:
+        return self._conn.root.generate_map_image(area, scale=scale, upscale=upscale)
 
-    @cached(cache={}, key=lambda self, area, scale: hashkey(area))
-    def get_level_texture(self, area: int, scale: float):
-        return pm.load_texture_bytes(".png", self.get_level_image(area, scale=scale))
+    @cached(cache={}, key=lambda self, area, scale=0.0, upscale=False: hashkey(area))
+    def get_level_texture(self, area: int, scale: float = 0.0, upscale=False):
+        return pm.load_texture_bytes(".png", self.get_level_image(area, scale=scale, upscale=upscale))
 
     def set_requirements(self, seed: int, difficulty: int) -> None:
         self._prev_seed = seed

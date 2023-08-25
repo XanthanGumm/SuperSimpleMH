@@ -1,8 +1,8 @@
 import pathlib
+import asyncio
 import os
 import subprocess
 from su_core.canvas import Canvas
-
 
 def main():
     root = pathlib.Path(__file__)
@@ -17,7 +17,8 @@ def main():
 
     try:
         canvas = Canvas()
-        canvas.event_loop()
+        # canvas.event_loop()
+        asyncio.run(canvas.event_loop())
     except Exception as e:
         raise e
     finally:
