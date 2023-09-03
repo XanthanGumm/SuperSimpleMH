@@ -40,7 +40,6 @@ if %M% == 1 (
     cd rpyc-d2-map-api
     py -3.11-32 -m venv venv
     call .\venv\Scripts\activate
-    pip install wheel
     pip install .
     echo rpyc-d2-map-api env installed successfully.
     call deactivate
