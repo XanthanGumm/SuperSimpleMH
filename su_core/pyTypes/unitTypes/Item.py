@@ -23,10 +23,8 @@ from su_core.data import (
 )
 
 
-_logger = manager.get_logger(__file__)
-
-
 class Item(UnitAny):
+    _logger = manager.get_logger(__name__)
     _stats_ignore_list = [
         "durability",
         "maxdurability",
@@ -315,8 +313,8 @@ class Item(UnitAny):
                     value = value / div_val
 
             except Exception:
-                _logger.debug(f"Exception occurred during drawing create item tooltip at stat: {name}")
-                _logger.debug(traceback.format_exc())
+                self._logger.debug(f"Exception occurred during drawing create item tooltip at stat: {name}")
+                self._logger.debug(traceback.format_exc())
                 break
 
             try:
@@ -329,10 +327,10 @@ class Item(UnitAny):
 
             except KeyError:
                 if descfunc not in [13, 14, 15, 16, 24, 27, 28]:
-                    _logger.debug(
+                    self._logger.debug(
                         f"Exception occurred during drawing create item tooltip at stat: {name} with key: {stat_key}"
                     )
-                    _logger.debug(traceback.format_exc())
+                    self._logger.debug(traceback.format_exc())
                     break
 
             if descfunc == 0:  # do not display value

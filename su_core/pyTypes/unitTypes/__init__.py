@@ -27,6 +27,7 @@ def obtain_units(unit_type: int) -> list:
             except Exception as e:
                 _logger.debug(f"Exception occurred during a search in the unit table for a unit of type {unit_type}")
                 _logger.debug(traceback.format_exc())
+                pass
 
     return valid_units
 
@@ -43,7 +44,7 @@ def obtain_player() -> Player | None:
                     Player.my_player_id = c.unit_id
                     return c
                 except Exception as e:
-                    if menu.last_open in [Menus.waypointMenu, Menus.loading]:
+                    if menu.last_open in [Menus.waypointMenu, Menus.loading, None]:
                         return None
                     raise e
     return None
@@ -87,23 +88,30 @@ def obtain_npcs() -> dict:
             except Exception as e:
                 _logger.debug(f"Exception occurred during update/read_npc_stats")
                 _logger.debug(traceback.format_exc())
+                pass
 
     return npcs
 
 
 def obtain_player_minions(unit_id):
     minions = []
-    minion_address = mem.read_pointer(mem.minions)
 
-    while True:
-        minion = mem.read_struct(minion_address, Minions)
-        if minion.dwOwnerId == unit_id:
-            minions.append(minion)
+    try:
+        minion_address = mem.read_pointer(mem.minions)
 
-        if not minion.pNext:
-            break
+        while True:
+            minion = mem.read_struct(minion_address, Minions)
+            if minion.dwOwnerId == unit_id:
+                minions.append(minion)
 
-        minion_address = minion.pNext
+            if not minion.pNext:
+                break
+
+            minion_address = minion.pNext
+
+    except Exception:
+        # log here
+        pass
 
     return minions
 
@@ -150,10 +158,11 @@ def obtain_members(player_unit_id):
             except Exception as e:
                 _logger.debug("Exception occurred during searching for hostiled rosters structures")
                 _logger.debug(traceback.format_exc())
+                pass
 
     for p in players:
         # just ignore any invalid unit that changes in the middle
-        if p.unit_id != Player.my_player_id:
+        if p.unit_id in [r.unit_id for r in rosters] and p.unit_id != Player.my_player_id:
             try:
                 p.update()
                 if p.unit_id in hostiled_rosters:
@@ -167,6 +176,7 @@ def obtain_members(player_unit_id):
             except Exception as e:
                 _logger.debug("Exception occurred during searching for hostiled players units")
                 _logger.debug(traceback.format_exc())
+                pass
 
     return hostiled_members, in_party_members, members, hostiled_rosters, in_party_rosters
 

@@ -10,11 +10,11 @@ from su_core.canvas.drawings import pm_colors
 from su_core.utils.helpers import get_root
 from su_core.utils.exceptions import FailedReadInventory
 
-_logger = manager.get_logger(__file__)
-
 
 class InventoryPanel:
+    _logger = manager.get_logger(__name__)
     def __init__(self, win_width, win_height, win_start_x, win_start_y, font_size):
+        
         self._font_size = font_size
         self._win_start_x = win_start_x
         self._win_start_y = win_start_y
@@ -104,17 +104,18 @@ class InventoryPanel:
 
             except Exception:
                 if self._hover_player.inventory is None:
-                    _logger.debug(
+                    self._logger.debug(
                         f"Exception occurred during drawing reading {self._hover_player.name} inventory."
                         "Canceling show player inventory command..."
                     )
-                    _logger.debug(traceback.format_exc())
+                    self._logger.debug(traceback.format_exc())
                     raise FailedReadInventory()
                 else:
-                    _logger.warning(
+                    self._logger.warning(
                         f"Exception occurred during drawing reading {self._hover_player.name} inventory."
                         f"Probably due to the player is too far."
                     )
+                    pass
 
             if self._hover_player.inventory.helm is not None:
                 self._tooltips["helm"] = self._hover_player.inventory.helm.create_tooltip(player_level)
@@ -305,8 +306,9 @@ class InventoryPanel:
             )
 
         except KeyError as e:
-            _logger.debug(f"Exception occurred during drawing inventory texture")
-            _logger.debug(traceback.format_exc())
+            self._logger.debug(f"Exception occurred during drawing inventory texture")
+            self._logger.debug(traceback.format_exc())
+            pass
 
     def _draw_item_tooltip(self, loc, start_x, start_y, direction="down"):
         # tooltip[0] = item_name, tooltip[1] = item_type, tooltip[2] = item_runes,

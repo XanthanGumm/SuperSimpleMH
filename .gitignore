@@ -187,7 +187,7 @@ fabric.properties
  .idea
 
 # others
-pyMeow-1.43.25.zip
+pyMeow-1.53.36.zip
 rpyc-d2-map-api/build/
 rpyc-d2-map-api/map_layout.egg-info/
 rpyc-d2-map-api/venv/

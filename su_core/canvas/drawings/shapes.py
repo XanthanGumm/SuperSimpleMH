@@ -1,7 +1,6 @@
 import math
-import pyMeow as pm
 from su_core.math import CSharpVector2
-from su_core.canvas.drawings import pm_colors
+from su_core.canvas.drawings import pm_colors, pm
 
 
 def draw_arrow_shape(

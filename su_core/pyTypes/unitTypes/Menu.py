@@ -9,14 +9,14 @@ class Menu:
     last_open = None
     last_act = None
 
-    def __new__(cls):
-        if cls.__instance is None:
-            cls.__instance = super(Menu, cls).__new__(cls)
-        return cls.__instance
+    # def __new__(cls):
+    #     if cls.__instance is None:
+    #         cls.__instance = super(Menu, cls).__new__(cls)
+    #     return cls.__instance
 
     def __init__(self):
         self._ui = None
-        self.inGame = None
+        self._inGame = None
         self._invMenu = None
         self._charMenu = None
         self._skillMenu = None
@@ -30,7 +30,9 @@ class Menu:
         self._mercMenu = None
         self._act_num = None
         self._loading = None
+        self.update()
 
+    def update(self):
         self._ui = mem.read_struct(mem.ui, UI)
         self._inGame = self._ui.inGame
         self._invMenu = self._ui.invMenu
@@ -101,8 +103,8 @@ class Menu:
         )
 
     @property
-    def is_loading(self) -> bool:
-        return self._loading
+    def act_number(self) -> int:
+        return self._act_num
 
     @property
     def waypoint_menu(self) -> bool:
