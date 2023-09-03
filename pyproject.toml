@@ -14,10 +14,15 @@ dependencies = [
     "cachetools",
     "rpyc",
     "pywin32",
+    "opencv-python",
     "pillow",
     "pandas",
     "numpy",
-    "psutil",
+    "psutil"
+]
+
+[project.optional-dependencies]
+dev = [
     "black"
 ]
 
