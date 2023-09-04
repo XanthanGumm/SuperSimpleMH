@@ -85,7 +85,7 @@ class Canvas(Window):
         self._player_inv_tooltip = dict()
 
         # init PyMeow overlay
-        pm.overlay_init(target="Diablo II: Resurrected")
+        pm.overlay_init(target="Diablo II: Resurrected", trackTarget=True)
 
         self._inv_win = InventoryPanel(
             self._width,

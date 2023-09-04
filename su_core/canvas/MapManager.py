@@ -122,7 +122,7 @@ class MapManager:
         if area not in self._level_data:
             self._logger.info(f"[!] Requesting area data for area: {area}...")
 
-            self._level_data[area] = self._rpyc_client.read_map_data(area, player_pos)
+            self._level_data[area] = self._rpyc_client.get_level_data(area, player_pos)
 
     def get_level_data(self):
         if isinstance(self._level_data[self._player_area], AsyncResult):
@@ -136,7 +136,7 @@ class MapManager:
 
         areas = self._acts_to_process.pop(self.act_number)
         for area in areas:
-            req = self._rpyc_client.read_map_grid(area)
+            req = self._rpyc_client.get_level_map(area)
             req.add_callback(self._on_map_grid_arrival)
             self._requests_batch.insert_data(req, area)
 
