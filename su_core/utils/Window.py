@@ -1,5 +1,6 @@
 import win32process
 import win32gui
+import win32api
 import win32con
 import psutil
 from su_core.math import CSharpVector2, CSharpMatrix3X2
@@ -23,7 +24,20 @@ class Window:
         self._x2, self._y2 = win32gui.ClientToScreen(self._hwnd, (x_end, y_end))
         self._center = self._width / 2, self._height / 2
 
-        win32gui.SetForegroundWindow(self._hwnd)
+        # TODO: force window to be on top
+        try:
+            win32gui.ShowWindow(self._hwnd, 5)
+            win32gui.SetForegroundWindow(self._hwnd)
+        except Exception:
+            pass
+
+        # hForeground = win32gui.GetForegroundWindow()
+        # cur_thread = win32api.GetCurrentThread()
+        # remote_thread = win32process.GetWindowThreadProcessId(hForeground, None)
+        #
+        # win32process.AttachThreadInput(cur_thread, remote_thread, True)
+        # win32gui.SetForegroundWindow(self._hwnd)
+        # win32process.AttachThreadInput(cur_thread, remote_thread, False)
 
     def _init_window_handle(self):
         proc_name = "D2R.exe"

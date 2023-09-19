@@ -4,7 +4,7 @@ import tomllib
 import pyMeow as pm
 from PIL import Image
 from su_core.utils.helpers import get_root, get_last_val
-from su_core.canvas.drawings import pm_colors
+from su_core.canvas.drawings import Colors
 
 
 class AdvancedStatsPanel:
@@ -159,7 +159,7 @@ class AdvancedStatsPanel:
                 self._advanced_stats_texture,
                 0,
                 self._height_pad,
-                pm_colors["White"],
+                Colors.Get("White"),
                 0,
                 1,
             )
@@ -169,7 +169,7 @@ class AdvancedStatsPanel:
                     self._value_box_texture,
                     self._value_box_x,
                     self._value_box_y,
-                    pm_colors["White"],
+                    Colors.Get("White"),
                     0,
                     1,
                 )
@@ -205,7 +205,7 @@ class AdvancedStatsPanel:
                         text_1_y,
                         self._font_size,
                         0,
-                        pm_colors["White"],
+                        Colors.Get("White"),
                     )
 
                     pm.draw_font(
@@ -215,7 +215,7 @@ class AdvancedStatsPanel:
                         text_2_y,
                         self._font_size,
                         0,
-                        pm_colors["White"],
+                        Colors.Get("White"),
                     )
 
                 else:
@@ -229,7 +229,7 @@ class AdvancedStatsPanel:
                         text_y,
                         self._font_size,
                         0,
-                        pm_colors["White"],
+                        Colors.Get("White"),
                     )
 
                 self._value_box_y += self._value_box_h + self._scale_h * 18

@@ -1,7 +1,7 @@
 import os
 import pathlib
 import ctypes as ct
-from su_core.pm import mem
+from su_core.pm import Mem
 from su_core.pyStructures import UnitAny as StructUnitAny
 from su_core.pyStructures import Act as StructAct
 from su_core.pyStructures import ActMisc as StructActMisc
@@ -17,6 +17,7 @@ from su_core.data import *
 
 class UnitAny:
     def __init__(self, address, path_type="dynamic"):
+        self._mem = Mem.GetMem()
         self._address = address
         self._path_type = path_type
         self._struct = self.read_unit_struct()
@@ -28,7 +29,7 @@ class UnitAny:
         self._stats_list_struct = None
 
     def update(self):
-        self._stats_list_struct = mem.read_struct(self._struct.pStatList, StructStatList)
+        self._stats_list_struct = self._mem.read_struct(self._struct.pStatList, StructStatList)
 
         if self._path_type == "dynamic":
             self._path = Path(self._struct.pPath)
@@ -38,12 +39,11 @@ class UnitAny:
             pass
 
     def read_unit_struct(self) -> StructUnitAny:
-        return mem.read_struct(self._address, StructUnitAny)
+        return self._mem.read_struct(self._address, StructUnitAny)
 
-    @staticmethod
-    def read_stats(stat_vector):
+    def read_stats(self, stat_vector):
         num_of_stats = stat_vector.dwlSize
-        raw_stats = mem.read_bytes(stat_vector.pStats, num_of_stats * ct.sizeof(StructStat))
+        raw_stats = self._mem.read_bytes(stat_vector.pStats, num_of_stats * ct.sizeof(StructStat))
         stats_array = StructStat * num_of_stats
         stats_array = stats_array.from_buffer_copy(raw_stats)
 
@@ -78,6 +78,7 @@ class ActMisc:
     __seed = None
 
     def __init__(self, address):
+        self._mem = Mem.GetMem()
         self._address = address
         self._struct = None
         self._real_tomb_area = None
@@ -95,7 +96,7 @@ class ActMisc:
         self.update()
 
     def update(self):
-        self._struct = mem.read_struct(self._address, StructActMisc)
+        self._struct = self._mem.read_struct(self._address, StructActMisc)
         self._real_tomb_area = Area(self._struct.dwRealTombArea)
         self._difficulty = Difficulty(self._struct.wDifficulty)
 
@@ -122,6 +123,7 @@ class ActMisc:
 
 class Act:
     def __init__(self, address):
+        self._mem = Mem.GetMem()
         self._address = address
         self._struct = None
         self._act_no = None
@@ -129,7 +131,7 @@ class Act:
         self.update()
 
     def update(self):
-        self._struct = mem.read_struct(self._address, StructAct)
+        self._struct = self._mem.read_struct(self._address, StructAct)
         self._act_no = ActNo(self._struct.dwAct)
         self._act_misc = ActMisc(self._struct.pActMisc)
 
@@ -144,6 +146,7 @@ class Act:
 
 class Path:
     def __init__(self, address):
+        self._mem = Mem.GetMem()
         self._struct = None
         self._room1 = None
         self._is_level_loaded = None
@@ -151,7 +154,7 @@ class Path:
         self.update()
 
     def update(self):
-        self._struct = mem.read_struct(self._address, DynamicPath)
+        self._struct = self._mem.read_struct(self._address, DynamicPath)
         self._is_level_loaded = self._struct.pRoom1 is not None
         if self._is_level_loaded:
             self._room1 = Room1(self._struct.pRoom1)
@@ -174,12 +177,13 @@ class Path:
 
 class ItemPath:
     def __init__(self, address):
+        self._mem = Mem.GetMem()
         self._address = address
         self._struct = None
         self.update()
 
     def update(self):
-        self._struct = mem.read_struct(self._address, StructItemPath)
+        self._struct = self._mem.read_struct(self._address, StructItemPath)
 
     @property
     def position(self):
@@ -188,6 +192,7 @@ class ItemPath:
 
 class Room1:
     def __init__(self, address):
+        self._mem = Mem.GetMem()
         self._address = address
         self._struct = None
         self._room2 = None
@@ -195,7 +200,7 @@ class Room1:
         self.update()
 
     def update(self):
-        self._struct = mem.read_struct(self._address, StructRoom1)
+        self._struct = self._mem.read_struct(self._address, StructRoom1)
         self._room2 = Room2(self._struct.pRoom2)
 
     @property
@@ -205,13 +210,14 @@ class Room1:
 
 class Room2:
     def __init__(self, address):
+        self._mem = Mem.GetMem()
         self._address = address
         self._struct = None
         self._level = None
         self.update()
 
     def update(self):
-        self._struct = mem.read_struct(self._address, StructRoom2)
+        self._struct = self._mem.read_struct(self._address, StructRoom2)
         self._level = Level(self._struct.pLevel)
 
     @property
@@ -221,6 +227,7 @@ class Room2:
 
 class Level:
     def __init__(self, address):
+        self._mem = Mem.GetMem()
         self._address = address
         self._struct = None
         self._area = None
@@ -228,7 +235,7 @@ class Level:
         self.update()
 
     def update(self):
-        self._struct = mem.read_struct(self._address, StructLevel)
+        self._struct = self._mem.read_struct(self._address, StructLevel)
         self._area = Area(self._struct.dwLevelNo)
         self._origin = self._struct.dwPosX * 5, self._struct.dwPosY * 5
 

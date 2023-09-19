@@ -1,6 +1,6 @@
 import math
 from su_core.math import CSharpVector2
-from su_core.canvas.drawings import pm_colors, pm
+from su_core.canvas.drawings import Colors, pm
 
 
 def draw_arrow_shape(
@@ -59,7 +59,7 @@ def draw_arrow_shape(
             posX=head_v3.x + 20,
             posY=head_v2.y - 5,
             fontSize=font_size,
-            color=pm_colors[text_color],
+            color=Colors.Get(text_color),
         )
 
     pm.draw_line(
@@ -67,7 +67,7 @@ def draw_arrow_shape(
         start.y,
         end.x,
         end.y,
-        color=pm_colors[color],
+        color=color,
         thick=2.0,
     )
 
@@ -78,7 +78,7 @@ def draw_arrow_shape(
         head_v2.y,
         head_v3.x,
         head_v3.y,
-        color=pm_colors[color],
+        color=color,
     )
 
 
@@ -97,7 +97,7 @@ def draw_label_shape(
         font_size,
         0.8,
         0,
-        pm_colors[background_color],
+        background_color,
     )
 
     pm.draw_font(
@@ -107,18 +107,8 @@ def draw_label_shape(
         position.y,
         font_size,
         0,
-        pm_colors[text_color],
+        text_color,
     )
-
-    # pm.draw_rectangle_rounded(
-    #     position.x - font_size // 2,
-    #     position.y,
-    #     text_width + font_size,
-    #     font_size,
-    #     0.8,
-    #     0,
-    #     pm_colors[background_color],
-    # )
 
 
 def draw_cross_shape(position, beta, gamma, color, color2="", multiplayer=6, thickness=1):
@@ -141,7 +131,7 @@ def draw_cross_shape(position, beta, gamma, color, color2="", multiplayer=6, thi
             start.y,
             end.x,
             end.y,
-            color=pm_colors[color] if 2 < i < 9 or not color2 else pm_colors[color2],
+            color=color if 2 < i < 9 or not color2 else color2,
             thick=thickness,
         )
 

@@ -2,10 +2,11 @@ import sys
 import ctypes as ct
 import pyMeow as pm
 from typing import Type
-from su_core.logger import manager
+from su_core.logging.Logger import Logger
 
 
 class Mem:
+    __instance = None
     unit_table_offset = "48 03 C7 49 8B 8C C6"
     expansion_offset = "48 8B 05 ?? ?? ?? ?? 48 8B D9 F3 0F 10 50"
     ui_offset = "40 84 ED 0F 94 05"
@@ -13,14 +14,26 @@ class Mem:
     roster_offset = "02 45 33 D2 4D 8B"
     hover_offset = "C6 84 C2 ?? ?? ?? ?? ?? 48 8B 74 24 ??"
 
+    @staticmethod
+    def GetMem():
+        if Mem.__instance is None:
+            print(Mem.__instance)
+            Mem()
+        return Mem.__instance
+
     def __init__(self):
+        if Mem.__instance is not None:
+            raise ValueError("[!] Mem class should be initialized only once. Use GetMem method instead.")
+
+        Mem.__instance = self
+
         try:
             self.proc = pm.open_process("D2R.exe")
             self.base = pm.get_module(self.proc, "D2R.exe")["base"]
         except Exception as e:
             sys.exit(e)
 
-        self._logger = manager.get_logger(__name__)
+        self._logger = Logger.get_logger(__name__)
         self._expansion_address = None
         self._unit_table_address = None
         self._ui_address = None
@@ -182,6 +195,6 @@ class Mem:
 
 
 if __name__ == "__main__":
-    mem = Mem()
+    mem = Mem.GetMem()
     print("[!] Unitable address: ", hex(mem.unit_table))
     print("[!] Expansion address: ", hex(mem.expansion))

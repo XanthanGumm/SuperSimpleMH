@@ -1,4 +1,4 @@
-from su_core.pm import mem
+from su_core.pm import Mem
 from su_core.pyStructures import UI
 from su_core.data import Menus
 
@@ -15,6 +15,7 @@ class Menu:
     #     return cls.__instance
 
     def __init__(self):
+        self._mem = Mem.GetMem()
         self._ui = None
         self._inGame = None
         self._invMenu = None
@@ -33,7 +34,7 @@ class Menu:
         self.update()
 
     def update(self):
-        self._ui = mem.read_struct(mem.ui, UI)
+        self._ui = self._mem.read_struct(self._mem.ui, UI)
         self._inGame = self._ui.inGame
         self._invMenu = self._ui.invMenu
         self._charMenu = self._ui.charMenu

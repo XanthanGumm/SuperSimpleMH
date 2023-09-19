@@ -1,0 +1,429 @@
+[RogueEncampment]
+
+[BloodMoor]
+RogueEncampment = true
+ColdPlains = true
+DenOfEvil = true
+
+[DenOfEvil]
+BloodMoor = true
+
+[ColdPlains]
+BloodMoor = true
+StonyFields = true
+CaveLevel1 = true
+BurialGrounds = true
+
+[CaveLevel1]
+ColdPlains = true
+CaveLevel2 = true
+
+[BurialGrounds]
+Crypt = true
+Mausoleum = true
+
+[Crypt]
+BurialGrounds = true
+
+[Mausoleum]
+BurialGrounds = true
+
+[StonyFields]
+ColdPlains = true
+UndergroundPassageLevel1 = true
+
+[UndergroundPassageLevel1]
+DarkWood = true
+UndergroundPassageLevel2 = true
+
+[UndergroundPassageLevel2]
+UndergroundPassageLevel1 = true
+
+[DarkWood]
+UndergroundPassageLevel1 = true
+BlackMarsh = true
+
+[BlackMarsh]
+DarkWood = true
+ForgottenTower = true
+TamoeHighland = true
+HoleLevel1 = true
+
+[HoleLevel1]
+BlackMarsh = true
+HoleLevel2 = true
+
+[HoleLevel2]
+HoleLevel1 = true
+
+[TowerCellarLevel1]
+ForgottenTower = true
+TowerCellarLevel2 = true
+
+[TowerCellarLevel2]
+TowerCellarLevel1 = true
+TowerCellarLevel3 = true
+
+[TowerCellarLevel3]
+TowerCellarLevel2 = true
+TowerCellarLevel4 = true
+
+[TowerCellarLevel4]
+TowerCellarLevel3 = true
+TowerCellarLevel5 = true
+
+[TowerCellarLevel5]
+TowerCellarLevel4 = true
+
+[TamoeHighland]
+BlackMarsh = true
+PitLevel1 = true
+
+[PitLevel1]
+TamoeHighland = true
+PitLevel2 = true
+
+[PitLevel2]
+PitLevel1 = true
+
+[MonasteryGate]
+OuterCloister = true
+
+[OuterCloister]
+Barracks = true
+
+[Barracks]
+OuterCloister = true
+JailLevel1 = true
+
+[JailLevel1]
+Barracks = true
+JailLevel2 = true
+
+[JailLevel2]
+JailLevel1 = true
+JailLevel3 = true
+
+[JailLevel3]
+JailLevel2 = true
+InnerCloister = true
+
+[InnerCloister]
+JailLevel3 = true
+Cathedral = true
+
+[Cathedral]
+InnerCloister = true
+CatacombsLevel1 = true
+
+[CatacombsLevel1]
+Cathedral = true
+CatacombsLevel2 = true
+
+[CatacombsLevel2]
+CatacombsLevel1 = true
+CatacombsLevel3 = true
+
+[CatacombsLevel3]
+CatacombsLevel2 = true
+
+[LutGholein]
+
+[SewersLevel1Act2]
+LutGholein = true
+SewersLevel2Act2 = true
+
+[SewersLevel2Act2]
+SewersLevel1Act2 = true
+SewersLevel3Act2 = true
+
+[SewersLevel3Act2]
+SewersLevel2Act2 = true
+
+[RockyWaste]
+StonyTombLevel1 = true
+DryHills = true
+
+[StonyTombLevel1]
+RockyWaste = true
+StonyTombLevel2 = true
+
+[StonyTombLevel2]
+StonyTombLevel1 = true
+
+[DryHills]
+RockyWaste = true
+FarOasis = true
+HallsOfTheDeadLevel1 = true
+
+[HallsOfTheDeadLevel1]
+DryHills = true
+HallsOfTheDeadLevel2 = true
+
+[FarOasis]
+DryHills = true
+MaggotLairLevel1 = true
+LostCity = true
+
+[MaggotLairLevel1]
+FarOasis = true
+MaggotLairLevel2 = true
+
+[MaggotLairLevel2]
+MaggotLairLevel1 = true
+MaggotLairLevel3 = true
+
+[MaggotLairLevel3]
+MaggotLairLevel2 = true
+
+[LostCity]
+FarOasis = true
+AncientTunnels = true
+ValleyOfSnakes = true
+
+[ValleyOfSnakes]
+LostCity = true
+ClawViperTempleLevel1 = true
+
+[ClawViperTempleLevel1]
+LostCity = true
+ClawViperTempleLevel2 = true
+
+[AncientTunnels]
+LostCity = true
+
+[HaremLevel1]
+LutGholein = true
+HaremLevel2 = true
+
+[HaremLevel2]
+HaremLevel3 = true
+PalaceCellarLevel1 = true
+
+[PalaceCellarLevel1]
+PalaceCellarLevel2 = true
+HaremLevel2 = true
+
+[PalaceCellarLevel2]
+PalaceCellarLevel1 = true
+PalaceCellarLevel3 = true
+
+[PalaceCellarLevel3]
+PalaceCellarLevel2 = true
+
+[ArcaneSanctuary]
+
+[CanyonOfTheMagi]
+TalRashasTomb1 = true
+TalRashasTomb2 = true
+TalRashasTomb3 = true
+TalRashasTomb4 = true
+TalRashasTomb5 = true
+TalRashasTomb6 = true
+TalRashasTomb7 = true
+
+[TalRashasTomb1]
+CanyonOfTheMagi = true
+
+[TalRashasTomb2]
+CanyonOfTheMagi = true
+
+[TalRashasTomb3]
+CanyonOfTheMagi = true
+
+[TalRashasTomb4]
+CanyonOfTheMagi = true
+
+[TalRashasTomb5]
+CanyonOfTheMagi = true
+
+[TalRashasTomb6]
+CanyonOfTheMagi = true
+
+[TalRashasTomb7]
+CanyonOfTheMagi = true
+
+[KurastDocks]
+
+[SpiderForest]
+GreatMarsh = true
+SpiderCave = true
+SpiderCavern = true
+
+[SpiderCavern]
+SpiderForest = true
+
+[SpiderCave]
+SpiderForest = true
+
+[GreatMarsh]
+FlayerJungle = true
+
+[FlayerJungle]
+GreatMarsh = true
+LowerKurast = true
+FlayerDungeonLevel1 = true
+SwampyPitLevel1 = true
+
+[FlayerDungeonLevel1]
+FlayerJungle = true
+FlayerDungeonLevel2 = true
+
+[FlayerDungeonLevel2]
+FlayerDungeonLevel1 = true
+
+[SwampyPitLevel1]
+FlayerJungle = true
+SwampyPitLevel2 = true
+
+[SwampyPitLevel2]
+SwampyPitLevel1 = true
+SwampyPitLevel2 = true
+
+[LowerKurast]
+KurastBazaar = true
+
+[KurastBazaar]
+LowerKurast = true
+UpperKurast = true
+RuinedTemple = true
+DisusedFane = true
+SewersLevel1Act3 = true
+
+[DisusedFane]
+KurastBazaar = true
+
+[RuinedTemple]
+KurastBazaar = true
+
+[SewersLevel1Act3]
+UpperKurast = true
+SewersLevel2Act3 = true
+
+[UpperKurast]
+KurastCauseway = true
+KurastBazaar = true
+ForgottenTemple = true
+ForgottenReliquary = true
+
+[ForgottenTemple]
+UpperKurast = true
+
+[KurastCauseway]
+UpperKurast = true
+RuinedFane = true
+DisusedReliquary = true
+Travincal = true
+
+[RuinedFane]
+KurastCauseway = true
+
+[DisusedReliquary]
+KurastCauseway = true
+
+[Travincal]
+KurastCauseway = true
+DuranceOfHateLevel1 = true
+
+[DuranceOfHateLevel1]
+Travincal = true
+DuranceOfHateLevel2 = true
+
+[DuranceOfHateLevel2]
+DuranceOfHateLevel1 = true
+DuranceOfHateLevel3 = true
+
+[DuranceOfHateLevel3]
+DuranceOfHateLevel2 = true
+
+[ThePandemoniumFortress]
+
+[OuterSteppes]
+ThePandemoniumFortress = true
+PlainsOfDespair = true
+
+[PlainsOfDespair]
+OuterSteppes = true
+CityOfTheDamned = true
+
+[CityOfTheDamned]
+PlainsOfDespair = true
+RiverOfFlame = true
+
+[RiverOfFlame]
+CityOfTheDamned = true
+ChaosSanctuary = true
+
+[ChaosSanctuary]
+RiverOfFlame = true
+
+[Harrogath]
+
+[BloodyFoothills]
+Harrogath = true
+FrigidHighlands = true
+
+[FrigidHighlands]
+ArreatPlateau = true
+
+[ArreatPlateau]
+FrigidHighlands = true
+CrystallinePassage = true
+
+[CrystallinePassage]
+ArreatPlateau = true
+GlacialTrail = true
+FrozenRiver = true
+
+[FrozenRiver]
+CrystallinePassage = true
+
+[GlacialTrail]
+FrozenTundra = true
+CrystallinePassage = true
+DrifterCavern = true
+
+[DrifterCavern]
+CrystallinePassage = true
+
+[FrozenTundra]
+GlacialTrail = true
+TheAncientsWay = true
+
+[TheAncientsWay]
+FrozenTundra = true
+ArreatSummit = true
+IcyCellar = true
+
+[IcyCellar]
+TheAncientsWay = true
+
+[ArreatSummit]
+TheAncientsWay = true
+TheWorldStoneKeepLevel1 = true
+
+[TheWorldStoneKeepLevel1]
+ArreatSummit = true
+TheWorldStoneKeepLevel2 = true
+
+[TheWorldStoneKeepLevel2]
+TheWorldStoneKeepLevel1 = true
+TheWorldStoneKeepLevel3 = true
+
+[TheWorldStoneKeepLevel3]
+TheWorldStoneKeepLevel2 = true
+ThroneOfDestruction = true
+
+[ThroneOfDestruction]
+TheWorldStoneKeepLevel3 = true
+
+[NihlathaksTemple]
+hallsOfAnguish = true
+
+[hallsOfAnguish]
+NihlathaksTemple = true
+HallsOfPain = true
+
+[HallsOfPain]
+hallsOfAnguish = true
+HallsOfVaught = true

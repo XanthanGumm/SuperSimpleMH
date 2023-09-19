@@ -1,11 +1,10 @@
-from su_core.pm import mem
 from su_core.pyTypes import UnitAny
 from su_core.pyStructures import ItemData, StatsList
 from su_core.data import GameItem, ItemQuality, ItemFlag, items_codes, item_texture_name
 from su_core.data import Skill, SkillTab
 from su_core.utils.helpers import get_last_val, get_last_key
 from su_core.utils.exceptions import ItemTypeNotFound
-from su_core.logger import manager, traceback
+from su_core.logging.Logger import Logger, traceback
 from su_core.data import (
     strings,
     statscost,
@@ -24,7 +23,6 @@ from su_core.data import (
 
 
 class Item(UnitAny):
-    _logger = manager.get_logger(__name__)
     _stats_ignore_list = [
         "durability",
         "maxdurability",
@@ -50,6 +48,7 @@ class Item(UnitAny):
 
     def __init__(self, address):
         super(Item, self).__init__(address, path_type="item")
+        self._logger = Logger.get_logger(__name__)
         self._item_type = None
         self._item_data = None
         self._item_quality = None
@@ -62,7 +61,7 @@ class Item(UnitAny):
 
     def update(self):
         super(Item, self).update()
-        self._item_data = mem.read_struct(self._struct.pUnitData, ItemData)
+        self._item_data = self._mem.read_struct(self._struct.pUnitData, ItemData)
         self._item_type = GameItem(self._txt_file_no)
 
         self._is_runeword = self._item_data.ItemFlags & ItemFlag.IFLAG_RUNEWORD.value == ItemFlag.IFLAG_RUNEWORD.value
@@ -98,7 +97,7 @@ class Item(UnitAny):
 
         added_basestats = dict()
         added_stats = dict()
-        last_stats_list = mem.read_struct(self._stats_list_struct.pMyStats, StatsList)
+        last_stats_list = self._mem.read_struct(self._stats_list_struct.pMyStats, StatsList)
 
         while True:
             if last_stats_list.BaseStats.pStats:
@@ -113,7 +112,7 @@ class Item(UnitAny):
             if not last_stats_list.pPrev:
                 break
 
-            last_stats_list = mem.read_struct(last_stats_list.pPrev, StatsList)
+            last_stats_list = self._mem.read_struct(last_stats_list.pPrev, StatsList)
 
         return added_basestats, added_stats
 

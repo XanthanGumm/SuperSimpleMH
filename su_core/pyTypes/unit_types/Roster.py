@@ -1,11 +1,12 @@
-from su_core.pm import mem
+from su_core.pm import Mem
 from su_core.pyStructures import RosterMember, HostileInfo
 
 
 class Roster:
     def __init__(self, address):
+        self._mem = Mem.GetMem()
         self._address = address
-        self._struct = mem.read_struct(self._address, RosterMember)
+        self._struct = self._mem.read_struct(self._address, RosterMember)
         self._name = bytes(self._struct.name).rstrip(b"\x00")
         self._unit_id = self._struct.dwUnitId
         self._life_percent = self._struct.dwLifePercentage
@@ -18,13 +19,13 @@ class Roster:
         if unit_id == self._unit_id:
             return 0
 
-        p_hostile_info = mem.read_pointer(self._struct.pHostileInfo)
+        p_hostile_info = self._mem.read_pointer(self._struct.pHostileInfo)
 
         while True:
             if not p_hostile_info:
                 break
 
-            hostile_info = mem.read_struct(p_hostile_info, HostileInfo)
+            hostile_info = self._mem.read_struct(p_hostile_info, HostileInfo)
 
             if hostile_info.dwUnitId == unit_id:
                 if hostile_info.dwHostileFlag > 0:

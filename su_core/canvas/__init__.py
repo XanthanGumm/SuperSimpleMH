@@ -5,29 +5,27 @@ import pyMeow as pm
 from su_core.canvas.AdvancedStatsPanel import AdvancedStatsPanel
 from su_core.canvas.InventoryPanel import InventoryPanel
 from su_core.canvas.MapManager import MapManager
-from su_core.canvas.drawings import pm_colors
+from su_core.canvas.drawings import Colors
 from su_core.canvas.drawings import shapes
 from su_core.data import Area
-from su_core.logger import manager
+from su_core.logging.Logger import Logger
 from su_core.math import CSharpVector2
-from su_core.pyTypes.unitTypes import (
-    obtain_player,
-    obtain_npcs,
-    obtain_members,
-    obtain_hovered_player,
-    obtain_player_minions,
-)
+from su_core.pyTypes.unit_types import UnitsFunctions
 from su_core.utils import Window
 from su_core.utils.exceptions import FailedReadInventory, InvalidPlayerUnit
 from su_core.utils.helpers import get_root
 
 
 class Canvas(Window):
-    def __init__(self):
+    def __init__(self, shared_memory):  # TODO: type hint this later
         super(Canvas, self).__init__()
         root = get_root(__file__)
-        self._logger = manager.get_logger(__name__)
-        
+        self._logger = Logger.get_logger(__name__)
+        self._units = UnitsFunctions.Obtain()
+
+        self._shared_memory = shared_memory
+        self._directions_cfg = dict()
+
         # canvas scalars
         self._label_width_scalar = 0.07
         self._label_height_scalar = 0.05
@@ -36,7 +34,7 @@ class Canvas(Window):
         self._width_scalar = (self._width / (1280 * 2)) * 6.786
         self._height_scalar = self._width_scalar / 2
         self._map_scalar = (self._width / (2 * 1280)) * 4.8
-        self._texture_scalar = 2.4
+        self._texture_scalar = self.get_map_quality_scalar()
 
         # arrow paddings and boundaries paddings
         self._padding_scalar = self._width / (1280 * 2)
@@ -122,21 +120,45 @@ class Canvas(Window):
 
             if self._map_manager.in_game:
                 try:
-                    player = obtain_player()
+                    player = self._units.obtain_player()
 
                 except InvalidPlayerUnit:
                     continue
 
+                # player in game
                 if player is not None:
                     origin = player.path.room1.room2.level.origin
                     game_seed = player.act.act_misc.decrypt_seed()
                     player_area = player.path.room1.room2.level.area.value
 
-                    # new game
+                    if self._map_manager.is_new_area(player_area):
+                        # set flags and pass data to the gui
+                        self._shared_memory.act.value = self._map_manager.act_number
+                        self._shared_memory.area.value = player_area
+                        self._shared_memory.on_area_change.set()
+
+                    if self._shared_memory.on_directions_change.is_set():
+                        self._shared_memory.on_directions_change.clear()
+                        self._directions_cfg.clear()
+                        self._directions_cfg.update(self._shared_memory.directions)
+
+                    if self._shared_memory.on_quality_change.is_set():
+                        self._shared_memory.on_quality_change.clear()
+                        self._texture_scalar = self.get_map_quality_scalar()
+                        self._map_manager.set_texture_quality(self._texture_scalar)
+
+                    # set rpyc-d2-map-api requirements
                     if self._map_manager.is_new_game(game_seed):
+                        acts_levels = []
+                        for act, levels in self._shared_memory.acts_levels.items():
+                            acts_levels.append(
+                                [Area.FromName(lvl).value for lvl, to_load in levels.items() if to_load]
+                            )
+
                         self._map_manager.initialize(
                             seed=game_seed,
                             difficulty=player.act.act_misc.difficulty.value,
+                            act_levels=acts_levels,
                         )
 
                     self._map_manager.update(area=player_area, player_pos=player.path.position)
@@ -149,19 +171,19 @@ class Canvas(Window):
 
                         level_texture = self._map_manager.get_map(area=player_area)
                         adj_level_textures = {
-                            level_name: self._map_manager.get_map(area=Area.FromName(level_name).value)
-                            for level_name in map_data["adjacent_levels"].keys()
+                            level: self._map_manager.get_map(area=level)
+                            for level in map_data["adjacent_levels"].keys()
                         }
 
-                        player_minions = obtain_player_minions(unit_id=player.unit_id)
-                        npcs = obtain_npcs()
+                        player_minions = self._units.obtain_player_minions(unit_id=player.unit_id)
+                        npcs = self._units.obtain_npcs()
 
                         # check for player hover
                         if pm.key_pressed(0x22):
                             self._wait_to_be_released(key=0x22)
 
                             pagedn_key = True
-                            hovered = obtain_hovered_player()
+                            hovered = self._units.obtain_hovered_player()
                             if hovered is not None:
                                 self._stats_win.hover_player = hovered
                                 self._stats_win.create_tooltip()
@@ -175,7 +197,7 @@ class Canvas(Window):
                             self._wait_to_be_released(0x2D)
 
                             insert_key = True
-                            hovered = obtain_hovered_player()
+                            hovered = self._units.obtain_hovered_player()
                             if hovered is not None:
                                 self._inv_win.hover_player = hovered
                                 try:
@@ -198,45 +220,48 @@ class Canvas(Window):
                             and not self._map_manager.is_panel_open
                             and not pagedn_key
                             and not insert_key
+                            and self._shared_memory.overlay.value
                         ):
-                            # draw current level overlay
-                            texture_pos = self.world2map(
-                                player_pos=player.path.position,
-                                target_pos=origin,
-                                area_origin=origin,
-                                width_scaler=self._width_scalar,
-                                height_scalar=self._height_scalar,
-                            )
-                            texture_pos.x = texture_pos.x - map_data["size"][1] * self._map_scalar
-
-                            pm.draw_texture(
-                                level_texture,
-                                texture_pos.x,
-                                texture_pos.y,
-                                pm_colors["White"],
-                                0,
-                                self._map_scalar / self._texture_scalar,
-                            )
-
-                            # draw adjacent levels overlay
-                            for name, data in map_data["adjacent_levels"].items():
+                            if level_texture:
+                                # draw current level overlay
                                 texture_pos = self.world2map(
                                     player_pos=player.path.position,
-                                    target_pos=data["origin"],
+                                    target_pos=origin,
                                     area_origin=origin,
                                     width_scaler=self._width_scalar,
                                     height_scalar=self._height_scalar,
                                 )
-                                texture_pos.x = texture_pos.x - data["size"][0] * self._map_scalar
+                                texture_pos.x = texture_pos.x - map_data["size"][1] * self._map_scalar
 
                                 pm.draw_texture(
-                                    adj_level_textures[name],
+                                    level_texture,
                                     texture_pos.x,
                                     texture_pos.y,
-                                    pm_colors["White"],
+                                    Colors.Fade("White", self._shared_memory.overlay_opacity.value),
                                     0,
                                     self._map_scalar / self._texture_scalar,
                                 )
+
+                            # draw adjacent levels overlay
+                            for level, data in map_data["adjacent_levels"].items():
+                                if adj_level_textures[level]:
+                                    texture_pos = self.world2map(
+                                        player_pos=player.path.position,
+                                        target_pos=data["origin"],
+                                        area_origin=origin,
+                                        width_scaler=self._width_scalar,
+                                        height_scalar=self._height_scalar,
+                                    )
+                                    texture_pos.x = texture_pos.x - data["size"][0] * self._map_scalar
+
+                                    pm.draw_texture(
+                                        adj_level_textures[level],
+                                        texture_pos.x,
+                                        texture_pos.y,
+                                        Colors.Fade("White", self._shared_memory.overlay_opacity.value),
+                                        0,
+                                        self._map_scalar / self._texture_scalar,
+                                    )
 
                             # draw player
                             player_icon_pos = self.world2map(
@@ -246,7 +271,10 @@ class Canvas(Window):
                                 width_scaler=self._width_scalar,
                                 height_scalar=self._height_scalar,
                             )
-                            self.draw_npc(player_icon_pos, color="Cyan")
+                            self.draw_npc(
+                                pos=player_icon_pos,
+                                color=Colors.Fade("Cyan", self._shared_memory.npcs_opacity.value),
+                            )
 
                             # draw town npcs
                             for npc in npcs["town"]:
@@ -257,21 +285,38 @@ class Canvas(Window):
                                     width_scaler=self._width_scalar,
                                     height_scalar=self._height_scalar,
                                 )
-                                self.draw_npc(icon_pos, color="White")
+
+                                self.draw_npc(
+                                    pos=icon_pos,
+                                    color=Colors.Fade("White", self._shared_memory.npcs_opacity.value),
+                                )
+
+                                self.draw_npc_label(
+                                    pos=icon_pos,
+                                    name=npc.name,
+                                    cross_multiplayer=6,
+                                    font_size=int(self._font_scalar * 26),
+                                    text_color=Colors.Fade("White", self._shared_memory.npcs_opacity.value),
+                                    background_color=Colors.Get("D2RBlackBackground"),
+                                )
 
                             # draw merc
-                            for npc in npcs["merc"]:
-                                for minion in player_minions:
-                                    if minion.dwUnitId == npc.unit_id and minion.dwOwnerId == player.unit_id:
-                                        icon_pos = self.world2map(
-                                            player_pos=player.path.position,
-                                            target_pos=npc.path.position,
-                                            area_origin=origin,
-                                            width_scaler=self._width_scalar,
-                                            height_scalar=self._height_scalar,
-                                        )
-                                        self.draw_npc(icon_pos, color="SeaGreen")
-                                        break
+                            if self._shared_memory.merc.value:
+                                for npc in npcs["merc"]:
+                                    for minion in player_minions:
+                                        if minion.dwUnitId == npc.unit_id and minion.dwOwnerId == player.unit_id:
+                                            icon_pos = self.world2map(
+                                                player_pos=player.path.position,
+                                                target_pos=npc.path.position,
+                                                area_origin=origin,
+                                                width_scaler=self._width_scalar,
+                                                height_scalar=self._height_scalar,
+                                            )
+                                            self.draw_npc(
+                                                pos=icon_pos,
+                                                color=Colors.Fade("SeaGreen", self._shared_memory.npcs_opacity.value),
+                                            )
+                                            break
 
                             (
                                 hostiles_members,
@@ -279,7 +324,7 @@ class Canvas(Window):
                                 members,
                                 hostiles_rosters,
                                 in_party_rosters,
-                            ) = obtain_members(player.unit_id)
+                            ) = self._units.obtain_members(player.unit_id)
 
                             # draw in party players
                             for unit_id, member in in_party_rosters.items():
@@ -292,15 +337,18 @@ class Canvas(Window):
                                     width_scaler=self._width_scalar,
                                     height_scalar=self._height_scalar,
                                 )
-                                self.draw_npc(icon_pos, color="TooltipGreen")
+                                self.draw_npc(
+                                    pos=icon_pos,
+                                    color=Colors.Fade("D2RGreen", self._shared_memory.npcs_opacity.value),
+                                )
 
                                 self.draw_npc_label(
                                     pos=icon_pos,
                                     name=member.name,
                                     cross_multiplayer=6,
                                     font_size=int(self._font_scalar * 26),
-                                    text_color="White",
-                                    background_color="GreenBackground",
+                                    text_color=Colors.Fade("White", self._shared_memory.npcs_opacity.value),
+                                    background_color=Colors.Get("GreenBackground"),
                                 )
 
                             # draw hostiled players
@@ -313,15 +361,15 @@ class Canvas(Window):
                                     width_scaler=self._width_scalar,
                                     height_scalar=self._height_scalar,
                                 )
-                                self.draw_npc(icon_pos, color="Red")
+                                self.draw_npc(icon_pos, color=Colors.Fade("Red", self._shared_memory.npcs_opacity.value))
 
                                 self.draw_npc_label(
                                     pos=icon_pos,
                                     name=member.name,
                                     cross_multiplayer=6,
                                     font_size=int(self._font_scalar * 26),
-                                    text_color="White",
-                                    background_color="RedBackground",
+                                    text_color=Colors.Fade("White", self._shared_memory.npcs_opacity.value),
+                                    background_color=Colors.Get("RedBackground"),
                                 )
 
                             # draw hostiled life percentage
@@ -332,8 +380,8 @@ class Canvas(Window):
                                     life_percent=roster.life_percent,
                                     index=index,
                                     font_size=int(self._font_scalar * 30),
-                                    text_color="White",
-                                    background_color="RedBackground",
+                                    text_color=Colors.Fade("White", self._shared_memory.npcs_opacity.value),
+                                    background_color=Colors.Get("RedBackground"),
                                 )
 
                             # draw players that either not hostile and not in our party
@@ -346,15 +394,15 @@ class Canvas(Window):
                                         width_scaler=self._width_scalar,
                                         height_scalar=self._height_scalar,
                                     )
-                                    self.draw_npc(icon_pos, color="White")
+                                    self.draw_npc(icon_pos, color=Colors.Fade("White", self._shared_memory.npcs_opacity.value))
 
                                     self.draw_npc_label(
                                         pos=icon_pos,
                                         name=member.name,
                                         cross_multiplayer=6,
                                         font_size=int(self._font_scalar * 26),
-                                        text_color="D2RBrown",
-                                        background_color="TooltipBackground",
+                                        text_color=Colors.Fade("D2RBrown", self._shared_memory.npcs_opacity.value),
+                                        background_color=Colors.Get("D2RBlackBackground"),
                                     )
 
                             if not player.is_in_town:
@@ -368,66 +416,95 @@ class Canvas(Window):
                                         width_scaler=self._width_scalar,
                                         height_scalar=self._height_scalar,
                                     )
-                                    self.draw_destination_to(dst_pos, name="Waypoint", color="Navy")
+                                    self.draw_destination_to(
+                                        dst_pos=dst_pos,
+                                        name="Waypoint",
+                                        color=Colors.Fade("Navy", self._shared_memory.directions_opacity.value),
+                                    )
 
                                 # draw destination to mazes
                                 if map_data["exits"] is not None:
-                                    for name, exit_position in map_data["exits"].items():
-                                        dst_pos = self.world2map(
+                                    for level, exit_position in map_data["exits"].items():
+                                        level_name = Area(level).name
+                                        try:
+                                            if self._directions_cfg[level_name]:
+                                                dst_pos = self.world2map(
+                                                    player_pos=player.path.position,
+                                                    target_pos=exit_position,
+                                                    area_origin=origin,
+                                                    width_scaler=self._width_scalar,
+                                                    height_scalar=self._height_scalar,
+                                                )
+                                                self.draw_destination_to(
+                                                    dst_pos=dst_pos,
+                                                    name=level_name,
+                                                    color=Colors.Fade("Green", self._shared_memory.directions_opacity.value),
+                                                )
+                                        except KeyError:
+                                            pass
+
+                                # draw destination to adjacent_levels
+                                if map_data["adjacent_levels"] is not None:
+                                    for level, data in map_data["adjacent_levels"].items():
+                                        level_name = Area(level).name
+                                        try:
+                                            if self._directions_cfg[level_name]:
+                                                for intersection_position in data["outdoor"]:
+                                                    dst_pos = self.world2map(
+                                                        player_pos=player.path.position,
+                                                        target_pos=intersection_position,
+                                                        area_origin=origin,
+                                                        width_scaler=self._width_scalar,
+                                                        height_scalar=self._height_scalar,
+                                                    )
+
+                                                    self.draw_destination_to(
+                                                        dst_pos=dst_pos,
+                                                        name=level_name,
+                                                        color=Colors.Fade("GreenYellow", self._shared_memory.directions_opacity.value),
+                                                    )
+                                        except KeyError:
+                                            pass
+
+                                # draw champions, uniques, super uniques
+                                if self._shared_memory.uniques.value:
+                                    for npc in npcs["unique"]:
+                                        icon_pos = self.world2map(
                                             player_pos=player.path.position,
-                                            target_pos=exit_position,
+                                            target_pos=npc.path.position,
                                             area_origin=origin,
                                             width_scaler=self._width_scalar,
                                             height_scalar=self._height_scalar,
                                         )
-                                        self.draw_destination_to(dst_pos, name, color="Green")
 
-                                # draw destination to adjacent_levels
-                                if map_data["adjacent_levels"] is not None:
-                                    for name, data in map_data["adjacent_levels"].items():
-                                        for intersection_position in data["outdoor"]:
-                                            dst_pos = self.world2map(
-                                                player_pos=player.path.position,
-                                                target_pos=intersection_position,
-                                                area_origin=origin,
-                                                width_scaler=self._width_scalar,
-                                                height_scalar=self._height_scalar,
-                                            )
-                                            self.draw_destination_to(dst_pos, name, color="GreenYellow")
-
-                                # draw champions, uniques, super uniques
-                                for npc in npcs["unique"]:
-                                    icon_pos = self.world2map(
-                                        player_pos=player.path.position,
-                                        target_pos=npc.path.position,
-                                        area_origin=origin,
-                                        width_scaler=self._width_scalar,
-                                        height_scalar=self._height_scalar,
-                                    )
-
-                                    self.draw_npc(
-                                        pos=icon_pos,
-                                        color=npc.resists_colors[0] if len(npc.resists_colors) else "White",
-                                        color2=npc.resists_colors[1] if len(npc.resists_colors) > 1 else "",
-                                        multiplayer=9,
-                                        thickness=2,
-                                    )
+                                        color1 = npc.resists_colors[0] if len(npc.resists_colors) else "White"
+                                        color2 = npc.resists_colors[1] if len(npc.resists_colors) > 1 else None
+                                        self.draw_npc(
+                                            pos=icon_pos,
+                                            color=Colors.Fade(color1, self._shared_memory.npcs_opacity.value),
+                                            color2=Colors.Fade(color2, self._shared_memory.npcs_opacity.value) if color2 else None,
+                                            multiplayer=9,
+                                            thickness=2,
+                                        )
 
                                 # draw normal monsters
-                                for npc in npcs["other"]:
-                                    icon_pos = self.world2map(
-                                        player_pos=player.path.position,
-                                        target_pos=npc.path.position,
-                                        area_origin=origin,
-                                        width_scaler=self._width_scalar,
-                                        height_scalar=self._height_scalar,
-                                    )
+                                if self._shared_memory.monsters.value:
+                                    for npc in npcs["other"]:
+                                        icon_pos = self.world2map(
+                                            player_pos=player.path.position,
+                                            target_pos=npc.path.position,
+                                            area_origin=origin,
+                                            width_scaler=self._width_scalar,
+                                            height_scalar=self._height_scalar,
+                                        )
 
-                                    self.draw_npc(
-                                        pos=icon_pos,
-                                        color=npc.resists_colors[0] if len(npc.resists_colors) else "White",
-                                        color2=npc.resists_colors[1] if len(npc.resists_colors) > 1 else "",
-                                    )
+                                        color1 = npc.resists_colors[0] if len(npc.resists_colors) else "White"
+                                        color2 = npc.resists_colors[1] if len(npc.resists_colors) > 1 else None
+                                        self.draw_npc(
+                                            pos=icon_pos,
+                                            color=Colors.Fade(color1, self._shared_memory.npcs_opacity.value),
+                                            color2=Colors.Fade(color2, self._shared_memory.npcs_opacity.value) if color2 else None,
+                                        )
 
                                 # draw player minions
                                 for npc in npcs["player_minions"]:
@@ -440,7 +517,11 @@ class Canvas(Window):
                                                 width_scaler=self._width_scalar,
                                                 height_scalar=self._height_scalar,
                                             )
-                                            self.draw_npc(icon_pos, color="RoyalBlue")
+
+                                            self.draw_npc(
+                                                pos=icon_pos,
+                                                color=Colors.Fade("RoyalBlue", self._shared_memory.npcs_opacity.value),
+                                            )
 
             pm.end_drawing()
 
@@ -457,7 +538,7 @@ class Canvas(Window):
             background_color=background_color,
         )
 
-    def draw_npc(self, pos, color, color2="", multiplayer=6, thickness=1):
+    def draw_npc(self, pos, color, color2=None, multiplayer=6, thickness=1):
         shapes.draw_cross_shape(
             position=pos,
             beta=self._width_scalar,
@@ -532,6 +613,14 @@ class Canvas(Window):
             if not pm.key_pressed(key):
                 break
             time.sleep(0.01)
+
+    def get_map_quality_scalar(self) -> float:
+        if self._shared_memory.quality.value == b"Low":
+            return 1.0
+        elif self._shared_memory.quality.value == b"Medium":
+            return 2.4
+        else:
+            return self._map_scalar
 
 
 if __name__ == "__main__":

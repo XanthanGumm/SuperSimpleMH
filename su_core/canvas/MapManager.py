@@ -3,65 +3,76 @@ import io
 import os
 import pickle
 import time
-import tomllib
 import cv2
 import numpy as np
-from su_core.logger import manager
+from su_core.logging.Logger import Logger
 from su_core.canvas.drawings.ProgressBar import ProgressBar, pm
-from su_core.pyTypes.unitTypes import Menu
+from su_core.pyTypes.unit_types import Menu
 from su_core.utils import RPYClient
 from su_core.utils.data_structures import RequestsBatch, TexturesBatch, AsyncResult
-from su_core.utils.helpers import get_root
 
 # from typing - learn how to add type hints
 
 
 class MapManager:
     def __init__(self, texture_scalar: float):
-        # root = get_root(__file__)
-        #
-        # # load levels textures config priority
-        # with open(os.path.join(root, "config", "levels_priority.toml"), "rb") as f:
-        #     self._levels_priority = tomllib.load(f)
 
-        self._logger = manager.get_logger(__name__)
-        
-        self._texture_scalar: float= texture_scalar
+        self._logger = Logger.get_logger(__name__)
+        self._texture_scalar: float = texture_scalar
+        self._quality: bytes | None = None
+        self._ksize: int | None = None
+
         self._rpyc_client: RPYClient = RPYClient()
         self._pool = None
         self._game_difficulty: int = -1
         self._game_seed: int = -1
         self._player_area: int = -1
-        self._acts_levels: list[range] = [range(1, 40), range(40, 75), range(75, 103), range(103, 109), range(109, 132)]
+        self._workers = os.cpu_count() - 2
 
-        # vars for download each act
         self._timer_begin: int = 0
         self._timer_end: int = 0
-        self._acts_to_process: dict = dict()
-        self._acts_processed: set = set()
+        self._acts_levels: list[range] = [range(1, 40), range(40, 75), range(75, 103), range(103, 109), range(109, 132)]
+        self._requests: dict = {0: dict(), 1: dict(), 2: dict(), 3: dict(), 4: dict()}
+        self._acts_to_process: dict = {b"Low": dict(), b"Medium": dict(), b"High": dict()}
+        self._acts_processed: dict = {b"Low": set(), b"Medium": set(), b"High": set()}
+        self._textures: dict = {b"Low": dict(), b"Medium": dict(), b"High": dict()}
+        self._level_data = dict()
         self._requests_batch: RequestsBatch = RequestsBatch()
         self._textures_batch: TexturesBatch = TexturesBatch()
-        self._level_data = dict()
-        self._textures = dict()
+
         self._game_ui: Menu = Menu()
         self._progress_bar: ProgressBar = ProgressBar()
 
-    def initialize(self, seed: int, difficulty: int) -> None:
+    def initialize(self, seed: int, difficulty: int, act_levels: list) -> None:
         self._logger.info(
-            f"[!] Initialize MapManager with seed: {hex(seed)}, at {'normal' if difficulty == 0 else 'nightmare' if difficulty == 1 else 'hell'} difficulty"
+            f"[!] Initialize MapManager with seed: {hex(seed)},"
+            f" at {'normal' if difficulty == 0 else 'nightmare' if difficulty == 1 else 'hell'} difficulty"
         )
 
         self._player_area: int = -1
         self._game_difficulty: int = difficulty
         self._game_seed: int = seed
+        self._acts_levels = act_levels
         self._rpyc_client.set_requirements(seed, difficulty)
-        self._acts_processed: set = set()
-        for index, levels in enumerate(self._acts_levels):
-            self._acts_to_process[index] = self._acts_levels[index]
-        self.clear()
+        self.set_texture_quality(self._texture_scalar)
 
-    # TODO: add in town npc labels
-    # TODO: add act levels config loader
+        for quality in [b"Low", b"Medium", b"High"]:
+            self._acts_to_process[quality].clear()
+            self._acts_processed[quality].clear()
+
+            for index, levels in enumerate(self._acts_levels):
+                self._acts_to_process[quality][index] = self._acts_levels[index]
+
+        for _, textures in self._textures.items():
+            for _, texture in textures.items():
+                pm.unload_texture(texture)
+            textures.clear()
+
+        for act in [0, 1, 2, 3, 4]:
+            self._requests[act].clear()
+
+        self._level_data.clear()
+
     # TODO: add waypoints, maze and outdoor, stash
     # TODO: fix act 1 town/bloodmoor
     # process each act
@@ -69,19 +80,24 @@ class MapManager:
         progress_value: int = 0
         progress_max_value: int = 0
 
-        self._read_level_data(area, player_pos)
+        # read level data
+        self._player_area: int = area
+        if area not in self._level_data:
+            self._logger.info(f"[!] Requesting area data for area: {area}")
+            self._level_data[area] = self._rpyc_client.get_level_data(area, player_pos)
 
         if self._game_ui.last_act is not None:
             # player changed act in the middle of loading maps
             if (
-                self._game_ui.last_act not in self._acts_to_process
-                and self._game_ui.last_act not in self._acts_processed
+                self._game_ui.last_act not in self._acts_to_process[self._quality]
+                and self._game_ui.last_act not in self._acts_processed[self._quality]
             ):
                 self._logger.info(
-                    f"[!] Player switched from Act{self.act_number} at the middle of processing Act{self._game_ui.last_act + 1} maps."
+                    f"[!] Player switched from Act{self.act_number} at"
+                    f" the middle of processing Act{self._game_ui.last_act + 1} maps"
                 )
-                self._logger.info(f"[!] Waiting for Act{self._game_ui.last_act + 1} maps requests to finish..")
-                self._logger.warning(f"[!] Canceling the process of up scaling Act{self._game_ui.last_act + 1} maps...")
+                self._logger.info(f"[!] Waiting for Act{self._game_ui.last_act + 1} maps requests to finish")
+                self._logger.warning(f"[!] Canceling the process of up scaling Act{self._game_ui.last_act + 1} maps")
 
                 # fix progress bar when player changing act while loading
                 progress_value = self._progress_bar.value
@@ -89,64 +105,98 @@ class MapManager:
 
                 # close the pool and add the previous act to the process list
                 self._pool.shutdown(wait=False, cancel_futures=True)
-                self._acts_to_process[self._game_ui.last_act] = self._acts_levels[self._game_ui.last_act]
+                self._acts_to_process[self._quality][self._game_ui.last_act] = self._acts_levels[self._game_ui.last_act]
 
-        if self.act_number in self._acts_to_process:
+        # initialize process textures dependencies
+        if self.act_number in self._acts_to_process[self._quality]:
             progress_value += progress_value
             progress_max_value += 2 * len(self._acts_levels[self.act_number]) - 1
             self._progress_bar.initialize_bar(start_value=progress_value, max_value=progress_max_value)
             self._timer_begin = time.perf_counter()
-
-            self._pool = concurrent.futures.ThreadPoolExecutor(max_workers=os.cpu_count() - 2)
+            self._pool = concurrent.futures.ThreadPoolExecutor(max_workers=self._workers)
             self._textures_batch.clear()
-            self._request_current_act_maps()
 
+            areas = self._acts_to_process[self._quality].pop(self.act_number)
+
+            # request act maps
+            if not self._requests[self.act_number]:
+                self._logger.info(f"[!] Requesting Act{self.act_number + 1} map levels grids")
+                for area in areas:
+                    req = self._rpyc_client.get_level_map(area)
+                    req.add_callback(self._on_map_grid_arrival)
+                    self._requests_batch.insert_data(req, area)
+            else:
+                for area in areas:
+                    self._submit_process_job(area, self._requests[self.act_number][area])
+
+        # upscale textures quality
         if not self._textures_batch.is_processed:
             if self._requests_batch.ready() and self._textures_batch.ready():
+                self._logger.info(f"[!] Loading Act{self.act_number + 1} textures")
+
                 self._pool.shutdown()
-                self._load_textures()
-                self._acts_processed.add(self.act_number)
+                # load textures to memory
+                data = self._textures_batch.extract_all()
+                for area, texture in data.items():
+                    self._textures[self._quality][area] = pm.load_texture_bytes(".png", texture)
+
+                self._acts_processed[self._quality].add(self.act_number)
                 self._textures_batch.is_processed = True
                 self._requests_batch.clear()
                 self._timer_end = time.perf_counter()
                 self._logger.info(
-                    f"[!] Finished to load Act{self.act_number + 1} map levels after: {self._timer_end - self._timer_begin} seconds"
+                    f"[!] Finished to load Act{self.act_number + 1} map levels after: "
+                    f"{self._timer_end - self._timer_begin} seconds"
                 )
 
-        if self.act_number not in self._acts_processed:
+        if self.act_number not in self._acts_processed[self._quality]:
             self._progress_bar.draw()
-
-    def _read_level_data(self, area: int, player_pos: tuple[float, float]) -> None:
-        self._player_area = area
-
-        if area not in self._level_data:
-            self._logger.info(f"[!] Requesting area data for area: {area}...")
-
-            self._level_data[area] = self._rpyc_client.get_level_data(area, player_pos)
 
     def get_level_data(self):
         if isinstance(self._level_data[self._player_area], AsyncResult):
-            self._logger.info(f"[!] Caching area data for area: {self._player_area}...")
+            self._logger.info(f"[!] Caching area data for area: {self._player_area}")
 
             self._level_data[self._player_area] = dict(self._level_data[self._player_area].value)
         return self._level_data[self._player_area]
 
-    def _request_current_act_maps(self):
-        self._logger.info(f"[!] Requesting Act{self.act_number + 1} map levels grids...")
-
-        areas = self._acts_to_process.pop(self.act_number)
-        for area in areas:
-            req = self._rpyc_client.get_level_map(area)
-            req.add_callback(self._on_map_grid_arrival)
-            self._requests_batch.insert_data(req, area)
-
     def read_game_ui(self) -> None:
         self._game_ui.update()
+
+    def get_map(self, area):
+        if area not in self._textures[self._quality]:
+            return None
+
+        return self._textures[self._quality][area]
+
+    def is_new_game(self, seed) -> bool:
+        return seed != self._game_seed
+
+    def is_new_area(self, area) -> bool:
+        return area != self._player_area
+
+    def set_texture_quality(self, texture_scalar) -> None:
+        self._texture_scalar = texture_scalar
+        self._quality = b"Low" if texture_scalar == 1.0 else b"Medium" if texture_scalar == 2.4 else b"High"
+
+        if texture_scalar == 1:
+            self._ksize = 0
+        elif 1 < texture_scalar <= 2.4:
+            self._ksize = 5
+        elif 2.4 < texture_scalar <= 3.6:
+            self._ksize = 7
+        elif 3.6 < texture_scalar <= 4.8:
+            self._ksize = 9
+        else:
+            self._ksize = 11
 
     def _on_map_grid_arrival(self, req):
         area = self._requests_batch.get_data(req)
         texture_bytes = req.value
-        job = self._pool.submit(self._process_map_texture, texture_bytes, self._texture_scalar, 7)
+        self._requests[self.act_number][area] = texture_bytes
+        self._submit_process_job(area, texture_bytes)
+
+    def _submit_process_job(self, area: int, texture_bytes: bytes):
+        job = self._pool.submit(self._process_map_texture, texture_bytes, self._texture_scalar, self._ksize)
         job.add_done_callback(self._progress_bar.update)
         self._textures_batch.insert_data(area, job)
         self._progress_bar.update()
@@ -202,11 +252,13 @@ class MapManager:
 
         level_map_iso_brga = cv2.cvtColor(level_map_cnts, cv2.COLOR_BGR2BGRA)
         level_map_iso_brga[0, :] = [255, 255, 255, 0]
-        Bmask = np.all(level_map_iso_brga == [0, 0, 0, 255], axis=-1)
-        Wmask = np.all(level_map_iso_brga == [255, 255, 255, 255], axis=-1)
 
-        level_map_iso_brga[Bmask] = [127, 127, 127, 127]
+        Wmask = np.all(level_map_iso_brga == [255, 255, 255, 255], axis=-1)
         level_map_iso_brga[Wmask] = [255, 255, 255, 0]
+
+        if not ksize:
+            Bmask = np.all(level_map_iso_brga == [0, 0, 0, 255], axis=-1)
+            level_map_iso_brga[Bmask] = [127, 127, 127, 127]
 
         h, w = level_map_iso_brga.shape[:2]
 
@@ -216,40 +268,14 @@ class MapManager:
             interpolation=cv2.INTER_CUBIC,
         )
 
-        level_map_iso_brga = cv2.GaussianBlur(level_map_iso_brga, (3, 3), 0)
-        level_map_iso_brga = cv2.medianBlur(level_map_iso_brga, ksize=ksize)
+        if ksize:
+            level_map_iso_brga = cv2.GaussianBlur(level_map_iso_brga, (3, 3), 0)
+            level_map_iso_brga = cv2.medianBlur(level_map_iso_brga, ksize=ksize)
 
         _, buffer = cv2.imencode(".png", level_map_iso_brga)
         texture_byte_arr = io.BytesIO(buffer)
 
         return bytes(texture_byte_arr.getbuffer())
-
-    def _load_textures(self) -> None:
-        self._logger.info(f"[!] Loading Act{self.act_number + 1} textures...")
-
-        data = self._textures_batch.extract_all()
-        for area, texture in data.items():
-            self._textures[area] = pm.load_texture_bytes(".png", texture)
-
-    def get_map(self, area):
-        return self._textures[area]
-
-    def is_new_game(self, seed):
-        return seed != self._game_seed
-
-    def is_new_area(self, area):
-        return area != self._player_area and area in self._level_data
-
-    def clear(self):
-        self._logger.info("[!] Clearing MapManager' levels textures and data cache...")
-        self._logger.info("[!] Unloading textures from memory...")
-
-        areas = list(self._textures.keys())
-        for area in areas:
-            texture = self._textures.pop(area)
-            pm.unload_texture(texture)
-
-        self._level_data.clear()
 
     @property
     def loading_area(self) -> bool:
@@ -287,4 +313,4 @@ class MapManager:
 
     @property
     def acts_processed(self):
-        return self._acts_processed
+        return self._acts_processed[self._quality]

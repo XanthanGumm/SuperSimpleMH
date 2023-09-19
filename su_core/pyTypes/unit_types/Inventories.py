@@ -1,12 +1,13 @@
 import ast
 import ctypes as ct
-from su_core.pm import mem
-from su_core.pyTypes.unitTypes.Item import Item
+from su_core.pm import Mem
+from su_core.pyTypes.unit_types.Item import Item
 from su_core.pyStructures import Inventory, InventoryGrid
 
 
 class Inventories:
     def __init__(self, address):
+        self._mem = Mem.GetMem()
         self._address = address
         self._struct = None
         self._struct_inventories = None
@@ -29,14 +30,14 @@ class Inventories:
         self.update()
 
     def update(self):
-        self._struct = mem.read_struct(self._address, Inventory)
-        self._struct_inventories = mem.read_struct(self._struct.pInventoryGrid, InventoryGrid)
+        self._struct = self._mem.read_struct(self._address, Inventory)
+        self._struct_inventories = self._mem.read_struct(self._struct.pInventoryGrid, InventoryGrid)
         self._owner_id = self._struct.dwOwnerId
         self._weapon_id = self._struct.dwWeaponId
         self._sig = self._struct.dwSignature
 
     def read_equip_items(self):
-        body_raw_ptrs = mem.read_bytes(self._struct_inventories.pEquipList, 13 * 8)
+        body_raw_ptrs = self._mem.read_bytes(self._struct_inventories.pEquipList, 13 * 8)
         equip_items_arr = (ct.c_void_p * 13).from_buffer_copy(body_raw_ptrs)
         if equip_items_arr[1]:
             self._helm = Item(equip_items_arr[1])
@@ -66,7 +67,7 @@ class Inventories:
     def read_grid_charms(self):
         r_l = len(self._grid[0])  # grid row length - number of nodes in a raw
         c_l = len(self._grid)  # grid col length - number of nodes in a column
-        grid_raw_ptrs = mem.read_bytes(self._struct_inventories.pInventoryList, 40 * 8)
+        grid_raw_ptrs = self._mem.read_bytes(self._struct_inventories.pInventoryList, 40 * 8)
         grid_ptrs = (ct.c_void_p * 40).from_buffer_copy(grid_raw_ptrs)
         for i in range(40):
             if grid_ptrs[i]:

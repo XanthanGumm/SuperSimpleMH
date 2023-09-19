@@ -1,9 +1,8 @@
 from su_core.pyTypes import UnitAny
-from su_core.pm import mem
 from su_core.pyTypes import Act
 from su_core.data import Area
 from su_core.data import StatOriginal
-from su_core.pyTypes.unitTypes.Inventories import Inventories
+from su_core.pyTypes.unit_types.Inventories import Inventories
 from su_core.utils.exceptions import InvalidPlayerUnit
 
 
@@ -32,7 +31,7 @@ class Player(UnitAny):
             raise InvalidPlayerUnit("Act is not loaded")
 
         self._act = Act(self._struct.pAct)
-        self._name = mem.read_bytes(self._struct.pUnitData, 16).rstrip(b"\x00")
+        self._name = self._mem.read_bytes(self._struct.pUnitData, 16).rstrip(b"\x00")
 
         return True
 

@@ -4,16 +4,18 @@ import tomllib
 import math
 import pyMeow as pm
 from PIL import Image
-from su_core.logger import manager, traceback
-from su_core.pyTypes.unitTypes import obtain_roster_members
-from su_core.canvas.drawings import pm_colors
+from su_core.logging.Logger import Logger, traceback
+from su_core.pyTypes.unit_types import UnitsFunctions
+from su_core.canvas.drawings import Colors
 from su_core.utils.helpers import get_root
 from su_core.utils.exceptions import FailedReadInventory
 
 
 class InventoryPanel:
-    _logger = manager.get_logger(__name__)
+
     def __init__(self, win_width, win_height, win_start_x, win_start_y, font_size):
+        self._units = UnitsFunctions.Obtain()
+        self._logger = Logger.get_logger(__name__)
         
         self._font_size = font_size
         self._win_start_x = win_start_x
@@ -97,7 +99,7 @@ class InventoryPanel:
         if self._hover_player is not None:
             try:
                 self._hover_player.read_player_inventory()
-                rosters = obtain_roster_members()
+                rosters = self._units.obtain_roster_members()
                 for r in rosters:
                     if r.unit_id == self._hover_player.unit_id:
                         player_level = r.player_level
@@ -185,11 +187,11 @@ class InventoryPanel:
                         }
 
     def draw_inventory(self):
-        pm.draw_texture(self._texture, 0, self._height_pad, pm_colors["White"], 0, 1)
+        pm.draw_texture(self._texture, 0, self._height_pad, Colors.Get("White"), 0, 1)
 
         switch_texture = self._switch_textures[0] if not self._is_on_switch else self._switch_textures[1]
-        pm.draw_texture(switch_texture, self._switch1_x, self._switch1_y, pm_colors["White"], 0, 1)
-        pm.draw_texture(switch_texture, self._switch2_x, self._switch2_y, pm_colors["White"], 0, 1)
+        pm.draw_texture(switch_texture, self._switch1_x, self._switch1_y, Colors.Get("White"), 0, 1)
+        pm.draw_texture(switch_texture, self._switch2_x, self._switch2_y, Colors.Get("White"), 0, 1)
 
         if "helm" in self._tooltips:
             self._draw_inv_item("helm")
@@ -294,13 +296,13 @@ class InventoryPanel:
             y_start = y + (h - t_h) // 2 + self._height_pad
 
             if self._is_loc_hovered(loc):
-                pm.draw_rectangle(x, y + self._height_pad, w, h, pm_colors["InvBackground"])
+                pm.draw_rectangle(x, y + self._height_pad, w, h, Colors.Get("RedInvBackground"))
 
             pm.draw_texture(
                 self._item_textures[dir_name][file_name],
                 x_start,
                 y_start,
-                pm_colors["White"],
+                Colors.Get("White"),
                 0,
                 1,
             )
@@ -355,15 +357,15 @@ class InventoryPanel:
         if item_quality == "UNIQUE" or item_quality == "RUNEWORD":
             color = "D2RBrown"
         elif item_quality == "SET":
-            color = "TooltipGreen"
+            color = "D2RGreen"
         elif item_quality == "RARE":
-            color = "TooltipYellow"
+            color = "D2RYellow"
         elif item_quality == "CRAFTED":
-            color = "TooltipOrange"
+            color = "D2ROrange"
         elif item_quality == "MAGIC":
-            color = "TooltipBlue"
+            color = "D2RBlue"
         else:
-            color = "TooltipGray"
+            color = "D2RGray"
 
         name_pad_x, name_pad_y = tooltip_pads.pop(0)
 
@@ -381,7 +383,7 @@ class InventoryPanel:
             background_y,
             background_w,
             background_h,
-            pm_colors["TooltipBackground"],
+            Colors.Get("D2RBlackBackground"),
         )
 
         pm.draw_font(
@@ -391,7 +393,7 @@ class InventoryPanel:
             start_y + name_pad_y,
             self._font_size,
             0,
-            pm_colors[color],
+            Colors.Get(color),
         )
 
         if type_pad_x is not None and type_pad_y is not None:
@@ -402,7 +404,7 @@ class InventoryPanel:
                 start_y + type_pad_y,
                 self._font_size,
                 0,
-                pm_colors["TooltipGray"] if item_quality == "RUNEWORD" else pm_colors[color],
+                Colors.Get("D2RGray") if item_quality == "RUNEWORD" else Colors.Get(color),
             )
 
         if runes_pad_x is not None and runes_pad_y is not None:
@@ -413,7 +415,7 @@ class InventoryPanel:
                 start_y + runes_pad_y,
                 self._font_size,
                 0,
-                pm_colors[color],
+                Colors.Get(color),
             )
 
         for pad, text in zip(prolog_pad, tooltip[3]):
@@ -424,7 +426,7 @@ class InventoryPanel:
                 start_y + pad[1],
                 self._font_size,
                 0,
-                pm_colors["White"],
+                Colors.Get("white"),
             )
 
         for pad, text in zip(text_pad, tooltip[4]):
@@ -435,7 +437,7 @@ class InventoryPanel:
                 start_y + pad[1],
                 self._font_size,
                 0,
-                pm_colors["TooltipBlue"],
+                Colors.Get("D2RBlue"),
             )
 
     def _inv_loc_position(self, loc: str) -> tuple:

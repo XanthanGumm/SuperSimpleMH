@@ -39,8 +39,8 @@ class RequestsBatch(Batch):
         return self._data[key]
 
     def ready(self) -> bool:
-        if not self._data:
-            raise ValueError("Packet is empty")
+        # if not self._data:
+        #     raise ValueError("Packet is empty")
         return all(v.ready for v in self._data.keys())
 
     # def extract_all(self) -> dict:

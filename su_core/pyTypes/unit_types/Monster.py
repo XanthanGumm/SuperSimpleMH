@@ -1,6 +1,5 @@
 from su_core.pyTypes import UnitAny
 from su_core.pyStructures import MonsterData, MonsterTxt
-from su_core.pm import mem
 from su_core.data import PlrMode, MonsterTypeFlag, Npc, UselessNpc, StatOriginal
 
 
@@ -8,7 +7,7 @@ class Monster(UnitAny):
     def __init__(self, address):
         super(Monster, self).__init__(address)
         if self._struct.pStatList:
-            self._is_revived = mem.read_uint(self._struct.pStatList + 0xAC8 + 0xC) & 31 == 1
+            self._is_revived = self._mem.read_uint(self._struct.pStatList + 0xAC8 + 0xC) & 31 == 1
         else:
             self._is_revived = False
 
@@ -21,8 +20,8 @@ class Monster(UnitAny):
 
     def update(self):
         super(Monster, self).update()
-        self._monster_data = mem.read_struct(self._struct.pUnitData, MonsterData)
-        self._monster_txt = mem.read_struct(self._monster_data.pMonsterTxt, MonsterTxt)
+        self._monster_data = self._mem.read_struct(self._struct.pUnitData, MonsterData)
+        self._monster_txt = self._mem.read_struct(self._monster_data.pMonsterTxt, MonsterTxt)
 
     def read_npc_stats(self) -> bool:
         if not self._stats_list_struct.Stats.pStats:
@@ -91,3 +90,7 @@ class Monster(UnitAny):
     @property
     def resists_colors(self):
         return self._immunities_colors
+
+    @property
+    def name(self):
+        return self._monster_txt.name.capitalize()

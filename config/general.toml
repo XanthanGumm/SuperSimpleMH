@@ -1,0 +1,9 @@
+[properties]
+quality = "Low"
+overlay_opacity = 3
+directions_opacity = 5
+npcs_opacity = 1
+draw_overlay = true
+draw_monsters = false
+draw_uniques = true
+draw_merc = true
