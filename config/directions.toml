@@ -49,6 +49,9 @@ ForgottenTower = true
 TamoeHighland = true
 HoleLevel1 = true
 
+[ForgottenTower]
+TowerCellarLevel1 = true
+
 [HoleLevel1]
 BlackMarsh = true
 HoleLevel2 = true
