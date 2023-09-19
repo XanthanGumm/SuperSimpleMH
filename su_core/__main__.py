@@ -9,7 +9,7 @@ from su_core.canvas import Canvas
 from su_core.utils import Config
 from su_core.utils import SharedMemory
 from su_core.data import Area
-from gui import create_gui, create_directions_checkboxes, on_visibility_change, MARGINS
+from su_core.gui import create_gui, create_directions_checkboxes, on_visibility_change, MARGINS
 
 
 def run(shared_memory: SharedMemory):
