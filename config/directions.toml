@@ -129,6 +129,9 @@ CatacombsLevel3 = true
 
 [CatacombsLevel3]
 CatacombsLevel2 = true
+CatacombsLevel4 = true
+
+[CatacombsLevel4]
 
 [LutGholein]
 
@@ -161,6 +164,13 @@ HallsOfTheDeadLevel1 = true
 
 [HallsOfTheDeadLevel1]
 DryHills = true
+HallsOfTheDeadLevel2 = true
+
+[HallsOfTheDeadLevel2]
+HallsOfTheDeadLevel1 = true
+HallsOfTheDeadLevel3 = true
+
+[HallsOfTheDeadLevel3]
 HallsOfTheDeadLevel2 = true
 
 [FarOasis]

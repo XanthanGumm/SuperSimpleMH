@@ -435,6 +435,7 @@ class Canvas(Window):
                                                     width_scaler=self._width_scalar,
                                                     height_scalar=self._height_scalar,
                                                 )
+
                                                 self.draw_destination_to(
                                                     dst_pos=dst_pos,
                                                     name=level_name,
