@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "SuperSimpleMH"
-version = "5.6.4"
+version = "6.4.6"
 requires-python = ">=3.11"
 classifiers = [
     "Programming Language :: Python :: 3",
@@ -17,6 +17,8 @@ dependencies = [
     "opencv-python",
     "pillow",
     "pandas",
+    "toml",
+    "dearpygui",
     "numpy",
     "psutil"
 ]
