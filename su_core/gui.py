@@ -9,6 +9,7 @@ def on_dir_selection(_, app_data, user_data):
     if cfg.is_d2lod_path_is_valid(app_data["current_path"]):
         cfg.update_d2lod_path(app_data["current_path"])
         dpg.configure_item("main", show=True)
+
         dpg.set_viewport_width(325)
         dpg.set_viewport_height(465)
         shared_memory.on_path_validator.set()
