@@ -440,6 +440,8 @@ ThroneOfDestruction = true
 [ThroneOfDestruction]
 TheWorldStoneKeepLevel3 = true
 
+[TheWorldstoneChamber]
+
 [NihlathaksTemple]
 HallsOfAnguish = true
 
