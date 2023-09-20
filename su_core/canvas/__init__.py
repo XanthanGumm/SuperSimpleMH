@@ -467,6 +467,22 @@ class Canvas(Window):
                                         except KeyError:
                                             pass
 
+                                # draw super uniques
+                                for m_id, m_data, in map_data["npcs"].items():
+                                    dst_pos = self.world2map(
+                                        player_pos=player.path.position,
+                                        target_pos=m_data["pos"],
+                                        area_origin=origin,
+                                        width_scaler=self._width_scalar,
+                                        height_scalar=self._height_scalar,
+                                    )
+
+                                    self.draw_destination_to(
+                                        dst_pos=dst_pos,
+                                        name=m_data["name"],
+                                        color=Colors.Fade("GreenYellow", self._shared_memory.directions_opacity.value),
+                                    )
+
                                 # draw champions, uniques, super uniques
                                 if self._shared_memory.uniques.value:
                                     for npc in npcs["unique"]:
