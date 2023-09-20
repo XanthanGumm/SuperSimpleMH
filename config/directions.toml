@@ -18,6 +18,9 @@ BurialGrounds = true
 ColdPlains = true
 CaveLevel2 = true
 
+[CaveLevel2]
+CaveLevel1 = true
+
 [BurialGrounds]
 Crypt = true
 Mausoleum = true
@@ -286,6 +289,10 @@ FlayerDungeonLevel2 = true
 
 [FlayerDungeonLevel2]
 FlayerDungeonLevel1 = true
+FlayerDungeonLevel3 = true
+
+[FlayerDungeonLevel3]
+FlayerDungeonLevel2 = true
 
 [SwampyPitLevel1]
 FlayerJungle = true
@@ -293,6 +300,9 @@ SwampyPitLevel2 = true
 
 [SwampyPitLevel2]
 SwampyPitLevel1 = true
+SwampyPitLevel3 = true
+
+[SwampyPitLevel3]
 SwampyPitLevel2 = true
 
 [LowerKurast]
@@ -317,6 +327,9 @@ KurastBazaar = true
 [SewersLevel1Act3]
 UpperKurast = true
 SewersLevel2Act3 = true
+
+[SewersLevel2Act3]
+SewersLevel1Act3 = true
 
 [UpperKurast]
 KurastCauseway = true
