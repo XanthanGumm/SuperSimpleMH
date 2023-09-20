@@ -23,3 +23,4 @@ class SharedMemory:
         self.on_area_change = mp.Event()
         self.on_quality_change = mp.Event()
         self.on_directions_change = mp.Event()
+        self.shut_down = mp.Event()

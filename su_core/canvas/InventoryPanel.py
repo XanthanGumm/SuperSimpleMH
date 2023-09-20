@@ -461,6 +461,17 @@ class InventoryPanel:
 
         return False
 
+    def clear(self):
+        pm.unload_texture(self._texture)
+
+        for t in self._switch_textures:
+            pm.unload_texture(t)
+
+        for _, textures in self._item_textures.items():
+            for name, t in textures.items():
+                pm.unload_texture(t)
+
+
     @property
     def hover_player(self):
         return self._hover_player

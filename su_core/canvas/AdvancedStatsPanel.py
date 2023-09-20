@@ -240,6 +240,10 @@ class AdvancedStatsPanel:
                 ):
                     break
 
+    def clear(self):
+        pm.unload_texture(self._advanced_stats_texture)
+        pm.unload_texture(self._value_box_texture)
+
     @property
     def hover_player(self):
         return self._hover_player

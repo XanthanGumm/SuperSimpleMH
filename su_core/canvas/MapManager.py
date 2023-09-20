@@ -63,15 +63,7 @@ class MapManager:
             for index, levels in enumerate(self._acts_levels):
                 self._acts_to_process[quality][index] = self._acts_levels[index]
 
-        for _, textures in self._textures.items():
-            for _, texture in textures.items():
-                pm.unload_texture(texture)
-            textures.clear()
-
-        for act in [0, 1, 2, 3, 4]:
-            self._requests[act].clear()
-
-        self._level_data.clear()
+        self.clear()
 
     # TODO: add waypoints, maze and outdoor, stash
     # TODO: fix act 1 town/bloodmoor
@@ -200,6 +192,17 @@ class MapManager:
         job.add_done_callback(self._progress_bar.update)
         self._textures_batch.insert_data(area, job)
         self._progress_bar.update()
+
+    def clear(self):
+        for _, textures in self._textures.items():
+            for _, texture in textures.items():
+                pm.unload_texture(texture)
+            textures.clear()
+
+        for act in [0, 1, 2, 3, 4]:
+            self._requests[act].clear()
+
+        self._level_data.clear()
 
     @staticmethod
     def _process_map_texture(pickled_map, scalar: float, ksize: int) -> bytes:

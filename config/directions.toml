@@ -202,6 +202,8 @@ ClawViperTempleLevel1 = true
 LostCity = true
 ClawViperTempleLevel2 = true
 
+[ClawViperTempleLevel2]
+
 [AncientTunnels]
 LostCity = true
 
@@ -210,7 +212,7 @@ LutGholein = true
 HaremLevel2 = true
 
 [HaremLevel2]
-HaremLevel3 = true
+HaremLevel1 = true
 PalaceCellarLevel1 = true
 
 [PalaceCellarLevel1]
@@ -309,6 +311,9 @@ KurastBazaar = true
 [RuinedTemple]
 KurastBazaar = true
 
+[ForgottenReliquary]
+KurastBazaar = true
+
 [SewersLevel1Act3]
 UpperKurast = true
 SewersLevel2Act3 = true
@@ -378,10 +383,15 @@ FrigidHighlands = true
 
 [FrigidHighlands]
 ArreatPlateau = true
+Abaddon = true
+
+[Abaddon]
 
 [ArreatPlateau]
 FrigidHighlands = true
 CrystallinePassage = true
+
+[PitOfAcheron]
 
 [CrystallinePassage]
 ArreatPlateau = true
@@ -431,12 +441,14 @@ ThroneOfDestruction = true
 TheWorldStoneKeepLevel3 = true
 
 [NihlathaksTemple]
-hallsOfAnguish = true
+HallsOfAnguish = true
 
-[hallsOfAnguish]
+[HallsOfAnguish]
 NihlathaksTemple = true
 HallsOfPain = true
 
 [HallsOfPain]
-hallsOfAnguish = true
+HallsOfAnguish = true
 HallsOfVaught = true
+
+[HallsOfVaught]

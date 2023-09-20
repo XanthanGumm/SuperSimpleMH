@@ -116,6 +116,10 @@ class Canvas(Window):
         insert_key = False
 
         while pm.overlay_loop():
+
+            if self._shared_memory.shut_down.is_set():
+                break
+
             self._map_manager.read_game_ui()
 
             if self._map_manager.in_game:
@@ -541,6 +545,11 @@ class Canvas(Window):
                                             )
 
             pm.end_drawing()
+
+        self._map_manager.clear()
+        self._inv_win.clear()
+        self._stats_win.clear()
+        pm.overlay_close()
 
     def draw_hostile_life_percent(self, pos, name, life_percent, index, font_size, text_color, background_color):
         pos = CSharpVector2(pos.x, pos.y + index * (font_size + font_size // 2))

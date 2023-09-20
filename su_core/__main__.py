@@ -88,6 +88,8 @@ def main():
         raise e
 
     finally:
+        shared_memory.shut_down.set()
+        mh_process.join()
         mh_process.close()
         dpg.destroy_context()
 
