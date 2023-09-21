@@ -54,7 +54,7 @@
 ## Loading times
 * Reducing loading times - every time the player is switching act for the first time, the maps of the current act will be processed.
 * The process time is depending on the overlay quality that you have chosen. The lower the quality, the shorter the loading times will be.
-* However, there is an option to use high quality and still achieve low loading times.
+* However, there is an option to use high quality and still achieve fast loading times.
 * You can make it by unchecking the maps in the areas tab within SuperSimpleMH graphical user interface.
 * This way the unchecked maps will not be loaded and loading times will be reduced.
 
