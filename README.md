@@ -17,7 +17,7 @@
 6) make sure there are no ERRORS
 
 ## Self Setup
-1) do step 1-5 from FAST Setup
+1) do step 1-4 from FAST Setup
 2) download pyMeow module from releases or compile it your self
 3) from rpyc-d2-map-api directory open command shell prompt and run the commands:
    1) py -3.11-32 -m venv venv
