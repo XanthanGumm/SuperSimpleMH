@@ -429,9 +429,9 @@ class Canvas(Window):
                                 # draw destination to mazes
                                 if map_data["exits"] is not None:
                                     for level, exit_position in map_data["exits"].items():
-                                        level_name = Area(level).name
+                                        area = Area(level)
                                         try:
-                                            if self._directions_cfg[level_name]:
+                                            if self._directions_cfg[area.name]:
                                                 dst_pos = self.world2map(
                                                     player_pos=player.path.position,
                                                     target_pos=exit_position,
@@ -439,11 +439,11 @@ class Canvas(Window):
                                                     width_scaler=self._width_scalar,
                                                     height_scalar=self._height_scalar,
                                                 )
-
+                                                color = "Green" if area.value > player_area else "Red"
                                                 self.draw_destination_to(
                                                     dst_pos=dst_pos,
-                                                    name=level_name,
-                                                    color=Colors.Fade("Green", self._shared_memory.directions_opacity.value),
+                                                    name=area.name,
+                                                    color=Colors.Fade(color, self._shared_memory.directions_opacity.value),
                                                 )
                                         except KeyError:
                                             pass
@@ -451,9 +451,9 @@ class Canvas(Window):
                                 # draw destination to adjacent_levels
                                 if map_data["adjacent_levels"] is not None:
                                     for level, data in map_data["adjacent_levels"].items():
-                                        level_name = Area(level).name
+                                        area = Area(level)
                                         try:
-                                            if self._directions_cfg[level_name]:
+                                            if self._directions_cfg[area.name]:
                                                 for intersection_position in data["outdoor"]:
                                                     dst_pos = self.world2map(
                                                         player_pos=player.path.position,
@@ -462,11 +462,11 @@ class Canvas(Window):
                                                         width_scaler=self._width_scalar,
                                                         height_scalar=self._height_scalar,
                                                     )
-
+                                                    color = "GreenYellow" if area.value > player_area else "Red"
                                                     self.draw_destination_to(
                                                         dst_pos=dst_pos,
-                                                        name=level_name,
-                                                        color=Colors.Fade("GreenYellow", self._shared_memory.directions_opacity.value),
+                                                        name=area.name,
+                                                        color=Colors.Fade(color, self._shared_memory.directions_opacity.value),
                                                     )
                                         except KeyError:
                                             pass
