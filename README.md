@@ -11,7 +11,7 @@
 ## Fast Setup
 1) install python 3.11 32-bit version
 2) install python 3.11 64-bit version 
-3) download SuperSimpleMH.zip from the releases
+3) download SuperSimpleMH.zip from releases
 4) download diablo 2 lod version 1.13c, you can download from here https://www.mediafire.com/file/3x7g0nuph242mu1/game.zip/file
 5) from the project directory (SuperSimpleMH folder) execute "run.bat" as admin, PRESS 1 and then ENTER
 6) make sure there are no ERRORS
