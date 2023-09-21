@@ -35,6 +35,8 @@ BurialGrounds = true
 ColdPlains = true
 UndergroundPassageLevel1 = true
 
+[Tristram]
+
 [UndergroundPassageLevel1]
 DarkWood = true
 UndergroundPassageLevel2 = true
@@ -135,6 +137,9 @@ CatacombsLevel2 = true
 CatacombsLevel4 = true
 
 [CatacombsLevel4]
+
+[MooMooFarm]
+RogueEncampment = true
 
 [LutGholein]
 
